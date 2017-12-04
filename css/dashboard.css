@@ -1,0 +1,23 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+
+.card-image .card-image-image {
+    width: 100%;
+    height: 150px;
+    background-size: auto 550px;
+    /*background-position-y: -200px;*/
+}
+
+.card-image .card-title {
+    background: rgba(0,0,0,0.6);
+}
+
+.collection-item a {
+    max-width: 90%;
+    display: inline-block;
+}

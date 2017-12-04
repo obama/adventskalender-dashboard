@@ -1,0 +1,44 @@
+{
+  "manifest_version": 2,
+
+  "name": "Adeventskalender",
+  "description": "Make adventskalendering easier",
+  "version": "1.0",
+  "author": "Putin",
+  "icons": {
+    "64": "img/64x64.png",
+    "96": "img/icon.svg"
+  },
+
+  "content_scripts": [{
+      "matches": [
+        "*://gewinnspiel.cosmopolitan.de/*",
+        "*://gewinnspiel.intouch.wunderweib.de/*",
+        "*://gewinnspiel.autozeitung.de/*",
+        "*://gewinnspiel.tvmovie.de/*",
+        "*://gewinnspiel.bravo.de/*",
+        "*://gewinnspiel.wunderweib.de/*"
+      ],
+      "js": ["js/sweep.js"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": [
+      "js/browser-polyfill.min.js",
+      "js/eventPage.js"
+    ],
+    "persistent": true
+  },
+  "permissions": [
+    "<all_urls>",
+    "activeTab",
+    "storage",
+    "tabs",
+    "webNavigation"
+  ]
+}

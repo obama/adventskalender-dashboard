@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Adventskalender Dashboard</title>
+
+    <link rel="stylesheet" href="css/materialize.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/webext-options-sync.js"></script>
+    <script src="js/browser-polyfill.min.js"></script>
+    <script src="js/dashboard.js"></script>
+</head>
+
+<body>
+    <nav class="nav-extended blue">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">
+                Adventskalender Dashboard
+            </a>
+        </div>
+        <div class="nav-content">
+            <ul class="tabs tabs-transparent">
+                <li class="tab">
+                    <a href="#dash">Dashboard</a>
+                </li>
+                <li class="tab">
+                    <a href="#daten">Persönliche Daten</a>
+                </li>
+                <li class="tab">
+                    <a href="#settings">Einstellungen</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="dash" class="container">
+        <div class="card">
+            <div class="card-image">
+                <div class="card-image-image"></div>
+                <span class="card-title">Los gehts</span>
+                <a id="btnStart" class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </a>
+            </div>
+            <div class="card-content">
+                <p>Füge unten die Seiten hinzu, die du besuchen willst und klicke dann auf den roten Los knopf!</p>
+            </div>
+        </div>
+
+
+        <div id="cardPageList" class="card-panel">
+            <h4>Seiten</h4>
+            <div class="row">
+                <form name="addPage">
+                    <div class="col s10">
+                        <label>Seite hinzufügen:
+                            <input type="url" class="validate" name="url" required>
+                        </label>
+                    </div>
+                    <div class="col s2">
+                        <a id="addPage" class="btn-floating btn-large waves-effect waves-light blue">
+                            <i class="material-icons">add</i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <ul class="collection" id="pageList">
+                <li class="collection-item">
+                    <div>Alvin
+                        <a href="#!" class="secondary-content">
+                            <i class="material-icons">send</i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="daten" class="container">
+        <form name="myData" id="myData">
+            <div class="row">
+                <div class="col s6">
+                    <label>Vorname
+                        <input type="text" name="firstName" placeholder="Vorname">
+                    </label>
+                </div>
+                <div class="col s6">
+                    <label>Nachname
+                        <input type="text" name="surName" placeholder="Nachname">
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <div class="switch">
+                        <label>
+                            Geschlecht: Mann
+                            <input type="checkbox" name="isFemale">
+                            <span class="lever"></span>
+                            Frau
+                        </label>
+                    </div>
+                </div>
+                <div class="col s6">
+                    <label>Geburtsdatum
+                        <input type="date" class="datepicker1" name="birthdate">
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <label>E-Mail
+                        <input type="email" placeholder="e-mail" name="email" class="validate">
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s10">
+                    <label>Straße
+                        <input type="text" placeholder="Straße" name="street">
+                    </label>
+                </div>
+                <div class="col s2">
+                    <label>Nr.
+                        <input type="text" placeholder="Nr." name="houseNo">
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s2">
+                    <label>PLZ
+                        <input type="number" placeholder="PLZ" name="postal" class="validate">
+                    </label>
+                </div>
+                <div class="col s10">
+                    <label>Ort
+                        <input type="text" placeholder="Ort" name="place">
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="settings" class="container">
+        <div id="exportData" class="card">
+            <div class="card-content">
+                <span class="card-title">Export Seitenliste</span>
+                <p>
+                    Kopiere die textarea, wenn du die Daten exportieren willst (JSON Format).
+                </p>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="col s12">
+                                <label>JSON</label>
+                                <textarea class=""></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <p>Paste ein valides JSON und klicke auf import wenn du importieren willst.</p>
+                <a href="#!" id="importJson" class="waves-effect btn blue">Import</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- #### -->
+    <div id="modalInfo" class="modal">
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect btn blue">Ok</a>
+        </div>
+    </div>
+
+    <div id="modalConfirm" class="modal">
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="modalConfirmYes" class="modal-action modal-close waves-effect btn blue">Ja</a>
+            <a href="#!" id="modalConfirmNo" class="modal-action modal-close waves-effect btn red">Nein</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
