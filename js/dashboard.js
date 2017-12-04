@@ -99,8 +99,8 @@ var confirmModal = function ({
   let m = $('#modalConfirm');
   m.find('h4').text(header);
   m.find('p').text(text)
-  m.find('#modalConfirmYes').click(yes);
-  m.find('#modalConfirmNo').click(no);
+  m.find('#modalConfirmYes').get(0).onclick = yes;
+  m.find('#modalConfirmNo').get(0).onclick= no;
   let instance = M.Modal.getInstance(m);
   instance.open();
   return instance;

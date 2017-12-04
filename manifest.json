@@ -9,6 +9,11 @@
     "64": "img/64x64.png",
     "96": "img/icon.svg"
   },
+  "applications": {
+    "gecko": {
+      "id": "sau@sose.de"
+    }
+  },
 
   "content_scripts": [{
       "matches": [
