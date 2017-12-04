@@ -20,10 +20,14 @@ was man bisher machen kann:
 ## Installation
 
 ### Firefox: 
-geht auf about:debugging#addons und erlaubt temporäre addons. dort dann den beim hinzufügen die `manifest.json` auswählen. (ACHTUNG: wenn man firefox schließt wird die seiten liste gelöscht! macht also vor dem beenden ein backup!)
+downloade die `.xpi` datei und füge sie hinzu.
+
+oder falls du den quelltext starten willst:
+geht auf [about:debugging#addons](about:debugging#addons) und erlaubt temporäre addons. dort dann den beim hinzufügen die `manifest.json` auswählen. (ACHTUNG: wenn man firefox schließt wird die seiten liste gelöscht! macht also vor dem beenden ein backup!)
 
 ### Chrome: 
-Bei erweiterungen den entwickler modus aktivieren und dann "entpackte erweiterung laden". chrome merkt sich die seitenliste scheinbar auch nach dem neustart bei beta-extensions.
+in den chrome store kann ich nichts hochladen, darum müsst ihr den quelltext nutzen. ladet also den ordner runter und dann
+ei erweiterungen den entwickler modus aktivieren und dann "entpackte erweiterung laden". dort den ordner suchen und hinzufügen. chrome merkt sich die seitenliste scheinbar auch nach dem neustart bei beta-extensions.
 
 ## Nutzen
 1. klickt auf das geschenk-icon
