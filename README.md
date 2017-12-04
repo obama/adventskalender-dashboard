@@ -39,4 +39,4 @@ ei erweiterungen den entwickler modus aktivieren und dann "entpackte erweiterung
 - wenn ihr den tab schließt müsste ihr nochmal den roten start knopf im dashboard klicken
 - manchmal ist die leiste zu breit, macht dann das fenster schmaler dann sollte der next knopf erscheinen (notfalls gibt es einen next knopf auf dem geschenk icon)
 -  das fill in form im geschenk icon geht noch nicht.
-
+- ihr solltet keine seiten adden während ihr den roten knopf schon gestartet habt. sie könnten in der reihenfolge so landen, dass sie erst am nächsten tag geöffnet werden.
