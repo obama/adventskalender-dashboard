@@ -6,7 +6,7 @@ window.onload = (e) => {
         window.close();
     };
 
-    document.getElementById('fillForm').onclick = function(e) {
+    /*document.getElementById('fillForm').onclick = function(e) {
         //alert(chrome.tabs.query)
         chrome.tabs.query({active: true}, (e)=>{
             let activeId = e[0].id;
@@ -14,7 +14,7 @@ window.onload = (e) => {
             console.log(activeId)
             chrome.tabs.executeScript(activeId, {code:'console.log(1)'});
         });
-    };
+    };*/
 
     document.getElementById('nextPage').onclick = function(e) {
         let p = browser.runtime.sendMessage({next:true});
