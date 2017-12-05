@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "Adventskalender Dashboard",
-  "description": "Macht das teilnehmen an Gewinnspiel-Adventskalendern angenehmer.",
-  "version": "1.0",
+  "description": "Macht das Teilnehmen an Gewinnspiel-Adventskalendern angenehmer.",
+  "version": "1.1",
   "author": "Putin",
   "icons": {
     "64": "img/64x64.png",
