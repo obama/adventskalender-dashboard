@@ -41,6 +41,8 @@ $(document).ready(function () {
     let f = document.forms.addPage;
     if (f.checkValidity()) {
       _submit();
+    } else {
+      infoModal({header:'Fehler', text:'Bitte gebe eine komplette URL ein mit http(s)://'})
     }
   });
 
