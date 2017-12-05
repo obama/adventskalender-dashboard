@@ -18,7 +18,8 @@ window.onload = (e) => {
 
     document.getElementById('nextPage').onclick = function(e) {
         let p = browser.runtime.sendMessage({next:true});
-        addClass(e.target, 'disabled');        
+        addClass(e.target, 'disabled');   
+        window.close();     
     };
 };
 

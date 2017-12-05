@@ -85,6 +85,9 @@
             "lastVisit": null,
             "note": "braucht code"
         },
+        "http://www.esprit.de/xmas/xmas-game": {
+            "lastVisit": null
+        },
         "http://www.gamestar.de/kalender/xmas2017,2/": {
             "lastVisit": null
         },
@@ -110,6 +113,9 @@
             "lastVisit": null
         },
         "http://www.pom-baer.de/adventskalender.html": {
+            "lastVisit": null
+        },
+        "http://www.qvc.de/content/specials/qvc-adventskalender.html": {
             "lastVisit": null
         },
         "http://www.selbst.de/adventskalender-hinter-jedem-tuerchen-steckt-ein-gewinn-35142.html": {
@@ -143,7 +149,8 @@
             "lastVisit": null
         },
         "https://adventskalender.westfalia.de/": {
-            "lastVisit": null
+            "lastVisit": null,
+            "note": "rabatt"
         },
         "https://basic-tutorials.de/tag/adventskalender-2017": {
             "lastVisit": null

@@ -20,7 +20,7 @@ was man bisher machen kann:
 ## Installation
 
 ### Firefox: 
-downloade die `.xpi` datei und füge sie hinzu.
+Füge das Addon hinzu: [https://addons.mozilla.org/de/firefox/addon/adventskalender-dashboard](https://addons.mozilla.org/de/firefox/addon/adventskalender-dashboard)
 
 oder falls du den quelltext starten willst:
 geht auf [about:debugging#addons](about:debugging#addons) und erlaubt temporäre addons. dort dann den beim hinzufügen die `manifest.json` auswählen. (ACHTUNG: wenn man firefox schließt wird die seiten liste gelöscht! macht also vor dem beenden ein backup!)
