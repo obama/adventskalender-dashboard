@@ -1,4 +1,5 @@
 document.body.onload = () => {
+  console.log('sweepstake script injected')
 
   let me = {};
   chrome.storage.local.get('options', (e) => {
@@ -19,6 +20,7 @@ document.body.onload = () => {
         'gewinnspiel.wunderweib.de'].indexOf(document.location.host) >= 0) {
       let sendBtn = document.querySelector('input[type=submit][name=commit]');
       let emailInput = document.querySelector('#entry_email');
+      //alert(sendBtn, emailInput)
       if (emailInput) {
         if (emailInput.value != me.email) {
           emailInput.value = me.email;
@@ -28,7 +30,7 @@ document.body.onload = () => {
           sendBtn.click()
         }
       }
-      if (document.querySelector('h1.confirmation-title')) {
+      if (document.querySelector('h1.confirmation-title') || document.querySelector('.entry > p')) {
         console.log('requesting close tab')
         chrome.runtime.sendMessage({
           closeTab: true

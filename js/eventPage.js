@@ -15,13 +15,34 @@ browser.browserAction.setIcon({
   path: 'img/icon.svg'
 });
 
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+  if (namespace == 'local') {
+    for (key in changes) {
+      if (key == 'pages') {
+        pages = changes[key].newValue;
+      }
+      if (key == 'options') {
+        myData = changes[key].newValue;
+      }
+      console.log('eventpage: reloaded pages');
+    }
+  }
+});
+
 var loadPages = function () {
   chrome.storage.local.get('pages', (e) => {
     pages = e.pages;
   });
 };
 
+var loadMyData = function () {
+  chrome.storage.local.get('options', (e) => {
+    myData = e.options;
+  });
+};
+
 loadPages();
+loadMyData();
 
 var savePages = function () {
   let p = chrome.storage.local.set({
@@ -71,13 +92,18 @@ var insertBar = function () {
     allFrames: true
   });
   // insert variable ;D
-  let tis = pages[Object.keys(pages)[run.i]];
+  let cur = Object.keys(pages)[run.i],
+      tis = pages[cur];
   let o = {
     note: typeof tis.note == 'undefined' ? '' : tis.note,
     page: {
+      url: cur,
       i: run.i,
       n: Object.keys(pages).length
-    }
+    },
+    form: tis.form,
+    myData: myData,
+    formsFilled: false
   };
   browser.tabs.executeScript(run.tab.id, {
     code: `advCal = ${JSON.stringify(o)}`
@@ -89,16 +115,7 @@ var insertBar = function () {
   pp.then((e) => console.log('executeScript ', e)); // oddly never fires, though file is injected?
 }
 
-chrome.storage.onChanged.addListener(function (changes, namespace) {
-  if (namespace == 'local') {
-    for (key in changes) {
-      if (key == 'pages') {
-        pages = changes[key].newValue;
-      }
-      console.log('eventpage: reloaded pages');
-    }
-  }
-});
+
 
 
 chrome.runtime.onMessage.addListener(

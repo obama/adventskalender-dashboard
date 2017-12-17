@@ -14,11 +14,7 @@ $(document).ready(function () {
     .css('background-image', `url(${chrome.extension.getURL("img/bg1.jpg")})`);
 
   $('#btnStart').click((e) => {
-    /*let modal = infoModal({
-      header: 'Lade...',
-      text: '<div class="progress blue lighten-5"><div class="indeterminate blue"></div></div>',
-      f: (e)=>false
-    });*/
+    console.log('sending start message')
     chrome.runtime.sendMessage({
       startRun: true
     },(e)=>{
