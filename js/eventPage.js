@@ -69,6 +69,7 @@ var createRunnerTab = function (index) {
     // reset the run object
     run.tab = tab;
     run.i = index;
+    run.pages = JSON.parse(JSON.stringify(pages));
     // wait till tab is finished loading before inserting code
     if (!browser.webNavigation.onCompleted.hasListener(nextSiteLoaded)) {
       browser.webNavigation.onCompleted.addListener(nextSiteLoaded, {
@@ -92,14 +93,14 @@ var insertBar = function () {
     allFrames: true
   });
   // insert variable ;D
-  let cur = Object.keys(pages)[run.i],
-      tis = pages[cur];
+  let cur = Object.keys(run.pages)[run.i],
+      tis = run.pages[cur];
   let o = {
     note: typeof tis.note == 'undefined' ? '' : tis.note,
     page: {
       url: cur,
       i: run.i,
-      n: Object.keys(pages).length
+      n: Object.keys(run.pages).length
     },
     form: tis.form,
     myData: myData,
@@ -132,7 +133,7 @@ chrome.runtime.onMessage.addListener(
         loadPages(); // TODO run callback that sends message to dashboard
         console.log('pages was empty when starting run, dead end code :> run a callback here')
       }
-      if (run.i > 0 && run.i < Object.keys(pages).length) {
+      if (run.i > 0 && run.i < Object.keys(run.pages).length) {
         sendResponse({
           resume: true
         });
@@ -147,9 +148,9 @@ chrome.runtime.onMessage.addListener(
       createRunnerTab(run.i);
     } else if (request.next == true) {
       run.i += 1;
-      if (run.i <= Object.keys(pages).length) {
+      if (run.i <= Object.keys(run.pages).length) {
         let p = browser.tabs.update(run.tab.id, {
-          url: Object.keys(pages)[run.i]
+          url: Object.keys(run.pages)[run.i]
         });
       } else {
         browser.tabs.executeScript(run.tab.id, {
@@ -157,7 +158,7 @@ chrome.runtime.onMessage.addListener(
         });
       }
     } else if (request.addNote != '') {
-      pages[Object.keys(pages)[run.i]].note = request.addNote;
+      pages[Object.keys(run.pages)[run.i]].note = request.addNote;
       console.log(pages)
       savePages();
       sendResponse(true);
