@@ -1,9 +1,15 @@
 /*!
- * Materialize v1.0.0-alpha.1 (http://materializecss.com)
+ * Materialize v1.0.0 (http://materializecss.com)
  * Copyright 2014-2017 Materialize
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41,7 +47,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   var frag;
   function parseHTML(str) {
     if (!frag) {
-      frag = doc.implementation.createHTMLDocument();
+      frag = doc.implementation.createHTMLDocument(null);
       var base = frag.createElement("base");
       base.href = doc.location.href;
       frag.head.appendChild(base);
@@ -567,9 +573,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     on: function (eventName, delegate, callback, runOnce) {
       // jshint ignore:line
-
       var originalCallback;
-
       if (!isString(eventName)) {
         for (var key in eventName) {
           this.on(key, delegate, eventName[key]);
@@ -591,11 +595,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         originalCallback = callback;
         callback = function (e) {
           var t = e.target;
-
           while (!matches(t, delegate)) {
-            if (t === this) {
+            if (t === this || t === null) {
               return t = false;
             }
+
             t = t.parentNode;
           }
 
@@ -717,11 +721,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     val: function (value) {
       if (value === undefined) {
         return getValue(this[0]);
-      } else {
-        return this.each(function (v) {
-          return v.value = value;
-        });
       }
+
+      return this.each(function (v) {
+        return v.value = value;
+      });
     }
 
   });
@@ -999,788 +1003,62 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   return cash;
 });
-; /*! VelocityJS.org (1.4.2). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
-/*! VelocityJS.org jQuery Shim (1.0.1). (C) 2014 The jQuery Foundation. MIT @license: en.wikipedia.org/wiki/MIT_License. */
-!function (a) {
-  "use strict";
-  function b(a) {
-    var b = a.length,
-        d = c.type(a);return "function" !== d && !c.isWindow(a) && (!(1 !== a.nodeType || !b) || "array" === d || 0 === b || "number" == typeof b && b > 0 && b - 1 in a);
-  }if (!a.jQuery) {
-    var c = function (a, b) {
-      return new c.fn.init(a, b);
-    };c.isWindow = function (a) {
-      return a && a === a.window;
-    }, c.type = function (a) {
-      return a ? "object" == typeof a || "function" == typeof a ? e[g.call(a)] || "object" : typeof a : a + "";
-    }, c.isArray = Array.isArray || function (a) {
-      return "array" === c.type(a);
-    }, c.isPlainObject = function (a) {
-      var b;if (!a || "object" !== c.type(a) || a.nodeType || c.isWindow(a)) return !1;try {
-        if (a.constructor && !f.call(a, "constructor") && !f.call(a.constructor.prototype, "isPrototypeOf")) return !1;
-      } catch (d) {
-        return !1;
-      }for (b in a) {}return void 0 === b || f.call(a, b);
-    }, c.each = function (a, c, d) {
-      var e,
-          f = 0,
-          g = a.length,
-          h = b(a);if (d) {
-        if (h) for (; f < g && (e = c.apply(a[f], d), e !== !1); f++) {} else for (f in a) {
-          if (a.hasOwnProperty(f) && (e = c.apply(a[f], d), e === !1)) break;
-        }
-      } else if (h) for (; f < g && (e = c.call(a[f], f, a[f]), e !== !1); f++) {} else for (f in a) {
-        if (a.hasOwnProperty(f) && (e = c.call(a[f], f, a[f]), e === !1)) break;
-      }return a;
-    }, c.data = function (a, b, e) {
-      if (void 0 === e) {
-        var f = a[c.expando],
-            g = f && d[f];if (void 0 === b) return g;if (g && b in g) return g[b];
-      } else if (void 0 !== b) {
-        var h = a[c.expando] || (a[c.expando] = ++c.uuid);return d[h] = d[h] || {}, d[h][b] = e, e;
-      }
-    }, c.removeData = function (a, b) {
-      var e = a[c.expando],
-          f = e && d[e];f && (b ? c.each(b, function (a, b) {
-        delete f[b];
-      }) : delete d[e]);
-    }, c.extend = function () {
-      var a,
-          b,
-          d,
-          e,
-          f,
-          g,
-          h = arguments[0] || {},
-          i = 1,
-          j = arguments.length,
-          k = !1;for ("boolean" == typeof h && (k = h, h = arguments[i] || {}, i++), "object" != typeof h && "function" !== c.type(h) && (h = {}), i === j && (h = this, i--); i < j; i++) {
-        if (f = arguments[i]) for (e in f) {
-          f.hasOwnProperty(e) && (a = h[e], d = f[e], h !== d && (k && d && (c.isPlainObject(d) || (b = c.isArray(d))) ? (b ? (b = !1, g = a && c.isArray(a) ? a : []) : g = a && c.isPlainObject(a) ? a : {}, h[e] = c.extend(k, g, d)) : void 0 !== d && (h[e] = d)));
-        }
-      }return h;
-    }, c.queue = function (a, d, e) {
-      function f(a, c) {
-        var d = c || [];return a && (b(Object(a)) ? !function (a, b) {
-          for (var c = +b.length, d = 0, e = a.length; d < c;) {
-            a[e++] = b[d++];
-          }if (c !== c) for (; void 0 !== b[d];) {
-            a[e++] = b[d++];
-          }return a.length = e, a;
-        }(d, "string" == typeof a ? [a] : a) : [].push.call(d, a)), d;
-      }if (a) {
-        d = (d || "fx") + "queue";var g = c.data(a, d);return e ? (!g || c.isArray(e) ? g = c.data(a, d, f(e)) : g.push(e), g) : g || [];
-      }
-    }, c.dequeue = function (a, b) {
-      c.each(a.nodeType ? [a] : a, function (a, d) {
-        b = b || "fx";var e = c.queue(d, b),
-            f = e.shift();"inprogress" === f && (f = e.shift()), f && ("fx" === b && e.unshift("inprogress"), f.call(d, function () {
-          c.dequeue(d, b);
-        }));
-      });
-    }, c.fn = c.prototype = { init: function (a) {
-        if (a.nodeType) return this[0] = a, this;throw new Error("Not a DOM node.");
-      }, offset: function () {
-        var b = this[0].getBoundingClientRect ? this[0].getBoundingClientRect() : { top: 0, left: 0 };return { top: b.top + (a.pageYOffset || document.scrollTop || 0) - (document.clientTop || 0), left: b.left + (a.pageXOffset || document.scrollLeft || 0) - (document.clientLeft || 0) };
-      }, position: function () {
-        function a(a) {
-          for (var b = a.offsetParent; b && "html" !== b.nodeName.toLowerCase() && b.style && "static" === b.style.position;) {
-            b = b.offsetParent;
-          }return b || document;
-        }var b = this[0],
-            d = a(b),
-            e = this.offset(),
-            f = /^(?:body|html)$/i.test(d.nodeName) ? { top: 0, left: 0 } : c(d).offset();return e.top -= parseFloat(b.style.marginTop) || 0, e.left -= parseFloat(b.style.marginLeft) || 0, d.style && (f.top += parseFloat(d.style.borderTopWidth) || 0, f.left += parseFloat(d.style.borderLeftWidth) || 0), { top: e.top - f.top, left: e.left - f.left };
-      } };var d = {};c.expando = "velocity" + new Date().getTime(), c.uuid = 0;for (var e = {}, f = e.hasOwnProperty, g = e.toString, h = "Boolean Number String Function Array Date RegExp Object Error".split(" "), i = 0; i < h.length; i++) {
-      e["[object " + h[i] + "]"] = h[i].toLowerCase();
-    }c.fn.init.prototype = c.fn, a.Velocity = { Utilities: c };
+;
+var Component = function () {
+  /**
+   * Generic constructor for all components
+   * @constructor
+   * @param {Element} el
+   * @param {Object} options
+   */
+  function Component(classDef, el, options) {
+    _classCallCheck(this, Component);
+
+    // Display error if el is valid HTML Element
+    if (!(el instanceof Element)) {
+      console.error(Error(el + ' is not an HTML Element'));
+    }
+
+    // If exists, destroy and reinitialize in child
+    var ins = classDef.getInstance(el);
+    if (!!ins) {
+      ins.destroy();
+    }
+
+    this.el = el;
+    this.$el = cash(el);
   }
-}(window), function (a) {
-  "use strict";
-  "object" == typeof module && "object" == typeof module.exports ? module.exports = a() : "function" == typeof define && define.amd ? define(a) : a();
-}(function () {
-  "use strict";
-  return function (a, b, c, d) {
-    function e(a) {
-      for (var b = -1, c = a ? a.length : 0, d = []; ++b < c;) {
-        var e = a[b];e && d.push(e);
-      }return d;
-    }function f(a) {
-      return t.isWrapped(a) ? a = s.call(a) : t.isNode(a) && (a = [a]), a;
-    }function g(a) {
-      var b = o.data(a, "velocity");return null === b ? d : b;
-    }function h(a, b) {
-      var c = g(a);c && c.delayTimer && !c.delayPaused && (c.delayRemaining = c.delay - b + c.delayBegin, c.delayPaused = !0, clearTimeout(c.delayTimer.setTimeout));
-    }function i(a, b) {
-      var c = g(a);c && c.delayTimer && c.delayPaused && (c.delayPaused = !1, c.delayTimer.setTimeout = setTimeout(c.delayTimer.next, c.delayRemaining));
-    }function j(a) {
-      return function (b) {
-        return Math.round(b * a) * (1 / a);
-      };
-    }function k(a, c, d, e) {
-      function f(a, b) {
-        return 1 - 3 * b + 3 * a;
-      }function g(a, b) {
-        return 3 * b - 6 * a;
-      }function h(a) {
-        return 3 * a;
-      }function i(a, b, c) {
-        return ((f(b, c) * a + g(b, c)) * a + h(b)) * a;
-      }function j(a, b, c) {
-        return 3 * f(b, c) * a * a + 2 * g(b, c) * a + h(b);
-      }function k(b, c) {
-        for (var e = 0; e < p; ++e) {
-          var f = j(c, a, d);if (0 === f) return c;var g = i(c, a, d) - b;c -= g / f;
-        }return c;
-      }function l() {
-        for (var b = 0; b < t; ++b) {
-          x[b] = i(b * u, a, d);
+
+  /**
+   * Initializes components
+   * @param {class} classDef
+   * @param {Element | NodeList | jQuery} els
+   * @param {Object} options
+   */
+
+
+  _createClass(Component, null, [{
+    key: "init",
+    value: function init(classDef, els, options) {
+      var instances = null;
+      if (els instanceof Element) {
+        instances = new classDef(els, options);
+      } else if (!!els && (els.jquery || els.cash || els instanceof NodeList)) {
+        var instancesArr = [];
+        for (var i = 0; i < els.length; i++) {
+          instancesArr.push(new classDef(els[i], options));
         }
-      }function m(b, c, e) {
-        var f,
-            g,
-            h = 0;do {
-          g = c + (e - c) / 2, f = i(g, a, d) - b, f > 0 ? e = g : c = g;
-        } while (Math.abs(f) > r && ++h < s);return g;
-      }function n(b) {
-        for (var c = 0, e = 1, f = t - 1; e !== f && x[e] <= b; ++e) {
-          c += u;
-        }--e;var g = (b - x[e]) / (x[e + 1] - x[e]),
-            h = c + g * u,
-            i = j(h, a, d);return i >= q ? k(b, h) : 0 === i ? h : m(b, c, c + u);
-      }function o() {
-        y = !0, a === c && d === e || l();
-      }var p = 4,
-          q = .001,
-          r = 1e-7,
-          s = 10,
-          t = 11,
-          u = 1 / (t - 1),
-          v = "Float32Array" in b;if (4 !== arguments.length) return !1;for (var w = 0; w < 4; ++w) {
-        if ("number" != typeof arguments[w] || isNaN(arguments[w]) || !isFinite(arguments[w])) return !1;
-      }a = Math.min(a, 1), d = Math.min(d, 1), a = Math.max(a, 0), d = Math.max(d, 0);var x = v ? new Float32Array(t) : new Array(t),
-          y = !1,
-          z = function (b) {
-        return y || o(), a === c && d === e ? b : 0 === b ? 0 : 1 === b ? 1 : i(n(b), c, e);
-      };z.getControlPoints = function () {
-        return [{ x: a, y: c }, { x: d, y: e }];
-      };var A = "generateBezier(" + [a, c, d, e] + ")";return z.toString = function () {
-        return A;
-      }, z;
-    }function l(a, b) {
-      var c = a;return t.isString(a) ? x.Easings[a] || (c = !1) : c = t.isArray(a) && 1 === a.length ? j.apply(null, a) : t.isArray(a) && 2 === a.length ? y.apply(null, a.concat([b])) : !(!t.isArray(a) || 4 !== a.length) && k.apply(null, a), c === !1 && (c = x.Easings[x.defaults.easing] ? x.defaults.easing : w), c;
-    }function m(a) {
-      if (a) {
-        var b = x.timestamp && a !== !0 ? a : r.now(),
-            c = x.State.calls.length;c > 1e4 && (x.State.calls = e(x.State.calls), c = x.State.calls.length);for (var f = 0; f < c; f++) {
-          if (x.State.calls[f]) {
-            var h = x.State.calls[f],
-                i = h[0],
-                j = h[2],
-                k = h[3],
-                l = !!k,
-                q = null,
-                s = h[5],
-                u = h[6];if (k || (k = x.State.calls[f][3] = b - 16), s) {
-              if (s.resume !== !0) continue;k = h[3] = Math.round(b - u - 16), h[5] = null;
-            }u = h[6] = b - k;for (var v = Math.min(u / j.duration, 1), w = 0, y = i.length; w < y; w++) {
-              var A = i[w],
-                  C = A.element;if (g(C)) {
-                var D = !1;if (j.display !== d && null !== j.display && "none" !== j.display) {
-                  if ("flex" === j.display) {
-                    var E = ["-webkit-box", "-moz-box", "-ms-flexbox", "-webkit-flex"];o.each(E, function (a, b) {
-                      z.setPropertyValue(C, "display", b);
-                    });
-                  }z.setPropertyValue(C, "display", j.display);
-                }j.visibility !== d && "hidden" !== j.visibility && z.setPropertyValue(C, "visibility", j.visibility);for (var F in A) {
-                  if (A.hasOwnProperty(F) && "element" !== F) {
-                    var G,
-                        H = A[F],
-                        I = t.isString(H.easing) ? x.Easings[H.easing] : H.easing;if (t.isString(H.pattern)) {
-                      var J = 1 === v ? function (a, b, c) {
-                        var d = H.endValue[b];return c ? Math.round(d) : d;
-                      } : function (a, b, c) {
-                        var d = H.startValue[b],
-                            e = H.endValue[b] - d,
-                            f = d + e * I(v, j, e);return c ? Math.round(f) : f;
-                      };G = H.pattern.replace(/{(\d+)(!)?}/g, J);
-                    } else if (1 === v) G = H.endValue;else {
-                      var K = H.endValue - H.startValue;G = H.startValue + K * I(v, j, K);
-                    }if (!l && G === H.currentValue) continue;if (H.currentValue = G, "tween" === F) q = G;else {
-                      var L;if (z.Hooks.registered[F]) {
-                        L = z.Hooks.getRoot(F);var M = g(C).rootPropertyValueCache[L];M && (H.rootPropertyValue = M);
-                      }var N = z.setPropertyValue(C, F, H.currentValue + (p < 9 && 0 === parseFloat(G) ? "" : H.unitType), H.rootPropertyValue, H.scrollData);z.Hooks.registered[F] && (z.Normalizations.registered[L] ? g(C).rootPropertyValueCache[L] = z.Normalizations.registered[L]("extract", null, N[1]) : g(C).rootPropertyValueCache[L] = N[1]), "transform" === N[0] && (D = !0);
-                    }
-                  }
-                }j.mobileHA && g(C).transformCache.translate3d === d && (g(C).transformCache.translate3d = "(0px, 0px, 0px)", D = !0), D && z.flushTransformCache(C);
-              }
-            }j.display !== d && "none" !== j.display && (x.State.calls[f][2].display = !1), j.visibility !== d && "hidden" !== j.visibility && (x.State.calls[f][2].visibility = !1), j.progress && j.progress.call(h[1], h[1], v, Math.max(0, k + j.duration - b), k, q), 1 === v && n(f);
-          }
-        }
-      }x.State.isTicking && B(m);
-    }function n(a, b) {
-      if (!x.State.calls[a]) return !1;for (var c = x.State.calls[a][0], e = x.State.calls[a][1], f = x.State.calls[a][2], h = x.State.calls[a][4], i = !1, j = 0, k = c.length; j < k; j++) {
-        var l = c[j].element;b || f.loop || ("none" === f.display && z.setPropertyValue(l, "display", f.display), "hidden" === f.visibility && z.setPropertyValue(l, "visibility", f.visibility));var m = g(l);if (f.loop !== !0 && (o.queue(l)[1] === d || !/\.velocityQueueEntryFlag/i.test(o.queue(l)[1])) && m) {
-          m.isAnimating = !1, m.rootPropertyValueCache = {};var n = !1;o.each(z.Lists.transforms3D, function (a, b) {
-            var c = /^scale/.test(b) ? 1 : 0,
-                e = m.transformCache[b];m.transformCache[b] !== d && new RegExp("^\\(" + c + "[^.]").test(e) && (n = !0, delete m.transformCache[b]);
-          }), f.mobileHA && (n = !0, delete m.transformCache.translate3d), n && z.flushTransformCache(l), z.Values.removeClass(l, "velocity-animating");
-        }if (!b && f.complete && !f.loop && j === k - 1) try {
-          f.complete.call(e, e);
-        } catch (p) {
-          setTimeout(function () {
-            throw p;
-          }, 1);
-        }h && f.loop !== !0 && h(e), m && f.loop === !0 && !b && (o.each(m.tweensContainer, function (a, b) {
-          if (/^rotate/.test(a) && (parseFloat(b.startValue) - parseFloat(b.endValue)) % 360 === 0) {
-            var c = b.startValue;b.startValue = b.endValue, b.endValue = c;
-          }/^backgroundPosition/.test(a) && 100 === parseFloat(b.endValue) && "%" === b.unitType && (b.endValue = 0, b.startValue = 100);
-        }), x(l, "reverse", { loop: !0, delay: f.delay })), f.queue !== !1 && o.dequeue(l, f.queue);
-      }x.State.calls[a] = !1;for (var q = 0, r = x.State.calls.length; q < r; q++) {
-        if (x.State.calls[q] !== !1) {
-          i = !0;break;
-        }
-      }i === !1 && (x.State.isTicking = !1, delete x.State.calls, x.State.calls = []);
-    }var o,
-        p = function () {
-      if (c.documentMode) return c.documentMode;for (var a = 7; a > 4; a--) {
-        var b = c.createElement("div");if (b.innerHTML = "<!--[if IE " + a + "]><span></span><![endif]-->", b.getElementsByTagName("span").length) return b = null, a;
-      }return d;
-    }(),
-        q = function () {
-      var a = 0;return b.webkitRequestAnimationFrame || b.mozRequestAnimationFrame || function (b) {
-        var c,
-            d = new Date().getTime();return c = Math.max(0, 16 - (d - a)), a = d + c, setTimeout(function () {
-          b(d + c);
-        }, c);
-      };
-    }(),
-        r = function () {
-      var a = b.performance || {};if (!Object.prototype.hasOwnProperty.call(a, "now")) {
-        var c = a.timing && a.timing.domComplete ? a.timing.domComplete : new Date().getTime();a.now = function () {
-          return new Date().getTime() - c;
-        };
-      }return a;
-    }(),
-        s = function () {
-      var a = Array.prototype.slice;try {
-        a.call(c.documentElement);
-      } catch (b) {
-        a = function () {
-          for (var a = this.length, b = []; --a > 0;) {
-            b[a] = this[a];
-          }return cloned;
-        };
-      }return a;
-    }(),
-        t = { isNumber: function (a) {
-        return "number" == typeof a;
-      }, isString: function (a) {
-        return "string" == typeof a;
-      }, isArray: Array.isArray || function (a) {
-        return "[object Array]" === Object.prototype.toString.call(a);
-      }, isFunction: function (a) {
-        return "[object Function]" === Object.prototype.toString.call(a);
-      }, isNode: function (a) {
-        return a && a.nodeType;
-      }, isWrapped: function (a) {
-        return a && t.isNumber(a.length) && !t.isString(a) && !t.isFunction(a) && !t.isNode(a) && (0 === a.length || t.isNode(a[0]));
-      }, isSVG: function (a) {
-        return b.SVGElement && a instanceof b.SVGElement;
-      }, isEmptyObject: function (a) {
-        for (var b in a) {
-          if (a.hasOwnProperty(b)) return !1;
-        }return !0;
-      } },
-        u = !1;if (a.fn && a.fn.jquery ? (o = a, u = !0) : o = b.Velocity.Utilities, p <= 8 && !u) throw new Error("Velocity: IE8 and below require jQuery to be loaded before Velocity.");if (p <= 7) return void (jQuery.fn.velocity = jQuery.fn.animate);var v = 400,
-        w = "swing",
-        x = { State: { isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent), isAndroid: /Android/i.test(navigator.userAgent), isGingerbread: /Android 2\.3\.[3-7]/i.test(navigator.userAgent), isChrome: b.chrome, isFirefox: /Firefox/i.test(navigator.userAgent), prefixElement: c.createElement("div"), prefixMatches: {}, scrollAnchor: null, scrollPropertyLeft: null, scrollPropertyTop: null, isTicking: !1, calls: [], delayedElements: { count: 0 } }, CSS: {}, Utilities: o, Redirects: {}, Easings: {}, Promise: b.Promise, defaults: { queue: "", duration: v, easing: w, begin: d, complete: d, progress: d, display: d, visibility: d, loop: !1, delay: !1, mobileHA: !0, _cacheValues: !0, promiseRejectEmpty: !0 }, init: function (a) {
-        o.data(a, "velocity", { isSVG: t.isSVG(a), isAnimating: !1, computedStyle: null, tweensContainer: null, rootPropertyValueCache: {}, transformCache: {} });
-      }, hook: null, mock: !1, version: { major: 1, minor: 4, patch: 2 }, debug: !1, timestamp: !0, pauseAll: function (a) {
-        var b = new Date().getTime();o.each(x.State.calls, function (b, c) {
-          if (c) {
-            if (a !== d && (c[2].queue !== a || c[2].queue === !1)) return !0;c[5] = { resume: !1 };
-          }
-        }), o.each(x.State.delayedElements, function (a, c) {
-          c && h(c, b);
-        });
-      }, resumeAll: function (a) {
-        var b = new Date().getTime();o.each(x.State.calls, function (b, c) {
-          if (c) {
-            if (a !== d && (c[2].queue !== a || c[2].queue === !1)) return !0;c[5] && (c[5].resume = !0);
-          }
-        }), o.each(x.State.delayedElements, function (a, c) {
-          c && i(c, b);
-        });
-      } };b.pageYOffset !== d ? (x.State.scrollAnchor = b, x.State.scrollPropertyLeft = "pageXOffset", x.State.scrollPropertyTop = "pageYOffset") : (x.State.scrollAnchor = c.documentElement || c.body.parentNode || c.body, x.State.scrollPropertyLeft = "scrollLeft", x.State.scrollPropertyTop = "scrollTop");var y = function () {
-      function a(a) {
-        return -a.tension * a.x - a.friction * a.v;
-      }function b(b, c, d) {
-        var e = { x: b.x + d.dx * c, v: b.v + d.dv * c, tension: b.tension, friction: b.friction };return { dx: e.v, dv: a(e) };
-      }function c(c, d) {
-        var e = { dx: c.v, dv: a(c) },
-            f = b(c, .5 * d, e),
-            g = b(c, .5 * d, f),
-            h = b(c, d, g),
-            i = 1 / 6 * (e.dx + 2 * (f.dx + g.dx) + h.dx),
-            j = 1 / 6 * (e.dv + 2 * (f.dv + g.dv) + h.dv);return c.x = c.x + i * d, c.v = c.v + j * d, c;
-      }return function d(a, b, e) {
-        var f,
-            g,
-            h,
-            i = { x: -1, v: 0, tension: null, friction: null },
-            j = [0],
-            k = 0,
-            l = 1e-4,
-            m = .016;for (a = parseFloat(a) || 500, b = parseFloat(b) || 20, e = e || null, i.tension = a, i.friction = b, f = null !== e, f ? (k = d(a, b), g = k / e * m) : g = m;;) {
-          if (h = c(h || i, g), j.push(1 + h.x), k += 16, !(Math.abs(h.x) > l && Math.abs(h.v) > l)) break;
-        }return f ? function (a) {
-          return j[a * (j.length - 1) | 0];
-        } : k;
-      };
-    }();x.Easings = { linear: function (a) {
-        return a;
-      }, swing: function (a) {
-        return .5 - Math.cos(a * Math.PI) / 2;
-      }, spring: function (a) {
-        return 1 - Math.cos(4.5 * a * Math.PI) * Math.exp(6 * -a);
-      } }, o.each([["ease", [.25, .1, .25, 1]], ["ease-in", [.42, 0, 1, 1]], ["ease-out", [0, 0, .58, 1]], ["ease-in-out", [.42, 0, .58, 1]], ["easeInSine", [.47, 0, .745, .715]], ["easeOutSine", [.39, .575, .565, 1]], ["easeInOutSine", [.445, .05, .55, .95]], ["easeInQuad", [.55, .085, .68, .53]], ["easeOutQuad", [.25, .46, .45, .94]], ["easeInOutQuad", [.455, .03, .515, .955]], ["easeInCubic", [.55, .055, .675, .19]], ["easeOutCubic", [.215, .61, .355, 1]], ["easeInOutCubic", [.645, .045, .355, 1]], ["easeInQuart", [.895, .03, .685, .22]], ["easeOutQuart", [.165, .84, .44, 1]], ["easeInOutQuart", [.77, 0, .175, 1]], ["easeInQuint", [.755, .05, .855, .06]], ["easeOutQuint", [.23, 1, .32, 1]], ["easeInOutQuint", [.86, 0, .07, 1]], ["easeInExpo", [.95, .05, .795, .035]], ["easeOutExpo", [.19, 1, .22, 1]], ["easeInOutExpo", [1, 0, 0, 1]], ["easeInCirc", [.6, .04, .98, .335]], ["easeOutCirc", [.075, .82, .165, 1]], ["easeInOutCirc", [.785, .135, .15, .86]]], function (a, b) {
-      x.Easings[b[0]] = k.apply(null, b[1]);
-    });var z = x.CSS = { RegEx: { isHex: /^#([A-f\d]{3}){1,2}$/i, valueUnwrap: /^[A-z]+\((.*)\)$/i, wrappedValueAlreadyExtracted: /[0-9.]+ [0-9.]+ [0-9.]+( [0-9.]+)?/, valueSplit: /([A-z]+\(.+\))|(([A-z0-9#-.]+?)(?=\s|$))/gi }, Lists: { colors: ["fill", "stroke", "stopColor", "color", "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "outlineColor"], transformsBase: ["translateX", "translateY", "scale", "scaleX", "scaleY", "skewX", "skewY", "rotateZ"], transforms3D: ["transformPerspective", "translateZ", "scaleZ", "rotateX", "rotateY"], units: ["%", "em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax", "cm", "mm", "Q", "in", "pc", "pt", "px", "deg", "grad", "rad", "turn", "s", "ms"], colorNames: { aliceblue: "240,248,255", antiquewhite: "250,235,215", aquamarine: "127,255,212", aqua: "0,255,255", azure: "240,255,255", beige: "245,245,220", bisque: "255,228,196", black: "0,0,0", blanchedalmond: "255,235,205", blueviolet: "138,43,226", blue: "0,0,255", brown: "165,42,42", burlywood: "222,184,135", cadetblue: "95,158,160", chartreuse: "127,255,0", chocolate: "210,105,30", coral: "255,127,80", cornflowerblue: "100,149,237", cornsilk: "255,248,220", crimson: "220,20,60", cyan: "0,255,255", darkblue: "0,0,139", darkcyan: "0,139,139", darkgoldenrod: "184,134,11", darkgray: "169,169,169", darkgrey: "169,169,169", darkgreen: "0,100,0", darkkhaki: "189,183,107", darkmagenta: "139,0,139", darkolivegreen: "85,107,47", darkorange: "255,140,0", darkorchid: "153,50,204", darkred: "139,0,0", darksalmon: "233,150,122", darkseagreen: "143,188,143", darkslateblue: "72,61,139", darkslategray: "47,79,79", darkturquoise: "0,206,209", darkviolet: "148,0,211", deeppink: "255,20,147", deepskyblue: "0,191,255", dimgray: "105,105,105", dimgrey: "105,105,105", dodgerblue: "30,144,255", firebrick: "178,34,34", floralwhite: "255,250,240", forestgreen: "34,139,34", fuchsia: "255,0,255", gainsboro: "220,220,220", ghostwhite: "248,248,255", gold: "255,215,0", goldenrod: "218,165,32", gray: "128,128,128", grey: "128,128,128", greenyellow: "173,255,47", green: "0,128,0", honeydew: "240,255,240", hotpink: "255,105,180", indianred: "205,92,92", indigo: "75,0,130", ivory: "255,255,240", khaki: "240,230,140", lavenderblush: "255,240,245", lavender: "230,230,250", lawngreen: "124,252,0", lemonchiffon: "255,250,205", lightblue: "173,216,230", lightcoral: "240,128,128", lightcyan: "224,255,255", lightgoldenrodyellow: "250,250,210", lightgray: "211,211,211", lightgrey: "211,211,211", lightgreen: "144,238,144", lightpink: "255,182,193", lightsalmon: "255,160,122", lightseagreen: "32,178,170", lightskyblue: "135,206,250", lightslategray: "119,136,153", lightsteelblue: "176,196,222", lightyellow: "255,255,224", limegreen: "50,205,50", lime: "0,255,0", linen: "250,240,230", magenta: "255,0,255", maroon: "128,0,0", mediumaquamarine: "102,205,170", mediumblue: "0,0,205", mediumorchid: "186,85,211", mediumpurple: "147,112,219", mediumseagreen: "60,179,113", mediumslateblue: "123,104,238", mediumspringgreen: "0,250,154", mediumturquoise: "72,209,204", mediumvioletred: "199,21,133", midnightblue: "25,25,112", mintcream: "245,255,250", mistyrose: "255,228,225", moccasin: "255,228,181", navajowhite: "255,222,173", navy: "0,0,128", oldlace: "253,245,230", olivedrab: "107,142,35", olive: "128,128,0", orangered: "255,69,0", orange: "255,165,0", orchid: "218,112,214", palegoldenrod: "238,232,170", palegreen: "152,251,152", paleturquoise: "175,238,238", palevioletred: "219,112,147", papayawhip: "255,239,213", peachpuff: "255,218,185", peru: "205,133,63", pink: "255,192,203", plum: "221,160,221", powderblue: "176,224,230", purple: "128,0,128", red: "255,0,0", rosybrown: "188,143,143", royalblue: "65,105,225", saddlebrown: "139,69,19", salmon: "250,128,114", sandybrown: "244,164,96", seagreen: "46,139,87", seashell: "255,245,238", sienna: "160,82,45", silver: "192,192,192", skyblue: "135,206,235", slateblue: "106,90,205", slategray: "112,128,144", snow: "255,250,250", springgreen: "0,255,127", steelblue: "70,130,180", tan: "210,180,140", teal: "0,128,128", thistle: "216,191,216", tomato: "255,99,71", turquoise: "64,224,208", violet: "238,130,238", wheat: "245,222,179", whitesmoke: "245,245,245", white: "255,255,255", yellowgreen: "154,205,50", yellow: "255,255,0" } }, Hooks: { templates: { textShadow: ["Color X Y Blur", "black 0px 0px 0px"], boxShadow: ["Color X Y Blur Spread", "black 0px 0px 0px 0px"], clip: ["Top Right Bottom Left", "0px 0px 0px 0px"], backgroundPosition: ["X Y", "0% 0%"], transformOrigin: ["X Y Z", "50% 50% 0px"], perspectiveOrigin: ["X Y", "50% 50%"] }, registered: {}, register: function () {
-          for (var a = 0; a < z.Lists.colors.length; a++) {
-            var b = "color" === z.Lists.colors[a] ? "0 0 0 1" : "255 255 255 1";z.Hooks.templates[z.Lists.colors[a]] = ["Red Green Blue Alpha", b];
-          }var c, d, e;if (p) for (c in z.Hooks.templates) {
-            if (z.Hooks.templates.hasOwnProperty(c)) {
-              d = z.Hooks.templates[c], e = d[0].split(" ");var f = d[1].match(z.RegEx.valueSplit);"Color" === e[0] && (e.push(e.shift()), f.push(f.shift()), z.Hooks.templates[c] = [e.join(" "), f.join(" ")]);
-            }
-          }for (c in z.Hooks.templates) {
-            if (z.Hooks.templates.hasOwnProperty(c)) {
-              d = z.Hooks.templates[c], e = d[0].split(" ");for (var g in e) {
-                if (e.hasOwnProperty(g)) {
-                  var h = c + e[g],
-                      i = g;z.Hooks.registered[h] = [c, i];
-                }
-              }
-            }
-          }
-        }, getRoot: function (a) {
-          var b = z.Hooks.registered[a];return b ? b[0] : a;
-        }, getUnit: function (a, b) {
-          var c = (a.substr(b || 0, 5).match(/^[a-z%]+/) || [])[0] || "";return c && z.Lists.units.indexOf(c) >= 0 ? c : "";
-        }, fixColors: function (a) {
-          return a.replace(/(rgba?\(\s*)?(\b[a-z]+\b)/g, function (a, b, c) {
-            return z.Lists.colorNames.hasOwnProperty(c) ? (b ? b : "rgba(") + z.Lists.colorNames[c] + (b ? "" : ",1)") : b + c;
-          });
-        }, cleanRootPropertyValue: function (a, b) {
-          return z.RegEx.valueUnwrap.test(b) && (b = b.match(z.RegEx.valueUnwrap)[1]), z.Values.isCSSNullValue(b) && (b = z.Hooks.templates[a][1]), b;
-        }, extractValue: function (a, b) {
-          var c = z.Hooks.registered[a];if (c) {
-            var d = c[0],
-                e = c[1];return b = z.Hooks.cleanRootPropertyValue(d, b), b.toString().match(z.RegEx.valueSplit)[e];
-          }return b;
-        }, injectValue: function (a, b, c) {
-          var d = z.Hooks.registered[a];if (d) {
-            var e,
-                f,
-                g = d[0],
-                h = d[1];return c = z.Hooks.cleanRootPropertyValue(g, c), e = c.toString().match(z.RegEx.valueSplit), e[h] = b, f = e.join(" ");
-          }return c;
-        } }, Normalizations: { registered: { clip: function (a, b, c) {
-            switch (a) {case "name":
-                return "clip";case "extract":
-                var d;return z.RegEx.wrappedValueAlreadyExtracted.test(c) ? d = c : (d = c.toString().match(z.RegEx.valueUnwrap), d = d ? d[1].replace(/,(\s+)?/g, " ") : c), d;case "inject":
-                return "rect(" + c + ")";}
-          }, blur: function (a, b, c) {
-            switch (a) {case "name":
-                return x.State.isFirefox ? "filter" : "-webkit-filter";case "extract":
-                var d = parseFloat(c);if (!d && 0 !== d) {
-                  var e = c.toString().match(/blur\(([0-9]+[A-z]+)\)/i);d = e ? e[1] : 0;
-                }return d;case "inject":
-                return parseFloat(c) ? "blur(" + c + ")" : "none";}
-          }, opacity: function (a, b, c) {
-            if (p <= 8) switch (a) {case "name":
-                return "filter";case "extract":
-                var d = c.toString().match(/alpha\(opacity=(.*)\)/i);return c = d ? d[1] / 100 : 1;case "inject":
-                return b.style.zoom = 1, parseFloat(c) >= 1 ? "" : "alpha(opacity=" + parseInt(100 * parseFloat(c), 10) + ")";} else switch (a) {case "name":
-                return "opacity";case "extract":
-                return c;case "inject":
-                return c;}
-          } }, register: function () {
-          function a(a, b, c) {
-            var d = "border-box" === z.getPropertyValue(b, "boxSizing").toString().toLowerCase();if (d === (c || !1)) {
-              var e,
-                  f,
-                  g = 0,
-                  h = "width" === a ? ["Left", "Right"] : ["Top", "Bottom"],
-                  i = ["padding" + h[0], "padding" + h[1], "border" + h[0] + "Width", "border" + h[1] + "Width"];for (e = 0; e < i.length; e++) {
-                f = parseFloat(z.getPropertyValue(b, i[e])), isNaN(f) || (g += f);
-              }return c ? -g : g;
-            }return 0;
-          }function b(b, c) {
-            return function (d, e, f) {
-              switch (d) {case "name":
-                  return b;case "extract":
-                  return parseFloat(f) + a(b, e, c);case "inject":
-                  return parseFloat(f) - a(b, e, c) + "px";}
-            };
-          }p && !(p > 9) || x.State.isGingerbread || (z.Lists.transformsBase = z.Lists.transformsBase.concat(z.Lists.transforms3D));for (var c = 0; c < z.Lists.transformsBase.length; c++) {
-            !function () {
-              var a = z.Lists.transformsBase[c];z.Normalizations.registered[a] = function (b, c, e) {
-                switch (b) {case "name":
-                    return "transform";case "extract":
-                    return g(c) === d || g(c).transformCache[a] === d ? /^scale/i.test(a) ? 1 : 0 : g(c).transformCache[a].replace(/[()]/g, "");case "inject":
-                    var f = !1;switch (a.substr(0, a.length - 1)) {case "translate":
-                        f = !/(%|px|em|rem|vw|vh|\d)$/i.test(e);break;case "scal":case "scale":
-                        x.State.isAndroid && g(c).transformCache[a] === d && e < 1 && (e = 1), f = !/(\d)$/i.test(e);break;case "skew":
-                        f = !/(deg|\d)$/i.test(e);break;case "rotate":
-                        f = !/(deg|\d)$/i.test(e);}return f || (g(c).transformCache[a] = "(" + e + ")"), g(c).transformCache[a];}
-              };
-            }();
-          }for (var e = 0; e < z.Lists.colors.length; e++) {
-            !function () {
-              var a = z.Lists.colors[e];z.Normalizations.registered[a] = function (b, c, e) {
-                switch (b) {case "name":
-                    return a;case "extract":
-                    var f;if (z.RegEx.wrappedValueAlreadyExtracted.test(e)) f = e;else {
-                      var g,
-                          h = { black: "rgb(0, 0, 0)", blue: "rgb(0, 0, 255)", gray: "rgb(128, 128, 128)", green: "rgb(0, 128, 0)", red: "rgb(255, 0, 0)", white: "rgb(255, 255, 255)" };/^[A-z]+$/i.test(e) ? g = h[e] !== d ? h[e] : h.black : z.RegEx.isHex.test(e) ? g = "rgb(" + z.Values.hexToRgb(e).join(" ") + ")" : /^rgba?\(/i.test(e) || (g = h.black), f = (g || e).toString().match(z.RegEx.valueUnwrap)[1].replace(/,(\s+)?/g, " ");
-                    }return (!p || p > 8) && 3 === f.split(" ").length && (f += " 1"), f;case "inject":
-                    return (/^rgb/.test(e) ? e : (p <= 8 ? 4 === e.split(" ").length && (e = e.split(/\s+/).slice(0, 3).join(" ")) : 3 === e.split(" ").length && (e += " 1"), (p <= 8 ? "rgb" : "rgba") + "(" + e.replace(/\s+/g, ",").replace(/\.(\d)+(?=,)/g, "") + ")")
-                    );}
-              };
-            }();
-          }z.Normalizations.registered.innerWidth = b("width", !0), z.Normalizations.registered.innerHeight = b("height", !0), z.Normalizations.registered.outerWidth = b("width"), z.Normalizations.registered.outerHeight = b("height");
-        } }, Names: { camelCase: function (a) {
-          return a.replace(/-(\w)/g, function (a, b) {
-            return b.toUpperCase();
-          });
-        }, SVGAttribute: function (a) {
-          var b = "width|height|x|y|cx|cy|r|rx|ry|x1|x2|y1|y2";return (p || x.State.isAndroid && !x.State.isChrome) && (b += "|transform"), new RegExp("^(" + b + ")$", "i").test(a);
-        }, prefixCheck: function (a) {
-          if (x.State.prefixMatches[a]) return [x.State.prefixMatches[a], !0];for (var b = ["", "Webkit", "Moz", "ms", "O"], c = 0, d = b.length; c < d; c++) {
-            var e;if (e = 0 === c ? a : b[c] + a.replace(/^\w/, function (a) {
-              return a.toUpperCase();
-            }), t.isString(x.State.prefixElement.style[e])) return x.State.prefixMatches[a] = e, [e, !0];
-          }return [a, !1];
-        } }, Values: { hexToRgb: function (a) {
-          var b,
-              c = /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
-              d = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;return a = a.replace(c, function (a, b, c, d) {
-            return b + b + c + c + d + d;
-          }), b = d.exec(a), b ? [parseInt(b[1], 16), parseInt(b[2], 16), parseInt(b[3], 16)] : [0, 0, 0];
-        }, isCSSNullValue: function (a) {
-          return !a || /^(none|auto|transparent|(rgba\(0, ?0, ?0, ?0\)))$/i.test(a);
-        }, getUnitType: function (a) {
-          return (/^(rotate|skew)/i.test(a) ? "deg" : /(^(scale|scaleX|scaleY|scaleZ|alpha|flexGrow|flexHeight|zIndex|fontWeight)$)|((opacity|red|green|blue|alpha)$)/i.test(a) ? "" : "px"
-          );
-        }, getDisplayType: function (a) {
-          var b = a && a.tagName.toString().toLowerCase();return (/^(b|big|i|small|tt|abbr|acronym|cite|code|dfn|em|kbd|strong|samp|var|a|bdo|br|img|map|object|q|script|span|sub|sup|button|input|label|select|textarea)$/i.test(b) ? "inline" : /^(li)$/i.test(b) ? "list-item" : /^(tr)$/i.test(b) ? "table-row" : /^(table)$/i.test(b) ? "table" : /^(tbody)$/i.test(b) ? "table-row-group" : "block"
-          );
-        }, addClass: function (a, b) {
-          if (a) if (a.classList) a.classList.add(b);else if (t.isString(a.className)) a.className += (a.className.length ? " " : "") + b;else {
-            var c = a.getAttribute(p <= 7 ? "className" : "class") || "";a.setAttribute("class", c + (c ? " " : "") + b);
-          }
-        }, removeClass: function (a, b) {
-          if (a) if (a.classList) a.classList.remove(b);else if (t.isString(a.className)) a.className = a.className.toString().replace(new RegExp("(^|\\s)" + b.split(" ").join("|") + "(\\s|$)", "gi"), " ");else {
-            var c = a.getAttribute(p <= 7 ? "className" : "class") || "";a.setAttribute("class", c.replace(new RegExp("(^|s)" + b.split(" ").join("|") + "(s|$)", "gi"), " "));
-          }
-        } }, getPropertyValue: function (a, c, e, f) {
-        function h(a, c) {
-          var e = 0;if (p <= 8) e = o.css(a, c);else {
-            var i = !1;/^(width|height)$/.test(c) && 0 === z.getPropertyValue(a, "display") && (i = !0, z.setPropertyValue(a, "display", z.Values.getDisplayType(a)));var j = function () {
-              i && z.setPropertyValue(a, "display", "none");
-            };if (!f) {
-              if ("height" === c && "border-box" !== z.getPropertyValue(a, "boxSizing").toString().toLowerCase()) {
-                var k = a.offsetHeight - (parseFloat(z.getPropertyValue(a, "borderTopWidth")) || 0) - (parseFloat(z.getPropertyValue(a, "borderBottomWidth")) || 0) - (parseFloat(z.getPropertyValue(a, "paddingTop")) || 0) - (parseFloat(z.getPropertyValue(a, "paddingBottom")) || 0);return j(), k;
-              }if ("width" === c && "border-box" !== z.getPropertyValue(a, "boxSizing").toString().toLowerCase()) {
-                var l = a.offsetWidth - (parseFloat(z.getPropertyValue(a, "borderLeftWidth")) || 0) - (parseFloat(z.getPropertyValue(a, "borderRightWidth")) || 0) - (parseFloat(z.getPropertyValue(a, "paddingLeft")) || 0) - (parseFloat(z.getPropertyValue(a, "paddingRight")) || 0);return j(), l;
-              }
-            }var m;m = g(a) === d ? b.getComputedStyle(a, null) : g(a).computedStyle ? g(a).computedStyle : g(a).computedStyle = b.getComputedStyle(a, null), "borderColor" === c && (c = "borderTopColor"), e = 9 === p && "filter" === c ? m.getPropertyValue(c) : m[c], "" !== e && null !== e || (e = a.style[c]), j();
-          }if ("auto" === e && /^(top|right|bottom|left)$/i.test(c)) {
-            var n = h(a, "position");("fixed" === n || "absolute" === n && /top|left/i.test(c)) && (e = o(a).position()[c] + "px");
-          }return e;
-        }var i;if (z.Hooks.registered[c]) {
-          var j = c,
-              k = z.Hooks.getRoot(j);e === d && (e = z.getPropertyValue(a, z.Names.prefixCheck(k)[0])), z.Normalizations.registered[k] && (e = z.Normalizations.registered[k]("extract", a, e)), i = z.Hooks.extractValue(j, e);
-        } else if (z.Normalizations.registered[c]) {
-          var l, m;l = z.Normalizations.registered[c]("name", a), "transform" !== l && (m = h(a, z.Names.prefixCheck(l)[0]), z.Values.isCSSNullValue(m) && z.Hooks.templates[c] && (m = z.Hooks.templates[c][1])), i = z.Normalizations.registered[c]("extract", a, m);
-        }if (!/^[\d-]/.test(i)) {
-          var n = g(a);if (n && n.isSVG && z.Names.SVGAttribute(c)) {
-            if (/^(height|width)$/i.test(c)) try {
-              i = a.getBBox()[c];
-            } catch (q) {
-              i = 0;
-            } else i = a.getAttribute(c);
-          } else i = h(a, z.Names.prefixCheck(c)[0]);
-        }return z.Values.isCSSNullValue(i) && (i = 0), x.debug >= 2 && console.log("Get " + c + ": " + i), i;
-      }, setPropertyValue: function (a, c, d, e, f) {
-        var h = c;if ("scroll" === c) f.container ? f.container["scroll" + f.direction] = d : "Left" === f.direction ? b.scrollTo(d, f.alternateValue) : b.scrollTo(f.alternateValue, d);else if (z.Normalizations.registered[c] && "transform" === z.Normalizations.registered[c]("name", a)) z.Normalizations.registered[c]("inject", a, d), h = "transform", d = g(a).transformCache[c];else {
-          if (z.Hooks.registered[c]) {
-            var i = c,
-                j = z.Hooks.getRoot(c);e = e || z.getPropertyValue(a, j), d = z.Hooks.injectValue(i, d, e), c = j;
-          }if (z.Normalizations.registered[c] && (d = z.Normalizations.registered[c]("inject", a, d), c = z.Normalizations.registered[c]("name", a)), h = z.Names.prefixCheck(c)[0], p <= 8) try {
-            a.style[h] = d;
-          } catch (k) {
-            x.debug && console.log("Browser does not support [" + d + "] for [" + h + "]");
-          } else {
-            var l = g(a);l && l.isSVG && z.Names.SVGAttribute(c) ? a.setAttribute(c, d) : a.style[h] = d;
-          }x.debug >= 2 && console.log("Set " + c + " (" + h + "): " + d);
-        }return [h, d];
-      }, flushTransformCache: function (a) {
-        var b = "",
-            c = g(a);if ((p || x.State.isAndroid && !x.State.isChrome) && c && c.isSVG) {
-          var d = function (b) {
-            return parseFloat(z.getPropertyValue(a, b));
-          },
-              e = { translate: [d("translateX"), d("translateY")], skewX: [d("skewX")], skewY: [d("skewY")], scale: 1 !== d("scale") ? [d("scale"), d("scale")] : [d("scaleX"), d("scaleY")], rotate: [d("rotateZ"), 0, 0] };o.each(g(a).transformCache, function (a) {
-            /^translate/i.test(a) ? a = "translate" : /^scale/i.test(a) ? a = "scale" : /^rotate/i.test(a) && (a = "rotate"), e[a] && (b += a + "(" + e[a].join(" ") + ") ", delete e[a]);
-          });
-        } else {
-          var f, h;o.each(g(a).transformCache, function (c) {
-            return f = g(a).transformCache[c], "transformPerspective" === c ? (h = f, !0) : (9 === p && "rotateZ" === c && (c = "rotate"), void (b += c + f + " "));
-          }), h && (b = "perspective" + h + " " + b);
-        }z.setPropertyValue(a, "transform", b);
-      } };z.Hooks.register(), z.Normalizations.register(), x.hook = function (a, b, c) {
-      var e;return a = f(a), o.each(a, function (a, f) {
-        if (g(f) === d && x.init(f), c === d) e === d && (e = z.getPropertyValue(f, b));else {
-          var h = z.setPropertyValue(f, b, c);"transform" === h[0] && x.CSS.flushTransformCache(f), e = h;
-        }
-      }), e;
-    };var A = function () {
-      function a() {
-        return k ? y.promise || null : p;
-      }function e(a, e) {
-        function f(f) {
-          var k, n;if (i.begin && 0 === C) try {
-            i.begin.call(r, r);
-          } catch (p) {
-            setTimeout(function () {
-              throw p;
-            }, 1);
-          }if ("scroll" === F) {
-            var q,
-                v,
-                w,
-                A = /^x$/i.test(i.axis) ? "Left" : "Top",
-                D = parseFloat(i.offset) || 0;i.container ? t.isWrapped(i.container) || t.isNode(i.container) ? (i.container = i.container[0] || i.container, q = i.container["scroll" + A], w = q + o(a).position()[A.toLowerCase()] + D) : i.container = null : (q = x.State.scrollAnchor[x.State["scrollProperty" + A]], v = x.State.scrollAnchor[x.State["scrollProperty" + ("Left" === A ? "Top" : "Left")]], w = o(a).offset()[A.toLowerCase()] + D), j = { scroll: { rootPropertyValue: !1, startValue: q, currentValue: q, endValue: w, unitType: "", easing: i.easing, scrollData: { container: i.container, direction: A, alternateValue: v } }, element: a }, x.debug && console.log("tweensContainer (scroll): ", j.scroll, a);
-          } else if ("reverse" === F) {
-            if (k = g(a), !k) return;if (!k.tweensContainer) return void o.dequeue(a, i.queue);"none" === k.opts.display && (k.opts.display = "auto"), "hidden" === k.opts.visibility && (k.opts.visibility = "visible"), k.opts.loop = !1, k.opts.begin = null, k.opts.complete = null, u.easing || delete i.easing, u.duration || delete i.duration, i = o.extend({}, k.opts, i), n = o.extend(!0, {}, k ? k.tweensContainer : null);for (var E in n) {
-              if (n.hasOwnProperty(E) && "element" !== E) {
-                var G = n[E].startValue;n[E].startValue = n[E].currentValue = n[E].endValue, n[E].endValue = G, t.isEmptyObject(u) || (n[E].easing = i.easing), x.debug && console.log("reverse tweensContainer (" + E + "): " + JSON.stringify(n[E]), a);
-              }
-            }j = n;
-          } else if ("start" === F) {
-            k = g(a), k && k.tweensContainer && k.isAnimating === !0 && (n = k.tweensContainer);var H = function (b, c) {
-              var d, f, g;return t.isFunction(b) && (b = b.call(a, e, B)), t.isArray(b) ? (d = b[0], !t.isArray(b[1]) && /^[\d-]/.test(b[1]) || t.isFunction(b[1]) || z.RegEx.isHex.test(b[1]) ? g = b[1] : t.isString(b[1]) && !z.RegEx.isHex.test(b[1]) && x.Easings[b[1]] || t.isArray(b[1]) ? (f = c ? b[1] : l(b[1], i.duration), g = b[2]) : g = b[1] || b[2]) : d = b, c || (f = f || i.easing), t.isFunction(d) && (d = d.call(a, e, B)), t.isFunction(g) && (g = g.call(a, e, B)), [d || 0, f, g];
-            },
-                I = function (e, f) {
-              var g,
-                  l = z.Hooks.getRoot(e),
-                  m = !1,
-                  p = f[0],
-                  q = f[1],
-                  r = f[2];
-              if (!(k && k.isSVG || "tween" === l || z.Names.prefixCheck(l)[1] !== !1 || z.Normalizations.registered[l] !== d)) return void (x.debug && console.log("Skipping [" + l + "] due to a lack of browser support."));(i.display !== d && null !== i.display && "none" !== i.display || i.visibility !== d && "hidden" !== i.visibility) && /opacity|filter/.test(e) && !r && 0 !== p && (r = 0), i._cacheValues && n && n[e] ? (r === d && (r = n[e].endValue + n[e].unitType), m = k.rootPropertyValueCache[l]) : z.Hooks.registered[e] ? r === d ? (m = z.getPropertyValue(a, l), r = z.getPropertyValue(a, e, m)) : m = z.Hooks.templates[l][1] : r === d && (r = z.getPropertyValue(a, e));var s,
-                  u,
-                  v,
-                  w = !1,
-                  y = function (a, b) {
-                var c, d;return d = (b || "0").toString().toLowerCase().replace(/[%A-z]+$/, function (a) {
-                  return c = a, "";
-                }), c || (c = z.Values.getUnitType(a)), [d, c];
-              };if (r !== p && t.isString(r) && t.isString(p)) {
-                g = "";var A = 0,
-                    B = 0,
-                    C = [],
-                    D = [],
-                    E = 0,
-                    F = 0,
-                    G = 0;for (r = z.Hooks.fixColors(r), p = z.Hooks.fixColors(p); A < r.length && B < p.length;) {
-                  var H = r[A],
-                      I = p[B];if (/[\d\.]/.test(H) && /[\d\.]/.test(I)) {
-                    for (var J = H, K = I, M = ".", N = "."; ++A < r.length;) {
-                      if (H = r[A], H === M) M = "..";else if (!/\d/.test(H)) break;J += H;
-                    }for (; ++B < p.length;) {
-                      if (I = p[B], I === N) N = "..";else if (!/\d/.test(I)) break;K += I;
-                    }var O = z.Hooks.getUnit(r, A),
-                        P = z.Hooks.getUnit(p, B);if (A += O.length, B += P.length, O === P) J === K ? g += J + O : (g += "{" + C.length + (F ? "!" : "") + "}" + O, C.push(parseFloat(J)), D.push(parseFloat(K)));else {
-                      var Q = parseFloat(J),
-                          R = parseFloat(K);g += (E < 5 ? "calc" : "") + "(" + (Q ? "{" + C.length + (F ? "!" : "") + "}" : "0") + O + " + " + (R ? "{" + (C.length + (Q ? 1 : 0)) + (F ? "!" : "") + "}" : "0") + P + ")", Q && (C.push(Q), D.push(0)), R && (C.push(0), D.push(R));
-                    }
-                  } else {
-                    if (H !== I) {
-                      E = 0;break;
-                    }g += H, A++, B++, 0 === E && "c" === H || 1 === E && "a" === H || 2 === E && "l" === H || 3 === E && "c" === H || E >= 4 && "(" === H ? E++ : (E && E < 5 || E >= 4 && ")" === H && --E < 5) && (E = 0), 0 === F && "r" === H || 1 === F && "g" === H || 2 === F && "b" === H || 3 === F && "a" === H || F >= 3 && "(" === H ? (3 === F && "a" === H && (G = 1), F++) : G && "," === H ? ++G > 3 && (F = G = 0) : (G && F < (G ? 5 : 4) || F >= (G ? 4 : 3) && ")" === H && --F < (G ? 5 : 4)) && (F = G = 0);
-                  }
-                }A === r.length && B === p.length || (x.debug && console.error('Trying to pattern match mis-matched strings ["' + p + '", "' + r + '"]'), g = d), g && (C.length ? (x.debug && console.log('Pattern found "' + g + '" -> ', C, D, "[" + r + "," + p + "]"), r = C, p = D, u = v = "") : g = d);
-              }g || (s = y(e, r), r = s[0], v = s[1], s = y(e, p), p = s[0].replace(/^([+-\/*])=/, function (a, b) {
-                return w = b, "";
-              }), u = s[1], r = parseFloat(r) || 0, p = parseFloat(p) || 0, "%" === u && (/^(fontSize|lineHeight)$/.test(e) ? (p /= 100, u = "em") : /^scale/.test(e) ? (p /= 100, u = "") : /(Red|Green|Blue)$/i.test(e) && (p = p / 100 * 255, u = "")));var S = function () {
-                var d = { myParent: a.parentNode || c.body, position: z.getPropertyValue(a, "position"), fontSize: z.getPropertyValue(a, "fontSize") },
-                    e = d.position === L.lastPosition && d.myParent === L.lastParent,
-                    f = d.fontSize === L.lastFontSize;L.lastParent = d.myParent, L.lastPosition = d.position, L.lastFontSize = d.fontSize;var g = 100,
-                    h = {};if (f && e) h.emToPx = L.lastEmToPx, h.percentToPxWidth = L.lastPercentToPxWidth, h.percentToPxHeight = L.lastPercentToPxHeight;else {
-                  var i = k && k.isSVG ? c.createElementNS("http://www.w3.org/2000/svg", "rect") : c.createElement("div");x.init(i), d.myParent.appendChild(i), o.each(["overflow", "overflowX", "overflowY"], function (a, b) {
-                    x.CSS.setPropertyValue(i, b, "hidden");
-                  }), x.CSS.setPropertyValue(i, "position", d.position), x.CSS.setPropertyValue(i, "fontSize", d.fontSize), x.CSS.setPropertyValue(i, "boxSizing", "content-box"), o.each(["minWidth", "maxWidth", "width", "minHeight", "maxHeight", "height"], function (a, b) {
-                    x.CSS.setPropertyValue(i, b, g + "%");
-                  }), x.CSS.setPropertyValue(i, "paddingLeft", g + "em"), h.percentToPxWidth = L.lastPercentToPxWidth = (parseFloat(z.getPropertyValue(i, "width", null, !0)) || 1) / g, h.percentToPxHeight = L.lastPercentToPxHeight = (parseFloat(z.getPropertyValue(i, "height", null, !0)) || 1) / g, h.emToPx = L.lastEmToPx = (parseFloat(z.getPropertyValue(i, "paddingLeft")) || 1) / g, d.myParent.removeChild(i);
-                }return null === L.remToPx && (L.remToPx = parseFloat(z.getPropertyValue(c.body, "fontSize")) || 16), null === L.vwToPx && (L.vwToPx = parseFloat(b.innerWidth) / 100, L.vhToPx = parseFloat(b.innerHeight) / 100), h.remToPx = L.remToPx, h.vwToPx = L.vwToPx, h.vhToPx = L.vhToPx, x.debug >= 1 && console.log("Unit ratios: " + JSON.stringify(h), a), h;
-              };if (/[\/*]/.test(w)) u = v;else if (v !== u && 0 !== r) if (0 === p) u = v;else {
-                h = h || S();var T = /margin|padding|left|right|width|text|word|letter/i.test(e) || /X$/.test(e) || "x" === e ? "x" : "y";switch (v) {case "%":
-                    r *= "x" === T ? h.percentToPxWidth : h.percentToPxHeight;break;case "px":
-                    break;default:
-                    r *= h[v + "ToPx"];}switch (u) {case "%":
-                    r *= 1 / ("x" === T ? h.percentToPxWidth : h.percentToPxHeight);break;case "px":
-                    break;default:
-                    r *= 1 / h[u + "ToPx"];}
-              }switch (w) {case "+":
-                  p = r + p;break;case "-":
-                  p = r - p;break;case "*":
-                  p *= r;break;case "/":
-                  p = r / p;}j[e] = { rootPropertyValue: m, startValue: r, currentValue: r, endValue: p, unitType: u, easing: q }, g && (j[e].pattern = g), x.debug && console.log("tweensContainer (" + e + "): " + JSON.stringify(j[e]), a);
-            };for (var J in s) {
-              if (s.hasOwnProperty(J)) {
-                var K = z.Names.camelCase(J),
-                    N = H(s[J]);if (z.Lists.colors.indexOf(K) >= 0) {
-                  var O = N[0],
-                      P = N[1],
-                      Q = N[2];if (z.RegEx.isHex.test(O)) {
-                    for (var R = ["Red", "Green", "Blue"], S = z.Values.hexToRgb(O), T = Q ? z.Values.hexToRgb(Q) : d, U = 0; U < R.length; U++) {
-                      var V = [S[U]];P && V.push(P), T !== d && V.push(T[U]), I(K + R[U], V);
-                    }continue;
-                  }
-                }I(K, N);
-              }
-            }j.element = a;
-          }j.element && (z.Values.addClass(a, "velocity-animating"), M.push(j), k = g(a), k && ("" === i.queue && (k.tweensContainer = j, k.opts = i), k.isAnimating = !0), C === B - 1 ? (x.State.calls.push([M, r, i, null, y.resolver, null, 0]), x.State.isTicking === !1 && (x.State.isTicking = !0, m())) : C++);
-        }var h,
-            i = o.extend({}, x.defaults, u),
-            j = {};switch (g(a) === d && x.init(a), parseFloat(i.delay) && i.queue !== !1 && o.queue(a, i.queue, function (b) {
-          x.velocityQueueEntryFlag = !0;var c = x.State.delayedElements.count++;x.State.delayedElements[c] = a;var d = function (a) {
-            return function () {
-              x.State.delayedElements[a] = !1, b();
-            };
-          }(c);g(a).delayBegin = new Date().getTime(), g(a).delay = parseFloat(i.delay), g(a).delayTimer = { setTimeout: setTimeout(b, parseFloat(i.delay)), next: d };
-        }), i.duration.toString().toLowerCase()) {case "fast":
-            i.duration = 200;break;case "normal":
-            i.duration = v;break;case "slow":
-            i.duration = 600;break;default:
-            i.duration = parseFloat(i.duration) || 1;}if (x.mock !== !1 && (x.mock === !0 ? i.duration = i.delay = 1 : (i.duration *= parseFloat(x.mock) || 1, i.delay *= parseFloat(x.mock) || 1)), i.easing = l(i.easing, i.duration), i.begin && !t.isFunction(i.begin) && (i.begin = null), i.progress && !t.isFunction(i.progress) && (i.progress = null), i.complete && !t.isFunction(i.complete) && (i.complete = null), i.display !== d && null !== i.display && (i.display = i.display.toString().toLowerCase(), "auto" === i.display && (i.display = x.CSS.Values.getDisplayType(a))), i.visibility !== d && null !== i.visibility && (i.visibility = i.visibility.toString().toLowerCase()), i.mobileHA = i.mobileHA && x.State.isMobile && !x.State.isGingerbread, i.queue === !1) {
-          if (i.delay) {
-            var k = x.State.delayedElements.count++;x.State.delayedElements[k] = a;var n = function (a) {
-              return function () {
-                x.State.delayedElements[a] = !1, f();
-              };
-            }(k);g(a).delayBegin = new Date().getTime(), g(a).delay = parseFloat(i.delay), g(a).delayTimer = { setTimeout: setTimeout(f, parseFloat(i.delay)), next: n };
-          } else f();
-        } else o.queue(a, i.queue, function (a, b) {
-          return b === !0 ? (y.promise && y.resolver(r), !0) : (x.velocityQueueEntryFlag = !0, void f(a));
-        });"" !== i.queue && "fx" !== i.queue || "inprogress" === o.queue(a)[0] || o.dequeue(a);
-      }var j,
-          k,
-          p,
-          q,
-          r,
-          s,
-          u,
-          w = arguments[0] && (arguments[0].p || o.isPlainObject(arguments[0].properties) && !arguments[0].properties.names || t.isString(arguments[0].properties));t.isWrapped(this) ? (k = !1, q = 0, r = this, p = this) : (k = !0, q = 1, r = w ? arguments[0].elements || arguments[0].e : arguments[0]);var y = { promise: null, resolver: null, rejecter: null };if (k && x.Promise && (y.promise = new x.Promise(function (a, b) {
-        y.resolver = a, y.rejecter = b;
-      })), w ? (s = arguments[0].properties || arguments[0].p, u = arguments[0].options || arguments[0].o) : (s = arguments[q], u = arguments[q + 1]), r = f(r), !r) return void (y.promise && (s && u && u.promiseRejectEmpty === !1 ? y.resolver() : y.rejecter()));var B = r.length,
-          C = 0;if (!/^(stop|finish|finishAll|pause|resume)$/i.test(s) && !o.isPlainObject(u)) {
-        var D = q + 1;u = {};for (var E = D; E < arguments.length; E++) {
-          t.isArray(arguments[E]) || !/^(fast|normal|slow)$/i.test(arguments[E]) && !/^\d/.test(arguments[E]) ? t.isString(arguments[E]) || t.isArray(arguments[E]) ? u.easing = arguments[E] : t.isFunction(arguments[E]) && (u.complete = arguments[E]) : u.duration = arguments[E];
-        }
-      }var F;switch (s) {case "scroll":
-          F = "scroll";break;case "reverse":
-          F = "reverse";break;case "pause":
-          var G = new Date().getTime();return o.each(r, function (a, b) {
-            h(b, G);
-          }), o.each(x.State.calls, function (a, b) {
-            var c = !1;b && o.each(b[1], function (a, e) {
-              var f = u === d ? "" : u;return f !== !0 && b[2].queue !== f && (u !== d || b[2].queue !== !1) || (o.each(r, function (a, d) {
-                if (d === e) return b[5] = { resume: !1 }, c = !0, !1;
-              }), !c && void 0);
-            });
-          }), a();case "resume":
-          return o.each(r, function (a, b) {
-            i(b, G);
-          }), o.each(x.State.calls, function (a, b) {
-            var c = !1;b && o.each(b[1], function (a, e) {
-              var f = u === d ? "" : u;return f !== !0 && b[2].queue !== f && (u !== d || b[2].queue !== !1) || !b[5] || (o.each(r, function (a, d) {
-                if (d === e) return b[5].resume = !0, c = !0, !1;
-              }), !c && void 0);
-            });
-          }), a();case "finish":case "finishAll":case "stop":
-          o.each(r, function (a, b) {
-            g(b) && g(b).delayTimer && (clearTimeout(g(b).delayTimer.setTimeout), g(b).delayTimer.next && g(b).delayTimer.next(), delete g(b).delayTimer), "finishAll" !== s || u !== !0 && !t.isString(u) || (o.each(o.queue(b, t.isString(u) ? u : ""), function (a, b) {
-              t.isFunction(b) && b();
-            }), o.queue(b, t.isString(u) ? u : "", []));
-          });var H = [];return o.each(x.State.calls, function (a, b) {
-            b && o.each(b[1], function (c, e) {
-              var f = u === d ? "" : u;return f !== !0 && b[2].queue !== f && (u !== d || b[2].queue !== !1) || void o.each(r, function (c, d) {
-                if (d === e) if ((u === !0 || t.isString(u)) && (o.each(o.queue(d, t.isString(u) ? u : ""), function (a, b) {
-                  t.isFunction(b) && b(null, !0);
-                }), o.queue(d, t.isString(u) ? u : "", [])), "stop" === s) {
-                  var h = g(d);h && h.tweensContainer && f !== !1 && o.each(h.tweensContainer, function (a, b) {
-                    b.endValue = b.currentValue;
-                  }), H.push(a);
-                } else "finish" !== s && "finishAll" !== s || (b[2].duration = 1);
-              });
-            });
-          }), "stop" === s && (o.each(H, function (a, b) {
-            n(b, !0);
-          }), y.promise && y.resolver(r)), a();default:
-          if (!o.isPlainObject(s) || t.isEmptyObject(s)) {
-            if (t.isString(s) && x.Redirects[s]) {
-              j = o.extend({}, u);var I = j.duration,
-                  J = j.delay || 0;return j.backwards === !0 && (r = o.extend(!0, [], r).reverse()), o.each(r, function (a, b) {
-                parseFloat(j.stagger) ? j.delay = J + parseFloat(j.stagger) * a : t.isFunction(j.stagger) && (j.delay = J + j.stagger.call(b, a, B)), j.drag && (j.duration = parseFloat(I) || (/^(callout|transition)/.test(s) ? 1e3 : v), j.duration = Math.max(j.duration * (j.backwards ? 1 - a / B : (a + 1) / B), .75 * j.duration, 200)), x.Redirects[s].call(b, b, j || {}, a, B, r, y.promise ? y : d);
-              }), a();
-            }var K = "Velocity: First argument (" + s + ") was not a property map, a known action, or a registered redirect. Aborting.";return y.promise ? y.rejecter(new Error(K)) : console.log(K), a();
-          }F = "start";}var L = { lastParent: null, lastPosition: null, lastFontSize: null, lastPercentToPxWidth: null, lastPercentToPxHeight: null, lastEmToPx: null, remToPx: null, vwToPx: null, vhToPx: null },
-          M = [];o.each(r, function (a, b) {
-        t.isNode(b) && e(b, a);
-      }), j = o.extend({}, x.defaults, u), j.loop = parseInt(j.loop, 10);var N = 2 * j.loop - 1;if (j.loop) for (var O = 0; O < N; O++) {
-        var P = { delay: j.delay, progress: j.progress };O === N - 1 && (P.display = j.display, P.visibility = j.visibility, P.complete = j.complete), A(r, "reverse", P);
-      }return a();
-    };x = o.extend(A, x), x.animate = A;var B = b.requestAnimationFrame || q;if (!x.State.isMobile && c.hidden !== d) {
-      var C = function () {
-        c.hidden ? (B = function (a) {
-          return setTimeout(function () {
-            a(!0);
-          }, 16);
-        }, m()) : B = b.requestAnimationFrame || q;
-      };C(), c.addEventListener("visibilitychange", C);
-    }return a.Velocity = x, a !== b && (a.fn.velocity = A, a.fn.velocity.defaults = x.defaults), o.each(["Down", "Up"], function (a, b) {
-      x.Redirects["slide" + b] = function (a, c, e, f, g, h) {
-        var i = o.extend({}, c),
-            j = i.begin,
-            k = i.complete,
-            l = {},
-            m = { height: "", marginTop: "", marginBottom: "", paddingTop: "", paddingBottom: "" };i.display === d && (i.display = "Down" === b ? "inline" === x.CSS.Values.getDisplayType(a) ? "inline-block" : "block" : "none"), i.begin = function () {
-          0 === e && j && j.call(g, g);for (var c in m) {
-            if (m.hasOwnProperty(c)) {
-              l[c] = a.style[c];var d = z.getPropertyValue(a, c);m[c] = "Down" === b ? [d, 0] : [0, d];
-            }
-          }l.overflow = a.style.overflow, a.style.overflow = "hidden";
-        }, i.complete = function () {
-          for (var b in l) {
-            l.hasOwnProperty(b) && (a.style[b] = l[b]);
-          }e === f - 1 && (k && k.call(g, g), h && h.resolver(g));
-        }, x(a, m, i);
-      };
-    }), o.each(["In", "Out"], function (a, b) {
-      x.Redirects["fade" + b] = function (a, c, e, f, g, h) {
-        var i = o.extend({}, c),
-            j = i.complete,
-            k = { opacity: "In" === b ? 1 : 0 };0 !== e && (i.begin = null), e !== f - 1 ? i.complete = null : i.complete = function () {
-          j && j.call(g, g), h && h.resolver(g);
-        }, i.display === d && (i.display = "In" === b ? "auto" : "none"), x(this, k, i);
-      };
-    }), x;
-  }(window.jQuery || window.Zepto || window, window, window ? window.document : void 0);
-});; // Required for Meteor package, the use of window prevents export by Meteor
+        instances = instancesArr;
+      }
+
+      return instances;
+    }
+  }]);
+
+  return Component;
+}();
+
+; // Required for Meteor package, the use of window prevents export by Meteor
 (function (window) {
   if (window.Package) {
     M = {};
@@ -1793,8 +1071,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 })(window);
 
 // AMD
-if (typeof define === "function" && define.amd) {
-  define("M", [], function () {
+if (typeof define === 'function' && define.amd) {
+  define('M', [], function () {
     return M;
   });
 
@@ -1806,6 +1084,8 @@ if (typeof define === "function" && define.amd) {
   exports.default = M;
 }
 
+M.version = '1.0.0';
+
 M.keys = {
   TAB: 9,
   ENTER: 13,
@@ -1813,6 +1093,36 @@ M.keys = {
   ARROW_UP: 38,
   ARROW_DOWN: 40
 };
+
+/**
+ * TabPress Keydown handler
+ */
+M.tabPressed = false;
+M.keyDown = false;
+var docHandleKeydown = function (e) {
+  M.keyDown = true;
+  if (e.which === M.keys.TAB || e.which === M.keys.ARROW_DOWN || e.which === M.keys.ARROW_UP) {
+    M.tabPressed = true;
+  }
+};
+var docHandleKeyup = function (e) {
+  M.keyDown = false;
+  if (e.which === M.keys.TAB || e.which === M.keys.ARROW_DOWN || e.which === M.keys.ARROW_UP) {
+    M.tabPressed = false;
+  }
+};
+var docHandleFocus = function (e) {
+  if (M.keyDown) {
+    document.body.classList.add('keyboard-focused');
+  }
+};
+var docHandleBlur = function (e) {
+  document.body.classList.remove('keyboard-focused');
+};
+document.addEventListener('keydown', docHandleKeydown, true);
+document.addEventListener('keyup', docHandleKeyup, true);
+document.addEventListener('focus', docHandleFocus, true);
+document.addEventListener('blur', docHandleBlur, true);
 
 /**
  * Initialize jQuery wrapper for plugin
@@ -1830,25 +1140,58 @@ M.initializeJqueryWrapper = function (plugin, pluginName, classRef) {
       if (methodOrOptions.slice(0, 3) === 'get') {
         var instance = this.first()[0][classRef];
         return instance[methodOrOptions].apply(instance, params);
-
-        // Void methods
-      } else {
-        return this.each(function () {
-          var instance = this[classRef];
-          instance[methodOrOptions].apply(instance, params);
-        });
       }
+
+      // Void methods
+      return this.each(function () {
+        var instance = this[classRef];
+        instance[methodOrOptions].apply(instance, params);
+      });
 
       // Initialize plugin if options or no argument is passed in
     } else if (typeof methodOrOptions === 'object' || !methodOrOptions) {
       plugin.init(this, arguments[0]);
       return this;
-
-      // Return error if an unrecognized  method name is passed in
-    } else {
-      jQuery.error("Method " + methodOrOptions + " does not exist on jQuery." + pluginName);
     }
+
+    // Return error if an unrecognized  method name is passed in
+    jQuery.error("Method " + methodOrOptions + " does not exist on jQuery." + pluginName);
   };
+};
+
+/**
+ * Automatically initialize components
+ * @param {Element} context  DOM Element to search within for components
+ */
+M.AutoInit = function (context) {
+  // Use document.body if no context is given
+  var root = !!context ? context : document.body;
+
+  var registry = {
+    Autocomplete: root.querySelectorAll('.autocomplete:not(.no-autoinit)'),
+    Carousel: root.querySelectorAll('.carousel:not(.no-autoinit)'),
+    Chips: root.querySelectorAll('.chips:not(.no-autoinit)'),
+    Collapsible: root.querySelectorAll('.collapsible:not(.no-autoinit)'),
+    Datepicker: root.querySelectorAll('.datepicker:not(.no-autoinit)'),
+    Dropdown: root.querySelectorAll('.dropdown-trigger:not(.no-autoinit)'),
+    Materialbox: root.querySelectorAll('.materialboxed:not(.no-autoinit)'),
+    Modal: root.querySelectorAll('.modal:not(.no-autoinit)'),
+    Parallax: root.querySelectorAll('.parallax:not(.no-autoinit)'),
+    Pushpin: root.querySelectorAll('.pushpin:not(.no-autoinit)'),
+    ScrollSpy: root.querySelectorAll('.scrollspy:not(.no-autoinit)'),
+    FormSelect: root.querySelectorAll('select:not(.no-autoinit)'),
+    Sidenav: root.querySelectorAll('.sidenav:not(.no-autoinit)'),
+    Tabs: root.querySelectorAll('.tabs:not(.no-autoinit)'),
+    TapTarget: root.querySelectorAll('.tap-target:not(.no-autoinit)'),
+    Timepicker: root.querySelectorAll('.timepicker:not(.no-autoinit)'),
+    Tooltip: root.querySelectorAll('.tooltipped:not(.no-autoinit)'),
+    FloatingActionButton: root.querySelectorAll('.fixed-action-btn:not(.no-autoinit)')
+  };
+
+  for (var pluginName in registry) {
+    var plugin = M[pluginName];
+    plugin.init(registry[pluginName]);
+  }
 };
 
 /**
@@ -1879,7 +1222,7 @@ M.guid = function () {
  * @returns {string}
  */
 M.escapeHash = function (hash) {
-  return hash.replace(/(:|\.|\[|\]|,|=)/g, "\\$1");
+  return hash.replace(/(:|\.|\[|\]|,|=|\/)/g, '\\$1');
 };
 
 M.elementOrParentIsFixed = function (element) {
@@ -1887,7 +1230,7 @@ M.elementOrParentIsFixed = function (element) {
   var $checkElements = $element.add($element.parents());
   var isFixed = false;
   $checkElements.each(function () {
-    if ($(this).css("position") === "fixed") {
+    if ($(this).css('position') === 'fixed') {
       isFixed = true;
       return false;
     }
@@ -1927,6 +1270,8 @@ M.checkWithinContainer = function (container, bounding, offset) {
   };
 
   var containerRect = container.getBoundingClientRect();
+  // If body element is smaller than viewport, use viewport height instead.
+  var containerBottom = container === document.body ? Math.max(containerRect.bottom, window.innerHeight) : containerRect.bottom;
 
   var scrollLeft = container.scrollLeft;
   var scrollTop = container.scrollTop;
@@ -1947,7 +1292,7 @@ M.checkWithinContainer = function (container, bounding, offset) {
     edges.top = true;
   }
 
-  if (scrolledY + bounding.height > containerRect.bottom - offset || scrolledY + bounding.height > window.innerHeight - offset) {
+  if (scrolledY + bounding.height > containerBottom - offset || scrolledY + bounding.height > window.innerHeight - offset) {
     edges.bottom = true;
   }
 
@@ -1968,35 +1313,38 @@ M.checkPossibleAlignments = function (el, container, bounding, offset) {
 
   var containerAllowsOverflow = getComputedStyle(container).overflow === 'visible';
   var containerRect = container.getBoundingClientRect();
+  var containerHeight = Math.min(containerRect.height, window.innerHeight);
+  var containerWidth = Math.min(containerRect.width, window.innerWidth);
   var elOffsetRect = el.getBoundingClientRect();
 
   var scrollLeft = container.scrollLeft;
   var scrollTop = container.scrollTop;
 
   var scrolledX = bounding.left - scrollLeft;
-  var scrolledY = bounding.top - scrollTop;
+  var scrolledYTopEdge = bounding.top - scrollTop;
+  var scrolledYBottomEdge = bounding.top + elOffsetRect.height - scrollTop;
 
   // Check for container and viewport for left
-  canAlign.spaceOnRight = !containerAllowsOverflow ? container.offsetWidth - (scrolledX + bounding.width) : window.innerWidth - (elOffsetRect.left + bounding.width);
-  if (!containerAllowsOverflow && scrolledX + bounding.width > container.offsetWidth || containerAllowsOverflow && elOffsetRect.left + bounding.width > window.innerWidth) {
+  canAlign.spaceOnRight = !containerAllowsOverflow ? containerWidth - (scrolledX + bounding.width) : window.innerWidth - (elOffsetRect.left + bounding.width);
+  if (canAlign.spaceOnRight < 0) {
     canAlign.left = false;
   }
 
   // Check for container and viewport for Right
   canAlign.spaceOnLeft = !containerAllowsOverflow ? scrolledX - bounding.width + elOffsetRect.width : elOffsetRect.right - bounding.width;
-  if (!containerAllowsOverflow && scrolledX - bounding.width + elOffsetRect.width < 0 || containerAllowsOverflow && elOffsetRect.right - bounding.width < 0) {
+  if (canAlign.spaceOnLeft < 0) {
     canAlign.right = false;
   }
 
   // Check for container and viewport for Top
-  canAlign.spaceOnBottom = !containerAllowsOverflow ? containerRect.height - (scrolledY + bounding.height + offset) : window.innerHeight - (elOffsetRect.top + bounding.height + offset);
-  if (!containerAllowsOverflow && scrolledY + bounding.height + offset > containerRect.height || containerAllowsOverflow && elOffsetRect.top + bounding.height + offset > window.innerHeight) {
+  canAlign.spaceOnBottom = !containerAllowsOverflow ? containerHeight - (scrolledYTopEdge + bounding.height + offset) : window.innerHeight - (elOffsetRect.top + bounding.height + offset);
+  if (canAlign.spaceOnBottom < 0) {
     canAlign.top = false;
   }
 
   // Check for container and viewport for Bottom
-  canAlign.spaceOnTop = !containerAllowsOverflow ? scrolledY - (bounding.height + offset) : elOffsetRect.bottom - (bounding.height + offset);
-  if (!containerAllowsOverflow && scrolledY - bounding.height - offset < 0 || containerAllowsOverflow && elOffsetRect.bottom - bounding.height - offset < 0) {
+  canAlign.spaceOnTop = !containerAllowsOverflow ? scrolledYBottomEdge - (bounding.height - offset) : elOffsetRect.bottom - (bounding.height + offset);
+  if (canAlign.spaceOnTop < 0) {
     canAlign.bottom = false;
   }
 
@@ -2010,9 +1358,9 @@ M.getOverflowParent = function (element) {
 
   if (element === document.body || getComputedStyle(element).overflow !== 'visible') {
     return element;
-  } else {
-    return M.getOverflowParent(element.parentElement);
   }
+
+  return M.getOverflowParent(element.parentElement);
 };
 
 /**
@@ -2027,7 +1375,7 @@ M.getIdFromTrigger = function (trigger) {
     if (id) {
       id = id.slice(1);
     } else {
-      id = "";
+      id = '';
     }
   }
   return id;
@@ -2118,22 +1466,424 @@ M.throttle = function (func, wait, options) {
     return result;
   };
 };
-
-// Velocity has conflicts when loaded with jQuery, this will check for it
-// First, check if in noConflict mode
-var Vel = void 0;
-if (M.jQueryLoaded) {
-  Vel = jQuery.Velocity;
-} else {
-  Vel = Velocity;
-}
-
-if (Vel) {
-  M.Vel = Vel;
-} else {
-  M.Vel = Velocity;
-}
-;(function ($, Vel) {
+; /*
+  v2.2.0
+  2017 Julian Garnier
+  Released under the MIT license
+  */
+var $jscomp = { scope: {} };$jscomp.defineProperty = "function" == typeof Object.defineProperties ? Object.defineProperty : function (e, r, p) {
+  if (p.get || p.set) throw new TypeError("ES3 does not support getters and setters.");e != Array.prototype && e != Object.prototype && (e[r] = p.value);
+};$jscomp.getGlobal = function (e) {
+  return "undefined" != typeof window && window === e ? e : "undefined" != typeof global && null != global ? global : e;
+};$jscomp.global = $jscomp.getGlobal(this);$jscomp.SYMBOL_PREFIX = "jscomp_symbol_";
+$jscomp.initSymbol = function () {
+  $jscomp.initSymbol = function () {};$jscomp.global.Symbol || ($jscomp.global.Symbol = $jscomp.Symbol);
+};$jscomp.symbolCounter_ = 0;$jscomp.Symbol = function (e) {
+  return $jscomp.SYMBOL_PREFIX + (e || "") + $jscomp.symbolCounter_++;
+};
+$jscomp.initSymbolIterator = function () {
+  $jscomp.initSymbol();var e = $jscomp.global.Symbol.iterator;e || (e = $jscomp.global.Symbol.iterator = $jscomp.global.Symbol("iterator"));"function" != typeof Array.prototype[e] && $jscomp.defineProperty(Array.prototype, e, { configurable: !0, writable: !0, value: function () {
+      return $jscomp.arrayIterator(this);
+    } });$jscomp.initSymbolIterator = function () {};
+};$jscomp.arrayIterator = function (e) {
+  var r = 0;return $jscomp.iteratorPrototype(function () {
+    return r < e.length ? { done: !1, value: e[r++] } : { done: !0 };
+  });
+};
+$jscomp.iteratorPrototype = function (e) {
+  $jscomp.initSymbolIterator();e = { next: e };e[$jscomp.global.Symbol.iterator] = function () {
+    return this;
+  };return e;
+};$jscomp.array = $jscomp.array || {};$jscomp.iteratorFromArray = function (e, r) {
+  $jscomp.initSymbolIterator();e instanceof String && (e += "");var p = 0,
+      m = { next: function () {
+      if (p < e.length) {
+        var u = p++;return { value: r(u, e[u]), done: !1 };
+      }m.next = function () {
+        return { done: !0, value: void 0 };
+      };return m.next();
+    } };m[Symbol.iterator] = function () {
+    return m;
+  };return m;
+};
+$jscomp.polyfill = function (e, r, p, m) {
+  if (r) {
+    p = $jscomp.global;e = e.split(".");for (m = 0; m < e.length - 1; m++) {
+      var u = e[m];u in p || (p[u] = {});p = p[u];
+    }e = e[e.length - 1];m = p[e];r = r(m);r != m && null != r && $jscomp.defineProperty(p, e, { configurable: !0, writable: !0, value: r });
+  }
+};$jscomp.polyfill("Array.prototype.keys", function (e) {
+  return e ? e : function () {
+    return $jscomp.iteratorFromArray(this, function (e) {
+      return e;
+    });
+  };
+}, "es6-impl", "es3");var $jscomp$this = this;
+(function (r) {
+  M.anime = r();
+})(function () {
+  function e(a) {
+    if (!h.col(a)) try {
+      return document.querySelectorAll(a);
+    } catch (c) {}
+  }function r(a, c) {
+    for (var d = a.length, b = 2 <= arguments.length ? arguments[1] : void 0, f = [], n = 0; n < d; n++) {
+      if (n in a) {
+        var k = a[n];c.call(b, k, n, a) && f.push(k);
+      }
+    }return f;
+  }function p(a) {
+    return a.reduce(function (a, d) {
+      return a.concat(h.arr(d) ? p(d) : d);
+    }, []);
+  }function m(a) {
+    if (h.arr(a)) return a;
+    h.str(a) && (a = e(a) || a);return a instanceof NodeList || a instanceof HTMLCollection ? [].slice.call(a) : [a];
+  }function u(a, c) {
+    return a.some(function (a) {
+      return a === c;
+    });
+  }function C(a) {
+    var c = {},
+        d;for (d in a) {
+      c[d] = a[d];
+    }return c;
+  }function D(a, c) {
+    var d = C(a),
+        b;for (b in a) {
+      d[b] = c.hasOwnProperty(b) ? c[b] : a[b];
+    }return d;
+  }function z(a, c) {
+    var d = C(a),
+        b;for (b in c) {
+      d[b] = h.und(a[b]) ? c[b] : a[b];
+    }return d;
+  }function T(a) {
+    a = a.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function (a, c, d, k) {
+      return c + c + d + d + k + k;
+    });var c = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(a);
+    a = parseInt(c[1], 16);var d = parseInt(c[2], 16),
+        c = parseInt(c[3], 16);return "rgba(" + a + "," + d + "," + c + ",1)";
+  }function U(a) {
+    function c(a, c, b) {
+      0 > b && (b += 1);1 < b && --b;return b < 1 / 6 ? a + 6 * (c - a) * b : .5 > b ? c : b < 2 / 3 ? a + (c - a) * (2 / 3 - b) * 6 : a;
+    }var d = /hsl\((\d+),\s*([\d.]+)%,\s*([\d.]+)%\)/g.exec(a) || /hsla\((\d+),\s*([\d.]+)%,\s*([\d.]+)%,\s*([\d.]+)\)/g.exec(a);a = parseInt(d[1]) / 360;var b = parseInt(d[2]) / 100,
+        f = parseInt(d[3]) / 100,
+        d = d[4] || 1;if (0 == b) f = b = a = f;else {
+      var n = .5 > f ? f * (1 + b) : f + b - f * b,
+          k = 2 * f - n,
+          f = c(k, n, a + 1 / 3),
+          b = c(k, n, a);a = c(k, n, a - 1 / 3);
+    }return "rgba(" + 255 * f + "," + 255 * b + "," + 255 * a + "," + d + ")";
+  }function y(a) {
+    if (a = /([\+\-]?[0-9#\.]+)(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(a)) return a[2];
+  }function V(a) {
+    if (-1 < a.indexOf("translate") || "perspective" === a) return "px";if (-1 < a.indexOf("rotate") || -1 < a.indexOf("skew")) return "deg";
+  }function I(a, c) {
+    return h.fnc(a) ? a(c.target, c.id, c.total) : a;
+  }function E(a, c) {
+    if (c in a.style) return getComputedStyle(a).getPropertyValue(c.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()) || "0";
+  }function J(a, c) {
+    if (h.dom(a) && u(W, c)) return "transform";if (h.dom(a) && (a.getAttribute(c) || h.svg(a) && a[c])) return "attribute";if (h.dom(a) && "transform" !== c && E(a, c)) return "css";if (null != a[c]) return "object";
+  }function X(a, c) {
+    var d = V(c),
+        d = -1 < c.indexOf("scale") ? 1 : 0 + d;a = a.style.transform;if (!a) return d;for (var b = [], f = [], n = [], k = /(\w+)\((.+?)\)/g; b = k.exec(a);) {
+      f.push(b[1]), n.push(b[2]);
+    }a = r(n, function (a, b) {
+      return f[b] === c;
+    });return a.length ? a[0] : d;
+  }function K(a, c) {
+    switch (J(a, c)) {case "transform":
+        return X(a, c);case "css":
+        return E(a, c);case "attribute":
+        return a.getAttribute(c);}return a[c] || 0;
+  }function L(a, c) {
+    var d = /^(\*=|\+=|-=)/.exec(a);if (!d) return a;var b = y(a) || 0;c = parseFloat(c);a = parseFloat(a.replace(d[0], ""));switch (d[0][0]) {case "+":
+        return c + a + b;case "-":
+        return c - a + b;case "*":
+        return c * a + b;}
+  }function F(a, c) {
+    return Math.sqrt(Math.pow(c.x - a.x, 2) + Math.pow(c.y - a.y, 2));
+  }function M(a) {
+    a = a.points;for (var c = 0, d, b = 0; b < a.numberOfItems; b++) {
+      var f = a.getItem(b);0 < b && (c += F(d, f));d = f;
+    }return c;
+  }function N(a) {
+    if (a.getTotalLength) return a.getTotalLength();switch (a.tagName.toLowerCase()) {case "circle":
+        return 2 * Math.PI * a.getAttribute("r");case "rect":
+        return 2 * a.getAttribute("width") + 2 * a.getAttribute("height");case "line":
+        return F({ x: a.getAttribute("x1"), y: a.getAttribute("y1") }, { x: a.getAttribute("x2"), y: a.getAttribute("y2") });case "polyline":
+        return M(a);case "polygon":
+        var c = a.points;return M(a) + F(c.getItem(c.numberOfItems - 1), c.getItem(0));}
+  }function Y(a, c) {
+    function d(b) {
+      b = void 0 === b ? 0 : b;return a.el.getPointAtLength(1 <= c + b ? c + b : 0);
+    }var b = d(),
+        f = d(-1),
+        n = d(1);switch (a.property) {case "x":
+        return b.x;case "y":
+        return b.y;
+      case "angle":
+        return 180 * Math.atan2(n.y - f.y, n.x - f.x) / Math.PI;}
+  }function O(a, c) {
+    var d = /-?\d*\.?\d+/g,
+        b;b = h.pth(a) ? a.totalLength : a;if (h.col(b)) {
+      if (h.rgb(b)) {
+        var f = /rgb\((\d+,\s*[\d]+,\s*[\d]+)\)/g.exec(b);b = f ? "rgba(" + f[1] + ",1)" : b;
+      } else b = h.hex(b) ? T(b) : h.hsl(b) ? U(b) : void 0;
+    } else f = (f = y(b)) ? b.substr(0, b.length - f.length) : b, b = c && !/\s/g.test(b) ? f + c : f;b += "";return { original: b, numbers: b.match(d) ? b.match(d).map(Number) : [0], strings: h.str(a) || c ? b.split(d) : [] };
+  }function P(a) {
+    a = a ? p(h.arr(a) ? a.map(m) : m(a)) : [];return r(a, function (a, d, b) {
+      return b.indexOf(a) === d;
+    });
+  }function Z(a) {
+    var c = P(a);return c.map(function (a, b) {
+      return { target: a, id: b, total: c.length };
+    });
+  }function aa(a, c) {
+    var d = C(c);if (h.arr(a)) {
+      var b = a.length;2 !== b || h.obj(a[0]) ? h.fnc(c.duration) || (d.duration = c.duration / b) : a = { value: a };
+    }return m(a).map(function (a, b) {
+      b = b ? 0 : c.delay;a = h.obj(a) && !h.pth(a) ? a : { value: a };h.und(a.delay) && (a.delay = b);return a;
+    }).map(function (a) {
+      return z(a, d);
+    });
+  }function ba(a, c) {
+    var d = {},
+        b;for (b in a) {
+      var f = I(a[b], c);h.arr(f) && (f = f.map(function (a) {
+        return I(a, c);
+      }), 1 === f.length && (f = f[0]));d[b] = f;
+    }d.duration = parseFloat(d.duration);d.delay = parseFloat(d.delay);return d;
+  }function ca(a) {
+    return h.arr(a) ? A.apply(this, a) : Q[a];
+  }function da(a, c) {
+    var d;return a.tweens.map(function (b) {
+      b = ba(b, c);var f = b.value,
+          e = K(c.target, a.name),
+          k = d ? d.to.original : e,
+          k = h.arr(f) ? f[0] : k,
+          w = L(h.arr(f) ? f[1] : f, k),
+          e = y(w) || y(k) || y(e);b.from = O(k, e);b.to = O(w, e);b.start = d ? d.end : a.offset;b.end = b.start + b.delay + b.duration;b.easing = ca(b.easing);b.elasticity = (1E3 - Math.min(Math.max(b.elasticity, 1), 999)) / 1E3;b.isPath = h.pth(f);b.isColor = h.col(b.from.original);b.isColor && (b.round = 1);return d = b;
+    });
+  }function ea(a, c) {
+    return r(p(a.map(function (a) {
+      return c.map(function (b) {
+        var c = J(a.target, b.name);if (c) {
+          var d = da(b, a);b = { type: c, property: b.name, animatable: a, tweens: d, duration: d[d.length - 1].end, delay: d[0].delay };
+        } else b = void 0;return b;
+      });
+    })), function (a) {
+      return !h.und(a);
+    });
+  }function R(a, c, d, b) {
+    var f = "delay" === a;return c.length ? (f ? Math.min : Math.max).apply(Math, c.map(function (b) {
+      return b[a];
+    })) : f ? b.delay : d.offset + b.delay + b.duration;
+  }function fa(a) {
+    var c = D(ga, a),
+        d = D(S, a),
+        b = Z(a.targets),
+        f = [],
+        e = z(c, d),
+        k;for (k in a) {
+      e.hasOwnProperty(k) || "targets" === k || f.push({ name: k, offset: e.offset, tweens: aa(a[k], d) });
+    }a = ea(b, f);return z(c, { children: [], animatables: b, animations: a, duration: R("duration", a, c, d), delay: R("delay", a, c, d) });
+  }function q(a) {
+    function c() {
+      return window.Promise && new Promise(function (a) {
+        return p = a;
+      });
+    }function d(a) {
+      return g.reversed ? g.duration - a : a;
+    }function b(a) {
+      for (var b = 0, c = {}, d = g.animations, f = d.length; b < f;) {
+        var e = d[b],
+            k = e.animatable,
+            h = e.tweens,
+            n = h.length - 1,
+            l = h[n];n && (l = r(h, function (b) {
+          return a < b.end;
+        })[0] || l);for (var h = Math.min(Math.max(a - l.start - l.delay, 0), l.duration) / l.duration, w = isNaN(h) ? 1 : l.easing(h, l.elasticity), h = l.to.strings, p = l.round, n = [], m = void 0, m = l.to.numbers.length, t = 0; t < m; t++) {
+          var x = void 0,
+              x = l.to.numbers[t],
+              q = l.from.numbers[t],
+              x = l.isPath ? Y(l.value, w * x) : q + w * (x - q);p && (l.isColor && 2 < t || (x = Math.round(x * p) / p));n.push(x);
+        }if (l = h.length) for (m = h[0], w = 0; w < l; w++) {
+          p = h[w + 1], t = n[w], isNaN(t) || (m = p ? m + (t + p) : m + (t + " "));
+        } else m = n[0];ha[e.type](k.target, e.property, m, c, k.id);e.currentValue = m;b++;
+      }if (b = Object.keys(c).length) for (d = 0; d < b; d++) {
+        H || (H = E(document.body, "transform") ? "transform" : "-webkit-transform"), g.animatables[d].target.style[H] = c[d].join(" ");
+      }g.currentTime = a;g.progress = a / g.duration * 100;
+    }function f(a) {
+      if (g[a]) g[a](g);
+    }function e() {
+      g.remaining && !0 !== g.remaining && g.remaining--;
+    }function k(a) {
+      var k = g.duration,
+          n = g.offset,
+          w = n + g.delay,
+          r = g.currentTime,
+          x = g.reversed,
+          q = d(a);if (g.children.length) {
+        var u = g.children,
+            v = u.length;
+        if (q >= g.currentTime) for (var G = 0; G < v; G++) {
+          u[G].seek(q);
+        } else for (; v--;) {
+          u[v].seek(q);
+        }
+      }if (q >= w || !k) g.began || (g.began = !0, f("begin")), f("run");if (q > n && q < k) b(q);else if (q <= n && 0 !== r && (b(0), x && e()), q >= k && r !== k || !k) b(k), x || e();f("update");a >= k && (g.remaining ? (t = h, "alternate" === g.direction && (g.reversed = !g.reversed)) : (g.pause(), g.completed || (g.completed = !0, f("complete"), "Promise" in window && (p(), m = c()))), l = 0);
+    }a = void 0 === a ? {} : a;var h,
+        t,
+        l = 0,
+        p = null,
+        m = c(),
+        g = fa(a);g.reset = function () {
+      var a = g.direction,
+          c = g.loop;g.currentTime = 0;g.progress = 0;g.paused = !0;g.began = !1;g.completed = !1;g.reversed = "reverse" === a;g.remaining = "alternate" === a && 1 === c ? 2 : c;b(0);for (a = g.children.length; a--;) {
+        g.children[a].reset();
+      }
+    };g.tick = function (a) {
+      h = a;t || (t = h);k((l + h - t) * q.speed);
+    };g.seek = function (a) {
+      k(d(a));
+    };g.pause = function () {
+      var a = v.indexOf(g);-1 < a && v.splice(a, 1);g.paused = !0;
+    };g.play = function () {
+      g.paused && (g.paused = !1, t = 0, l = d(g.currentTime), v.push(g), B || ia());
+    };g.reverse = function () {
+      g.reversed = !g.reversed;t = 0;l = d(g.currentTime);
+    };g.restart = function () {
+      g.pause();
+      g.reset();g.play();
+    };g.finished = m;g.reset();g.autoplay && g.play();return g;
+  }var ga = { update: void 0, begin: void 0, run: void 0, complete: void 0, loop: 1, direction: "normal", autoplay: !0, offset: 0 },
+      S = { duration: 1E3, delay: 0, easing: "easeOutElastic", elasticity: 500, round: 0 },
+      W = "translateX translateY translateZ rotate rotateX rotateY rotateZ scale scaleX scaleY scaleZ skewX skewY perspective".split(" "),
+      H,
+      h = { arr: function (a) {
+      return Array.isArray(a);
+    }, obj: function (a) {
+      return -1 < Object.prototype.toString.call(a).indexOf("Object");
+    },
+    pth: function (a) {
+      return h.obj(a) && a.hasOwnProperty("totalLength");
+    }, svg: function (a) {
+      return a instanceof SVGElement;
+    }, dom: function (a) {
+      return a.nodeType || h.svg(a);
+    }, str: function (a) {
+      return "string" === typeof a;
+    }, fnc: function (a) {
+      return "function" === typeof a;
+    }, und: function (a) {
+      return "undefined" === typeof a;
+    }, hex: function (a) {
+      return (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(a)
+      );
+    }, rgb: function (a) {
+      return (/^rgb/.test(a)
+      );
+    }, hsl: function (a) {
+      return (/^hsl/.test(a)
+      );
+    }, col: function (a) {
+      return h.hex(a) || h.rgb(a) || h.hsl(a);
+    } },
+      A = function () {
+    function a(a, d, b) {
+      return (((1 - 3 * b + 3 * d) * a + (3 * b - 6 * d)) * a + 3 * d) * a;
+    }return function (c, d, b, f) {
+      if (0 <= c && 1 >= c && 0 <= b && 1 >= b) {
+        var e = new Float32Array(11);if (c !== d || b !== f) for (var k = 0; 11 > k; ++k) {
+          e[k] = a(.1 * k, c, b);
+        }return function (k) {
+          if (c === d && b === f) return k;if (0 === k) return 0;if (1 === k) return 1;for (var h = 0, l = 1; 10 !== l && e[l] <= k; ++l) {
+            h += .1;
+          }--l;var l = h + (k - e[l]) / (e[l + 1] - e[l]) * .1,
+              n = 3 * (1 - 3 * b + 3 * c) * l * l + 2 * (3 * b - 6 * c) * l + 3 * c;if (.001 <= n) {
+            for (h = 0; 4 > h; ++h) {
+              n = 3 * (1 - 3 * b + 3 * c) * l * l + 2 * (3 * b - 6 * c) * l + 3 * c;if (0 === n) break;var m = a(l, c, b) - k,
+                  l = l - m / n;
+            }k = l;
+          } else if (0 === n) k = l;else {
+            var l = h,
+                h = h + .1,
+                g = 0;do {
+              m = l + (h - l) / 2, n = a(m, c, b) - k, 0 < n ? h = m : l = m;
+            } while (1e-7 < Math.abs(n) && 10 > ++g);k = m;
+          }return a(k, d, f);
+        };
+      }
+    };
+  }(),
+      Q = function () {
+    function a(a, b) {
+      return 0 === a || 1 === a ? a : -Math.pow(2, 10 * (a - 1)) * Math.sin(2 * (a - 1 - b / (2 * Math.PI) * Math.asin(1)) * Math.PI / b);
+    }var c = "Quad Cubic Quart Quint Sine Expo Circ Back Elastic".split(" "),
+        d = { In: [[.55, .085, .68, .53], [.55, .055, .675, .19], [.895, .03, .685, .22], [.755, .05, .855, .06], [.47, 0, .745, .715], [.95, .05, .795, .035], [.6, .04, .98, .335], [.6, -.28, .735, .045], a], Out: [[.25, .46, .45, .94], [.215, .61, .355, 1], [.165, .84, .44, 1], [.23, 1, .32, 1], [.39, .575, .565, 1], [.19, 1, .22, 1], [.075, .82, .165, 1], [.175, .885, .32, 1.275], function (b, c) {
+        return 1 - a(1 - b, c);
+      }], InOut: [[.455, .03, .515, .955], [.645, .045, .355, 1], [.77, 0, .175, 1], [.86, 0, .07, 1], [.445, .05, .55, .95], [1, 0, 0, 1], [.785, .135, .15, .86], [.68, -.55, .265, 1.55], function (b, c) {
+        return .5 > b ? a(2 * b, c) / 2 : 1 - a(-2 * b + 2, c) / 2;
+      }] },
+        b = { linear: A(.25, .25, .75, .75) },
+        f = {},
+        e;for (e in d) {
+      f.type = e, d[f.type].forEach(function (a) {
+        return function (d, f) {
+          b["ease" + a.type + c[f]] = h.fnc(d) ? d : A.apply($jscomp$this, d);
+        };
+      }(f)), f = { type: f.type };
+    }return b;
+  }(),
+      ha = { css: function (a, c, d) {
+      return a.style[c] = d;
+    }, attribute: function (a, c, d) {
+      return a.setAttribute(c, d);
+    }, object: function (a, c, d) {
+      return a[c] = d;
+    }, transform: function (a, c, d, b, f) {
+      b[f] || (b[f] = []);b[f].push(c + "(" + d + ")");
+    } },
+      v = [],
+      B = 0,
+      ia = function () {
+    function a() {
+      B = requestAnimationFrame(c);
+    }function c(c) {
+      var b = v.length;if (b) {
+        for (var d = 0; d < b;) {
+          v[d] && v[d].tick(c), d++;
+        }a();
+      } else cancelAnimationFrame(B), B = 0;
+    }return a;
+  }();q.version = "2.2.0";q.speed = 1;q.running = v;q.remove = function (a) {
+    a = P(a);for (var c = v.length; c--;) {
+      for (var d = v[c], b = d.animations, f = b.length; f--;) {
+        u(a, b[f].animatable.target) && (b.splice(f, 1), b.length || d.pause());
+      }
+    }
+  };q.getValue = K;q.path = function (a, c) {
+    var d = h.str(a) ? e(a)[0] : a,
+        b = c || 100;return function (a) {
+      return { el: d, property: a, totalLength: N(d) * (b / 100) };
+    };
+  };q.setDashoffset = function (a) {
+    var c = N(a);a.setAttribute("stroke-dasharray", c);return c;
+  };q.bezier = A;q.easings = Q;q.timeline = function (a) {
+    var c = q(a);c.pause();c.duration = 0;c.add = function (d) {
+      c.children.forEach(function (a) {
+        a.began = !0;a.completed = !0;
+      });m(d).forEach(function (b) {
+        var d = z(b, D(S, a || {}));d.targets = d.targets || a.targets;b = c.duration;var e = d.offset;d.autoplay = !1;d.direction = c.direction;d.offset = h.und(e) ? b : L(e, b);c.began = !0;c.completed = !0;c.seek(d.offset);d = q(d);d.began = !0;d.completed = !0;d.duration > b && (c.duration = d.duration);c.children.push(d);
+      });c.seek(0);c.reset();c.autoplay && c.restart();return c;
+    };return c;
+  };q.random = function (a, c) {
+    return Math.floor(Math.random() * (c - a + 1)) + a;
+  };return q;
+});
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
@@ -2151,7 +1901,9 @@ if (Vel) {
    *
    */
 
-  var Collapsible = function () {
+  var Collapsible = function (_Component) {
+    _inherits(Collapsible, _Component);
+
     /**
      * Construct Collapsible instance
      * @constructor
@@ -2161,14 +1913,9 @@ if (Vel) {
     function Collapsible(el, options) {
       _classCallCheck(this, Collapsible);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Collapsible) {
-        el.M_Collapsible.destroy();
-      }
+      var _this3 = _possibleConstructorReturn(this, (Collapsible.__proto__ || Object.getPrototypeOf(Collapsible)).call(this, Collapsible, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Collapsible = this;
+      _this3.el.M_Collapsible = _this3;
 
       /**
        * Options for the collapsible
@@ -2181,19 +1928,24 @@ if (Vel) {
        * @prop {Number} inDuration - Transition in duration in milliseconds.
        * @prop {Number} outDuration - Transition duration in milliseconds.
        */
-      this.options = $.extend({}, Collapsible.defaults, options);
+      _this3.options = $.extend({}, Collapsible.defaults, options);
 
-      this._setupEventHandlers();
+      // Setup tab indices
+      _this3.$headers = _this3.$el.children('li').children('.collapsible-header');
+      _this3.$headers.attr('tabindex', 0);
+
+      _this3._setupEventHandlers();
 
       // Open first active
-      var $activeBodies = this.$el.children('li.active').children('.collapsible-body');
-      if (this.options.accordion) {
+      var $activeBodies = _this3.$el.children('li.active').children('.collapsible-body');
+      if (_this3.options.accordion) {
         // Handle Accordion
         $activeBodies.first().css('display', 'block');
       } else {
         // Handle Expandables
         $activeBodies.css('display', 'block');
       }
+      return _this3;
     }
 
     _createClass(Collapsible, [{
@@ -2215,8 +1967,14 @@ if (Vel) {
     }, {
       key: "_setupEventHandlers",
       value: function _setupEventHandlers() {
+        var _this4 = this;
+
         this._handleCollapsibleClickBound = this._handleCollapsibleClick.bind(this);
+        this._handleCollapsibleKeydownBound = this._handleCollapsibleKeydown.bind(this);
         this.el.addEventListener('click', this._handleCollapsibleClickBound);
+        this.$headers.each(function (header) {
+          header.addEventListener('keydown', _this4._handleCollapsibleKeydownBound);
+        });
       }
 
       /**
@@ -2226,7 +1984,12 @@ if (Vel) {
     }, {
       key: "_removeEventHandlers",
       value: function _removeEventHandlers() {
+        var _this5 = this;
+
         this.el.removeEventListener('click', this._handleCollapsibleClickBound);
+        this.$headers.each(function (header) {
+          header.removeEventListener('keydown', _this5._handleCollapsibleKeydownBound);
+        });
       }
 
       /**
@@ -2256,6 +2019,19 @@ if (Vel) {
       }
 
       /**
+       * Handle Collapsible Keydown
+       * @param {Event} e
+       */
+
+    }, {
+      key: "_handleCollapsibleKeydown",
+      value: function _handleCollapsibleKeydown(e) {
+        if (e.keyCode === 13) {
+          this._handleCollapsibleClickBound(e);
+        }
+      }
+
+      /**
        * Animate in collapsible slide
        * @param {Number} index - 0th index of slide
        */
@@ -2263,24 +2039,50 @@ if (Vel) {
     }, {
       key: "_animateIn",
       value: function _animateIn(index) {
-        var _this3 = this;
+        var _this6 = this;
 
         var $collapsibleLi = this.$el.children('li').eq(index);
         if ($collapsibleLi.length) {
           var $body = $collapsibleLi.children('.collapsible-body');
-          Vel($body[0], 'stop');
-          Vel($body[0], 'slideDown', { duration: this.options.inDuration, easing: 'easeInOutCubic', queue: false,
-            complete: function () {
-              $body[0].style.height = '';
-              $body[0].style.overflow = '';
-              $body[0].style.padding = '';
-              $body[0].style.margin = '';
+
+          anim.remove($body[0]);
+          $body.css({
+            display: 'block',
+            overflow: 'hidden',
+            height: 0,
+            paddingTop: '',
+            paddingBottom: ''
+          });
+
+          var pTop = $body.css('padding-top');
+          var pBottom = $body.css('padding-bottom');
+          var finalHeight = $body[0].scrollHeight;
+          $body.css({
+            paddingTop: 0,
+            paddingBottom: 0
+          });
+
+          anim({
+            targets: $body[0],
+            height: finalHeight,
+            paddingTop: pTop,
+            paddingBottom: pBottom,
+            duration: this.options.inDuration,
+            easing: 'easeInOutCubic',
+            complete: function (anim) {
+              $body.css({
+                overflow: '',
+                paddingTop: '',
+                paddingBottom: '',
+                height: ''
+              });
 
               // onOpenEnd callback
-              if (typeof _this3.options.onOpenEnd === 'function') {
-                _this3.options.onOpenEnd.call(_this3, $collapsibleLi[0]);
+              if (typeof _this6.options.onOpenEnd === 'function') {
+                _this6.options.onOpenEnd.call(_this6, $collapsibleLi[0]);
               }
-            } });
+            }
+          });
         }
       }
 
@@ -2292,24 +2094,34 @@ if (Vel) {
     }, {
       key: "_animateOut",
       value: function _animateOut(index) {
-        var _this4 = this;
+        var _this7 = this;
 
         var $collapsibleLi = this.$el.children('li').eq(index);
         if ($collapsibleLi.length) {
           var $body = $collapsibleLi.children('.collapsible-body');
-          Vel($body[0], 'stop');
-          Vel($body[0], 'slideUp', { duration: this.options.outDuration, easing: 'easeInOutCubic', queue: false,
+          anim.remove($body[0]);
+          $body.css('overflow', 'hidden');
+          anim({
+            targets: $body[0],
+            height: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            duration: this.options.outDuration,
+            easing: 'easeInOutCubic',
             complete: function () {
-              $body[0].style.height = '';
-              $body[0].style.overflow = '';
-              $body[0].style.padding = '';
-              $body[0].style.margin = '';
+              $body.css({
+                height: '',
+                overflow: '',
+                padding: '',
+                display: ''
+              });
 
               // onCloseEnd callback
-              if (typeof _this4.options.onCloseEnd === 'function') {
-                _this4.options.onCloseEnd.call(_this4, $collapsibleLi[0]);
+              if (typeof _this7.options.onCloseEnd === 'function') {
+                _this7.options.onCloseEnd.call(_this7, $collapsibleLi[0]);
               }
-            } });
+            }
+          });
         }
       }
 
@@ -2321,11 +2133,10 @@ if (Vel) {
     }, {
       key: "open",
       value: function open(index) {
-        var _this5 = this;
+        var _this8 = this;
 
         var $collapsibleLi = this.$el.children('li').eq(index);
         if ($collapsibleLi.length && !$collapsibleLi[0].classList.contains('active')) {
-
           // onOpenStart callback
           if (typeof this.options.onOpenStart === 'function') {
             this.options.onOpenStart.call(this, $collapsibleLi[0]);
@@ -2337,7 +2148,7 @@ if (Vel) {
             var $activeLis = this.$el.children('li.active');
             $activeLis.each(function (el) {
               var index = $collapsibleLis.index($(el));
-              _this5.close(index);
+              _this8.close(index);
             });
           }
 
@@ -2357,7 +2168,6 @@ if (Vel) {
       value: function close(index) {
         var $collapsibleLi = this.$el.children('li').eq(index);
         if ($collapsibleLi.length && $collapsibleLi[0].classList.contains('active')) {
-
           // onCloseStart callback
           if (typeof this.options.onCloseStart === 'function') {
             this.options.onCloseStart.call(this, $collapsibleLi[0]);
@@ -2370,12 +2180,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Collapsible(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Collapsible.__proto__ || Object.getPrototypeOf(Collapsible), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -2396,20 +2202,22 @@ if (Vel) {
     }]);
 
     return Collapsible;
-  }();
+  }(Component);
 
   M.Collapsible = Collapsible;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Collapsible, 'collapsible', 'M_Collapsible');
   }
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
     alignment: 'left',
+    autoFocus: true,
     constrainWidth: true,
+    container: null,
     coverTrigger: true,
     closeOnClick: true,
     hover: false,
@@ -2418,59 +2226,85 @@ if (Vel) {
     onOpenStart: null,
     onOpenEnd: null,
     onCloseStart: null,
-    onCloseEnd: null
+    onCloseEnd: null,
+    onItemClick: null
   };
 
   /**
    * @class
    */
 
-  var Dropdown = function () {
+  var Dropdown = function (_Component2) {
+    _inherits(Dropdown, _Component2);
+
     function Dropdown(el, options) {
       _classCallCheck(this, Dropdown);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Dropdown) {
-        el.M_Dropdown.destroy();
-      }
+      var _this9 = _possibleConstructorReturn(this, (Dropdown.__proto__ || Object.getPrototypeOf(Dropdown)).call(this, Dropdown, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Dropdown = this;
-      Dropdown._dropdowns.push(this);
+      _this9.el.M_Dropdown = _this9;
+      Dropdown._dropdowns.push(_this9);
 
-      this.id = M.getIdFromTrigger(el);
-      this.dropdownEl = document.getElementById(this.id);
-      this.$dropdownEl = $(this.dropdownEl);
+      _this9.id = M.getIdFromTrigger(el);
+      _this9.dropdownEl = document.getElementById(_this9.id);
+      _this9.$dropdownEl = $(_this9.dropdownEl);
 
       /**
        * Options for the dropdown
        * @member Dropdown#options
-       * @prop {Function} onOpenStart - Function called when sidenav starts entering
-       * @prop {Function} onOpenEnd - Function called when sidenav finishes entering
-       * @prop {Function} onCloseStart - Function called when sidenav starts exiting
-       * @prop {Function} onCloseEnd - Function called when sidenav finishes exiting
+       * @prop {String} [alignment='left'] - Edge which the dropdown is aligned to
+       * @prop {Boolean} [autoFocus=true] - Automatically focus dropdown el for keyboard
+       * @prop {Boolean} [constrainWidth=true] - Constrain width to width of the button
+       * @prop {Element} container - Container element to attach dropdown to (optional)
+       * @prop {Boolean} [coverTrigger=true] - Place dropdown over trigger
+       * @prop {Boolean} [closeOnClick=true] - Close on click of dropdown item
+       * @prop {Boolean} [hover=false] - Open dropdown on hover
+       * @prop {Number} [inDuration=150] - Duration of open animation in ms
+       * @prop {Number} [outDuration=250] - Duration of close animation in ms
+       * @prop {Function} onOpenStart - Function called when dropdown starts opening
+       * @prop {Function} onOpenEnd - Function called when dropdown finishes opening
+       * @prop {Function} onCloseStart - Function called when dropdown starts closing
+       * @prop {Function} onCloseEnd - Function called when dropdown finishes closing
        */
-      this.options = $.extend({}, Dropdown.defaults, options);
+      _this9.options = $.extend({}, Dropdown.defaults, options);
 
       /**
        * Describes open/close state of dropdown
        * @type {Boolean}
        */
-      this.isOpen = false;
+      _this9.isOpen = false;
 
-      this.focusedIndex = null;
-      this.filterQuery = [];
+      /**
+       * Describes if dropdown content is scrollable
+       * @type {Boolean}
+       */
+      _this9.isScrollable = false;
+
+      /**
+       * Describes if touch moving on dropdown content
+       * @type {Boolean}
+       */
+      _this9.isTouchMoving = false;
+
+      _this9.focusedIndex = -1;
+      _this9.filterQuery = [];
 
       // Move dropdown-content after dropdown-trigger
-      this.$el.after(this.dropdownEl);
+      if (!!_this9.options.container) {
+        $(_this9.options.container).append(_this9.dropdownEl);
+      } else {
+        _this9.$el.after(_this9.dropdownEl);
+      }
 
-      this._makeDropdownFocusable();
-      this._resetFilterQueryBound = this._resetFilterQuery.bind(this);
-      this._handleDocumentClickBound = this._handleDocumentClick.bind(this);
-      this._handleDropdownKeydownBound = this._handleDropdownKeydown.bind(this);
-      this._handleTriggerKeydownBound = this._handleTriggerKeydown.bind(this);
-      this._setupEventHandlers();
+      _this9._makeDropdownFocusable();
+      _this9._resetFilterQueryBound = _this9._resetFilterQuery.bind(_this9);
+      _this9._handleDocumentClickBound = _this9._handleDocumentClick.bind(_this9);
+      _this9._handleDocumentTouchmoveBound = _this9._handleDocumentTouchmove.bind(_this9);
+      _this9._handleDropdownClickBound = _this9._handleDropdownClick.bind(_this9);
+      _this9._handleDropdownKeydownBound = _this9._handleDropdownKeydown.bind(_this9);
+      _this9._handleTriggerKeydownBound = _this9._handleTriggerKeydown.bind(_this9);
+      _this9._setupEventHandlers();
+      return _this9;
     }
 
     _createClass(Dropdown, [{
@@ -2497,6 +2331,9 @@ if (Vel) {
         // Trigger keydown handler
         this.el.addEventListener('keydown', this._handleTriggerKeydownBound);
 
+        // Item click handler
+        this.dropdownEl.addEventListener('click', this._handleDropdownClickBound);
+
         // Hover event handlers
         if (this.options.hover) {
           this._handleMouseEnterBound = this._handleMouseEnter.bind(this);
@@ -2519,13 +2356,13 @@ if (Vel) {
     }, {
       key: "_removeEventHandlers",
       value: function _removeEventHandlers() {
-        // Trigger keydown handler
         this.el.removeEventListener('keydown', this._handleTriggerKeydownBound);
+        this.dropdownEl.removeEventListener('click', this._handleDropdownClickBound);
 
         if (this.options.hover) {
-          this.el.removeEventHandlers('mouseenter', this._handleMouseEnterBound);
-          this.el.removeEventHandlers('mouseleave', this._handleMouseLeaveBound);
-          this.dropdownEl.removeEventHandlers('mouseleave', this._handleMouseLeaveBound);
+          this.el.removeEventListener('mouseenter', this._handleMouseEnterBound);
+          this.el.removeEventListener('mouseleave', this._handleMouseLeaveBound);
+          this.dropdownEl.removeEventListener('mouseleave', this._handleMouseLeaveBound);
         } else {
           this.el.removeEventListener('click', this._handleClickBound);
         }
@@ -2535,6 +2372,8 @@ if (Vel) {
       value: function _setupTemporaryEventHandlers() {
         // Use capture phase event handler to prevent click
         document.body.addEventListener('click', this._handleDocumentClickBound, true);
+        document.body.addEventListener('touchend', this._handleDocumentClickBound);
+        document.body.addEventListener('touchmove', this._handleDocumentTouchmoveBound);
         this.dropdownEl.addEventListener('keydown', this._handleDropdownKeydownBound);
       }
     }, {
@@ -2542,6 +2381,8 @@ if (Vel) {
       value: function _removeTemporaryEventHandlers() {
         // Use capture phase event handler to prevent click
         document.body.removeEventListener('click', this._handleDocumentClickBound, true);
+        document.body.removeEventListener('touchend', this._handleDocumentClickBound);
+        document.body.removeEventListener('touchmove', this._handleDocumentTouchmoveBound);
         this.dropdownEl.removeEventListener('keydown', this._handleDropdownKeydownBound);
       }
     }, {
@@ -2575,22 +2416,20 @@ if (Vel) {
     }, {
       key: "_handleDocumentClick",
       value: function _handleDocumentClick(e) {
-        var _this6 = this;
+        var _this10 = this;
 
         var $target = $(e.target);
-        if (this.options.closeOnClick && $target.closest('.dropdown-content').length) {
+        if (this.options.closeOnClick && $target.closest('.dropdown-content').length && !this.isTouchMoving) {
+          // isTouchMoving to check if scrolling on mobile.
           setTimeout(function () {
-            _this6.close();
+            _this10.close();
           }, 0);
-        } else if ($target.closest('.dropdown-trigger').length) {
+        } else if ($target.closest('.dropdown-trigger').length || !$target.closest('.dropdown-content').length) {
           setTimeout(function () {
-            _this6.close();
-          }, 0);
-        } else if (!$target.closest('.dropdown-content').length) {
-          setTimeout(function () {
-            _this6.close();
+            _this10.close();
           }, 0);
         }
+        this.isTouchMoving = false;
       }
     }, {
       key: "_handleTriggerKeydown",
@@ -2599,6 +2438,35 @@ if (Vel) {
         if ((e.which === M.keys.ARROW_DOWN || e.which === M.keys.ENTER) && !this.isOpen) {
           e.preventDefault();
           this.open();
+        }
+      }
+
+      /**
+       * Handle Document Touchmove
+       * @param {Event} e
+       */
+
+    }, {
+      key: "_handleDocumentTouchmove",
+      value: function _handleDocumentTouchmove(e) {
+        var $target = $(e.target);
+        if ($target.closest('.dropdown-content').length) {
+          this.isTouchMoving = true;
+        }
+      }
+
+      /**
+       * Handle Dropdown Click
+       * @param {Event} e
+       */
+
+    }, {
+      key: "_handleDropdownClick",
+      value: function _handleDropdownClick(e) {
+        // onItemClick callback
+        if (typeof this.options.onItemClick === 'function') {
+          var itemEl = $(e.target).closest('li')[0];
+          this.options.onItemClick.call(this, itemEl);
         }
       }
 
@@ -2618,8 +2486,21 @@ if (Vel) {
         } else if ((e.which === M.keys.ARROW_DOWN || e.which === M.keys.ARROW_UP) && this.isOpen) {
           e.preventDefault();
           var direction = e.which === M.keys.ARROW_DOWN ? 1 : -1;
-          this.focusedIndex = Math.max(Math.min(this.focusedIndex + direction, this.dropdownEl.children.length - 1), 0);
-          this._focusFocusedItem();
+          var newFocusedIndex = this.focusedIndex;
+          var foundNewIndex = false;
+          do {
+            newFocusedIndex = newFocusedIndex + direction;
+
+            if (!!this.dropdownEl.children[newFocusedIndex] && this.dropdownEl.children[newFocusedIndex].tabIndex !== -1) {
+              foundNewIndex = true;
+              break;
+            }
+          } while (newFocusedIndex < this.dropdownEl.children.length && newFocusedIndex >= 0);
+
+          if (foundNewIndex) {
+            this.focusedIndex = newFocusedIndex;
+            this._focusFocusedItem();
+          }
 
           // ENTER selects choice on focused item
         } else if (e.which === M.keys.ENTER && this.isOpen) {
@@ -2628,7 +2509,11 @@ if (Vel) {
           var $activatableElement = $(focusedElement).find('a, button').first();
 
           // Click a or button tag if exists, otherwise click li tag
-          !!$activatableElement.length ? $activatableElement[0].click() : focusedElement.click();
+          if (!!$activatableElement.length) {
+            $activatableElement[0].click();
+          } else if (!!focusedElement) {
+            focusedElement.click();
+          }
 
           // Close dropdown on ESC
         } else if (e.which === M.keys.ESC && this.isOpen) {
@@ -2682,30 +2567,34 @@ if (Vel) {
     }, {
       key: "_makeDropdownFocusable",
       value: function _makeDropdownFocusable() {
-        if (this.dropdownEl.tabIndex === -1) {
-          this.dropdownEl.tabIndex = 0;
-        }
+        // Needed for arrow key navigation
+        this.dropdownEl.tabIndex = 0;
 
-        $(this.dropdownEl).children().attr('tabindex', 0);
+        // Only set tabindex if it hasn't been set by user
+        $(this.dropdownEl).children().each(function (el) {
+          if (!el.getAttribute('tabindex')) {
+            el.setAttribute('tabindex', 0);
+          }
+        });
       }
     }, {
       key: "_focusFocusedItem",
       value: function _focusFocusedItem() {
-        this.dropdownEl.children[this.focusedIndex].focus();
+        if (this.focusedIndex >= 0 && this.focusedIndex < this.dropdownEl.children.length && this.options.autoFocus) {
+          this.dropdownEl.children[this.focusedIndex].focus();
+        }
       }
     }, {
       key: "_getDropdownPosition",
       value: function _getDropdownPosition() {
         var offsetParentBRect = this.el.offsetParent.getBoundingClientRect();
-        var triggerOffset = { left: this.el.offsetLeft, top: this.el.offsetTop, width: this.el.offsetWidth, height: this.el.offsetHeight };
-        var dropdownOffset = { left: this.dropdownEl.offsetLeft, top: this.dropdownEl.offsetTop, width: this.dropdownEl.offsetWidth, height: this.dropdownEl.offsetHeight };
         var triggerBRect = this.el.getBoundingClientRect();
         var dropdownBRect = this.dropdownEl.getBoundingClientRect();
 
         var idealHeight = dropdownBRect.height;
         var idealWidth = dropdownBRect.width;
-        var idealXPos = triggerOffset.left;
-        var idealYPos = triggerOffset.top;
+        var idealXPos = triggerBRect.left - dropdownBRect.left;
+        var idealYPos = triggerBRect.top - dropdownBRect.top;
 
         var dropdownBounds = {
           left: idealXPos,
@@ -2715,16 +2604,23 @@ if (Vel) {
         };
 
         // Countainer here will be closest ancestor with overflow: hidden
-        var closestOverflowParent = this.dropdownEl.offsetParent;
+        var closestOverflowParent = !!this.dropdownEl.offsetParent ? this.dropdownEl.offsetParent : this.dropdownEl.parentNode;
+
         var alignments = M.checkPossibleAlignments(this.el, closestOverflowParent, dropdownBounds, this.options.coverTrigger ? 0 : triggerBRect.height);
 
         var verticalAlignment = 'top';
         var horizontalAlignment = this.options.alignment;
         idealYPos += this.options.coverTrigger ? 0 : triggerBRect.height;
+
+        // Reset isScrollable
+        this.isScrollable = false;
+
         if (!alignments.top) {
           if (alignments.bottom) {
             verticalAlignment = 'bottom';
           } else {
+            this.isScrollable = true;
+
             // Determine which side has most space and cutoff at correct height
             if (alignments.spaceOnTop > alignments.spaceOnBottom) {
               verticalAlignment = 'bottom';
@@ -2760,12 +2656,14 @@ if (Vel) {
         if (horizontalAlignment === 'right') {
           idealXPos = idealXPos - dropdownBRect.width + triggerBRect.width;
         }
-        return { x: idealXPos,
+        return {
+          x: idealXPos,
           y: idealYPos,
           verticalAlignment: verticalAlignment,
           horizontalAlignment: horizontalAlignment,
           height: idealHeight,
-          width: idealWidth };
+          width: idealWidth
+        };
       }
 
       /**
@@ -2774,29 +2672,28 @@ if (Vel) {
 
     }, {
       key: "_animateIn",
-      value: function _animateIn(positionInfo) {
-        var _this7 = this;
+      value: function _animateIn() {
+        var _this11 = this;
 
-        // Place dropdown
-        this.dropdownEl.style.left = positionInfo.x + 'px';
-        this.dropdownEl.style.top = positionInfo.y + 'px';
-        this.dropdownEl.style.height = positionInfo.height + 'px';
-        this.dropdownEl.style.width = positionInfo.width + 'px';
-        this.dropdownEl.style.transformOrigin = (positionInfo.horizontalAlignment === 'left' ? '0' : '100%') + " " + (positionInfo.verticalAlignment === 'top' ? '0' : '100%');
-
-        Vel(this.dropdownEl, {
-          opacity: [1, 'easeOutQuad'],
-          scaleX: [1, .3],
-          scaleY: [1, .3] }, {
+        anim.remove(this.dropdownEl);
+        anim({
+          targets: this.dropdownEl,
+          opacity: {
+            value: [0, 1],
+            easing: 'easeOutQuad'
+          },
+          scaleX: [0.3, 1],
+          scaleY: [0.3, 1],
           duration: this.options.inDuration,
-          queue: false,
           easing: 'easeOutQuint',
-          complete: function () {
-            _this7._focusFocusedItem();
+          complete: function (anim) {
+            if (_this11.options.autoFocus) {
+              _this11.dropdownEl.focus();
+            }
 
             // onOpenEnd callback
-            if (typeof _this7.options.onOpenEnd === 'function') {
-              _this7.options.onOpenEnd.call(_this7, _this7.el);
+            if (typeof _this11.options.onOpenEnd === 'function') {
+              _this11.options.onOpenEnd.call(_this11, _this11.el);
             }
           }
         });
@@ -2809,24 +2706,47 @@ if (Vel) {
     }, {
       key: "_animateOut",
       value: function _animateOut() {
-        var _this8 = this;
+        var _this12 = this;
 
-        Vel(this.dropdownEl, {
-          opacity: [0, 'easeOutQuint'],
-          scaleX: [.3, 1],
-          scaleY: [.3, 1] }, {
+        anim.remove(this.dropdownEl);
+        anim({
+          targets: this.dropdownEl,
+          opacity: {
+            value: 0,
+            easing: 'easeOutQuint'
+          },
+          scaleX: 0.3,
+          scaleY: 0.3,
           duration: this.options.outDuration,
-          queue: false,
           easing: 'easeOutQuint',
-          complete: function () {
-            _this8._resetDropdownStyles();
+          complete: function (anim) {
+            _this12._resetDropdownStyles();
 
             // onCloseEnd callback
-            if (typeof _this8.options.onCloseEnd === 'function') {
-              _this8.options.onCloseEnd.call(_this8, _this8.el);
+            if (typeof _this12.options.onCloseEnd === 'function') {
+              _this12.options.onCloseEnd.call(_this12, _this12.el);
             }
           }
         });
+      }
+
+      /**
+       * Place dropdown
+       */
+
+    }, {
+      key: "_placeDropdown",
+      value: function _placeDropdown() {
+        // Set width before calculating positionInfo
+        var idealWidth = this.options.constrainWidth ? this.el.getBoundingClientRect().width : this.dropdownEl.getBoundingClientRect().width;
+        this.dropdownEl.style.width = idealWidth + 'px';
+
+        var positionInfo = this._getDropdownPosition();
+        this.dropdownEl.style.left = positionInfo.x + 'px';
+        this.dropdownEl.style.top = positionInfo.y + 'px';
+        this.dropdownEl.style.height = positionInfo.height + 'px';
+        this.dropdownEl.style.width = positionInfo.width + 'px';
+        this.dropdownEl.style.transformOrigin = (positionInfo.horizontalAlignment === 'left' ? '0' : '100%') + " " + (positionInfo.verticalAlignment === 'top' ? '0' : '100%');
       }
 
       /**
@@ -2841,27 +2761,17 @@ if (Vel) {
         }
         this.isOpen = true;
 
-        // Highlight focused item
-        if (this.focusedIndex === null) {
-          this.focusedIndex = 0;
-        }
-
         // onOpenStart callback
         if (typeof this.options.onOpenStart === 'function') {
           this.options.onOpenStart.call(this, this.el);
         }
 
-        // Stop any previous animation
-        Vel(this.dropdownEl, 'stop');
+        // Reset styles
         this._resetDropdownStyles();
-        Vel.hook(this.dropdownEl, 'display', 'block');
+        this.dropdownEl.style.display = 'block';
 
-        // Set width before calculating positionInfo
-        var idealWidth = this.options.constrainWidth ? this.el.getBoundingClientRect().width : this.dropdownEl.getBoundingClientRect().width;
-        this.dropdownEl.style.width = idealWidth + 'px';
-
-        var positionInfo = this._getDropdownPosition();
-        this._animateIn(positionInfo);
+        this._placeDropdown();
+        this._animateIn();
         this._setupTemporaryEventHandlers();
       }
 
@@ -2876,6 +2786,7 @@ if (Vel) {
           return;
         }
         this.isOpen = false;
+        this.focusedIndex = -1;
 
         // onCloseStart callback
         if (typeof this.options.onCloseStart === 'function') {
@@ -2884,16 +2795,34 @@ if (Vel) {
 
         this._animateOut();
         this._removeTemporaryEventHandlers();
-        this.el.focus();
+
+        if (this.options.autoFocus) {
+          this.el.focus();
+        }
+      }
+
+      /**
+       * Recalculate dimensions
+       */
+
+    }, {
+      key: "recalculateDimensions",
+      value: function recalculateDimensions() {
+        if (this.isOpen) {
+          this.$dropdownEl.css({
+            width: '',
+            height: '',
+            left: '',
+            top: '',
+            'transform-origin': ''
+          });
+          this._placeDropdown();
+        }
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Dropdown(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Dropdown.__proto__ || Object.getPrototypeOf(Dropdown), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -2914,7 +2843,7 @@ if (Vel) {
     }]);
 
     return Dropdown;
-  }();
+  }(Component);
 
   /**
    * @static
@@ -2924,21 +2853,24 @@ if (Vel) {
 
   Dropdown._dropdowns = [];
 
-  window.M.Dropdown = Dropdown;
+  M.Dropdown = Dropdown;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Dropdown, 'dropdown', 'M_Dropdown');
   }
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
     opacity: 0.5,
     inDuration: 250,
     outDuration: 250,
-    ready: undefined,
-    complete: undefined,
+    onOpenStart: null,
+    onOpenEnd: null,
+    onCloseStart: null,
+    onCloseEnd: null,
+    preventScrolling: true,
     dismissible: true,
     startingTop: '4%',
     endingTop: '10%'
@@ -2949,7 +2881,9 @@ if (Vel) {
    *
    */
 
-  var Modal = function () {
+  var Modal = function (_Component3) {
+    _inherits(Modal, _Component3);
+
     /**
      * Construct Modal instance and set up overlay
      * @constructor
@@ -2959,14 +2893,9 @@ if (Vel) {
     function Modal(el, options) {
       _classCallCheck(this, Modal);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Modal) {
-        el.M_Modal.destroy();
-      }
+      var _this13 = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, Modal, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Modal = this;
+      _this13.el.M_Modal = _this13;
 
       /**
        * Options for the modal
@@ -2974,29 +2903,31 @@ if (Vel) {
        * @prop {Number} [opacity=0.5] - Opacity of the modal overlay
        * @prop {Number} [inDuration=250] - Length in ms of enter transition
        * @prop {Number} [outDuration=250] - Length in ms of exit transition
-       * @prop {Function} ready - Callback function called when modal is finished entering
-       * @prop {Function} complete - Callback function called when modal is finished exiting
+       * @prop {Function} onOpenStart - Callback function called before modal is opened
+       * @prop {Function} onOpenEnd - Callback function called after modal is opened
+       * @prop {Function} onCloseStart - Callback function called before modal is closed
+       * @prop {Function} onCloseEnd - Callback function called after modal is closed
        * @prop {Boolean} [dismissible=true] - Allow modal to be dismissed by keyboard or overlay click
        * @prop {String} [startingTop='4%'] - startingTop
        * @prop {String} [endingTop='10%'] - endingTop
        */
-      this.options = $.extend({}, Modal.defaults, options);
+      _this13.options = $.extend({}, Modal.defaults, options);
 
       /**
        * Describes open/close state of modal
        * @type {Boolean}
        */
-      this.isOpen = false;
+      _this13.isOpen = false;
 
-      this.id = this.$el.attr('id');
-      this._openingTrigger = undefined;
-      this.$overlay = $('<div class="modal-overlay"></div>');
+      _this13.id = _this13.$el.attr('id');
+      _this13._openingTrigger = undefined;
+      _this13.$overlay = $('<div class="modal-overlay"></div>');
+      _this13.el.tabIndex = 0;
+      _this13._nthModalOpened = 0;
 
-      Modal._increment++;
       Modal._count++;
-      this.$overlay[0].style.zIndex = 1000 + Modal._increment * 2;
-      this.el.style.zIndex = 1000 + Modal._increment * 2 + 1;
-      this._setupEventHandlers();
+      _this13._setupEventHandlers();
+      return _this13;
     }
 
     _createClass(Modal, [{
@@ -3105,13 +3036,27 @@ if (Vel) {
       }
 
       /**
+       * Handle Focus
+       * @param {Event} e
+       */
+
+    }, {
+      key: "_handleFocus",
+      value: function _handleFocus(e) {
+        // Only trap focus if this modal is the last model opened (prevents loops in nested modals).
+        if (!this.el.contains(e.target) && this._nthModalOpened === Modal._modalsOpen) {
+          this.el.focus();
+        }
+      }
+
+      /**
        * Animate in modal
        */
 
     }, {
       key: "_animateIn",
       value: function _animateIn() {
-        var _this9 = this;
+        var _this14 = this;
 
         // Set initial styles
         $.extend(this.el.style, {
@@ -3124,31 +3069,43 @@ if (Vel) {
         });
 
         // Animate overlay
-        Vel(this.$overlay[0], { opacity: this.options.opacity }, { duration: this.options.inDuration, queue: false, ease: 'easeOutCubic' });
+        anim({
+          targets: this.$overlay[0],
+          opacity: this.options.opacity,
+          duration: this.options.inDuration,
+          easing: 'easeOutQuad'
+        });
 
         // Define modal animation options
-        var enterVelocityOptions = {
+        var enterAnimOptions = {
+          targets: this.el,
           duration: this.options.inDuration,
-          queue: false,
-          ease: 'easeOutCubic',
-          // Handle modal ready callback
+          easing: 'easeOutCubic',
+          // Handle modal onOpenEnd callback
           complete: function () {
-            if (typeof _this9.options.ready === 'function') {
-              _this9.options.ready.call(_this9, _this9.el, _this9._openingTrigger);
+            if (typeof _this14.options.onOpenEnd === 'function') {
+              _this14.options.onOpenEnd.call(_this14, _this14.el, _this14._openingTrigger);
             }
           }
         };
 
         // Bottom sheet animation
         if (this.el.classList.contains('bottom-sheet')) {
-          Vel(this.el, { bottom: 0, opacity: 1 }, enterVelocityOptions);
+          $.extend(enterAnimOptions, {
+            bottom: 0,
+            opacity: 1
+          });
+          anim(enterAnimOptions);
 
           // Normal modal animation
         } else {
-          Vel.hook(this.el, 'scaleX', 0.8);
-          Vel.hook(this.el, 'scaleY', 0.8);
-          this.el.style.top = this.options.startingTop;
-          Vel(this.el, { top: this.options.endingTop, opacity: 1, scaleX: 1, scaleY: 1 }, enterVelocityOptions);
+          $.extend(enterAnimOptions, {
+            top: [this.options.startingTop, this.options.endingTop],
+            opacity: 1,
+            scaleX: [0.8, 1],
+            scaleY: [0.8, 1]
+          });
+          anim(enterAnimOptions);
         }
       }
 
@@ -3159,34 +3116,50 @@ if (Vel) {
     }, {
       key: "_animateOut",
       value: function _animateOut() {
-        var _this10 = this;
+        var _this15 = this;
 
         // Animate overlay
-        Vel(this.$overlay[0], { opacity: 0 }, { duration: this.options.outDuration, queue: false, ease: 'easeOutQuart' });
+        anim({
+          targets: this.$overlay[0],
+          opacity: 0,
+          duration: this.options.outDuration,
+          easing: 'easeOutQuart'
+        });
 
         // Define modal animation options
-        var exitVelocityOptions = {
+        var exitAnimOptions = {
+          targets: this.el,
           duration: this.options.outDuration,
-          queue: false,
-          ease: 'easeOutCubic',
+          easing: 'easeOutCubic',
           // Handle modal ready callback
           complete: function () {
-            _this10.el.style.display = 'none';
-            // Call complete callback
-            if (typeof _this10.options.complete === 'function') {
-              _this10.options.complete.call(_this10, _this10.$el);
+            _this15.el.style.display = 'none';
+            _this15.$overlay.remove();
+
+            // Call onCloseEnd callback
+            if (typeof _this15.options.onCloseEnd === 'function') {
+              _this15.options.onCloseEnd.call(_this15, _this15.el);
             }
-            _this10.$overlay.remove();
           }
         };
 
         // Bottom sheet animation
         if (this.el.classList.contains('bottom-sheet')) {
-          Vel(this.el, { bottom: '-100%', opacity: 0 }, exitVelocityOptions);
+          $.extend(exitAnimOptions, {
+            bottom: '-100%',
+            opacity: 0
+          });
+          anim(exitAnimOptions);
 
           // Normal modal animation
         } else {
-          Vel(this.el, { top: this.options.startingTop, opacity: 0, scaleX: 0.8, scaleY: 0.8 }, exitVelocityOptions);
+          $.extend(exitAnimOptions, {
+            top: [this.options.endingTop, this.options.startingTop],
+            opacity: 0,
+            scaleX: 0.8,
+            scaleY: 0.8
+          });
+          anim(exitAnimOptions);
         }
       }
 
@@ -3203,20 +3176,42 @@ if (Vel) {
         }
 
         this.isOpen = true;
-        var body = document.body;
-        body.style.overflow = 'hidden';
-        this.el.classList.add('open');
-        body.appendChild(this.$overlay[0]);
+        Modal._modalsOpen++;
+        this._nthModalOpened = Modal._modalsOpen;
+
+        // Set Z-Index based on number of currently open modals
+        this.$overlay[0].style.zIndex = 1000 + Modal._modalsOpen * 2;
+        this.el.style.zIndex = 1000 + Modal._modalsOpen * 2 + 1;
 
         // Set opening trigger, undefined indicates modal was opened by javascript
-        this._openingTrigger = !!$trigger ? $trigger : undefined;
+        this._openingTrigger = !!$trigger ? $trigger[0] : undefined;
+
+        // onOpenStart callback
+        if (typeof this.options.onOpenStart === 'function') {
+          this.options.onOpenStart.call(this, this.el, this._openingTrigger);
+        }
+
+        if (this.options.preventScrolling) {
+          document.body.style.overflow = 'hidden';
+        }
+
+        this.el.classList.add('open');
+        this.el.insertAdjacentElement('afterend', this.$overlay[0]);
 
         if (this.options.dismissible) {
           this._handleKeydownBound = this._handleKeydown.bind(this);
+          this._handleFocusBound = this._handleFocus.bind(this);
           document.addEventListener('keydown', this._handleKeydownBound);
+          document.addEventListener('focus', this._handleFocusBound, true);
         }
 
+        anim.remove(this.el);
+        anim.remove(this.$overlay[0]);
         this._animateIn();
+
+        // Focus modal
+        this.el.focus();
+
         return this;
       }
 
@@ -3232,24 +3227,35 @@ if (Vel) {
         }
 
         this.isOpen = false;
+        Modal._modalsOpen--;
+        this._nthModalOpened = 0;
+
+        // Call onCloseStart callback
+        if (typeof this.options.onCloseStart === 'function') {
+          this.options.onCloseStart.call(this, this.el);
+        }
+
         this.el.classList.remove('open');
-        document.body.style.overflow = '';
+
+        // Enable body scrolling only if there are no more modals open.
+        if (Modal._modalsOpen === 0) {
+          document.body.style.overflow = '';
+        }
 
         if (this.options.dismissible) {
           document.removeEventListener('keydown', this._handleKeydownBound);
+          document.removeEventListener('focus', this._handleFocusBound, true);
         }
 
+        anim.remove(this.el);
+        anim.remove(this.$overlay[0]);
         this._animateOut();
         return this;
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Modal(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Modal.__proto__ || Object.getPrototypeOf(Modal), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -3270,7 +3276,7 @@ if (Vel) {
     }]);
 
     return Modal;
-  }();
+  }(Component);
 
   /**
    * @static
@@ -3278,7 +3284,7 @@ if (Vel) {
    */
 
 
-  Modal._increment = 0;
+  Modal._modalsOpen = 0;
 
   /**
    * @static
@@ -3291,13 +3297,17 @@ if (Vel) {
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Modal, 'modal', 'M_Modal');
   }
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
     inDuration: 275,
-    outDuration: 200
+    outDuration: 200,
+    onOpenStart: null,
+    onOpenEnd: null,
+    onCloseStart: null,
+    onCloseEnd: null
   };
 
   /**
@@ -3305,7 +3315,9 @@ if (Vel) {
    *
    */
 
-  var Materialbox = function () {
+  var Materialbox = function (_Component4) {
+    _inherits(Materialbox, _Component4);
+
     /**
      * Construct Materialbox instance
      * @constructor
@@ -3315,36 +3327,36 @@ if (Vel) {
     function Materialbox(el, options) {
       _classCallCheck(this, Materialbox);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Materialbox) {
-        el.M_Materialbox.destroy();
-      }
+      var _this16 = _possibleConstructorReturn(this, (Materialbox.__proto__ || Object.getPrototypeOf(Materialbox)).call(this, Materialbox, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Materialbox = this;
+      _this16.el.M_Materialbox = _this16;
 
       /**
        * Options for the modal
        * @member Materialbox#options
        * @prop {Number} [inDuration=275] - Length in ms of enter transition
        * @prop {Number} [outDuration=200] - Length in ms of exit transition
+       * @prop {Function} onOpenStart - Callback function called before materialbox is opened
+       * @prop {Function} onOpenEnd - Callback function called after materialbox is opened
+       * @prop {Function} onCloseStart - Callback function called before materialbox is closed
+       * @prop {Function} onCloseEnd - Callback function called after materialbox is closed
        */
-      this.options = $.extend({}, Materialbox.defaults, options);
+      _this16.options = $.extend({}, Materialbox.defaults, options);
 
-      this.overlayActive = false;
-      this.doneAnimating = true;
-      this.placeholder = $('<div></div>').addClass('material-placeholder');
-      this.originalWidth = 0;
-      this.originalHeight = 0;
-      this.originInlineStyles = this.$el.attr('style');
-      this.caption = this.el.getAttribute('data-caption') || "";
+      _this16.overlayActive = false;
+      _this16.doneAnimating = true;
+      _this16.placeholder = $('<div></div>').addClass('material-placeholder');
+      _this16.originalWidth = 0;
+      _this16.originalHeight = 0;
+      _this16.originInlineStyles = _this16.$el.attr('style');
+      _this16.caption = _this16.el.getAttribute('data-caption') || '';
 
       // Wrap
-      this.$el.before(this.placeholder);
-      this.placeholder.append(this.$el);
+      _this16.$el.before(_this16.placeholder);
+      _this16.placeholder.append(_this16.$el);
 
-      this._setupEventHandlers();
+      _this16._setupEventHandlers();
+      return _this16;
     }
 
     _createClass(Materialbox, [{
@@ -3357,6 +3369,11 @@ if (Vel) {
       value: function destroy() {
         this._removeEventHandlers();
         this.el.M_Materialbox = undefined;
+
+        // Unwrap image
+        $(this.placeholder).after(this.el).remove();
+
+        this.$el.removeAttr('style');
       }
 
       /**
@@ -3375,8 +3392,8 @@ if (Vel) {
        */
 
     }, {
-      key: "removeEventHandlers",
-      value: function removeEventHandlers() {
+      key: "_removeEventHandlers",
+      value: function _removeEventHandlers() {
         this.el.removeEventListener('click', this._handleMaterialboxClickBound);
       }
 
@@ -3464,33 +3481,37 @@ if (Vel) {
     }, {
       key: "_animateImageIn",
       value: function _animateImageIn() {
-        var _this11 = this;
+        var _this17 = this;
 
-        var velocityOptions = {
+        var animOptions = {
+          targets: this.el,
+          height: [this.originalHeight, this.newHeight],
+          width: [this.originalWidth, this.newWidth],
+          left: M.getDocumentScrollLeft() + this.windowWidth / 2 - this.placeholder.offset().left - this.newWidth / 2,
+          top: M.getDocumentScrollTop() + this.windowHeight / 2 - this.placeholder.offset().top - this.newHeight / 2,
           duration: this.options.inDuration,
-          queue: false,
-          ease: 'easeOutQuad',
+          easing: 'easeOutQuad',
           complete: function () {
-            _this11.doneAnimating = true;
+            _this17.doneAnimating = true;
+
+            // onOpenEnd callback
+            if (typeof _this17.options.onOpenEnd === 'function') {
+              _this17.options.onOpenEnd.call(_this17, _this17.el);
+            }
           }
         };
 
-        var velocityProperties = {
-          height: this.newHeight,
-          width: this.newWidth,
-          left: M.getDocumentScrollLeft() + this.windowWidth / 2 - this.placeholder.offset().left - this.newWidth / 2,
-          top: M.getDocumentScrollTop() + this.windowHeight / 2 - this.placeholder.offset().top - this.newHeight / 2
-        };
-
-        if (this.$el.hasClass('responsive-img')) {
-          velocityProperties.maxWidth = [this.newWidth, this.newWidth];
-          velocityProperties.width = [velocityProperties.width, this.originalWidth];
-        } else {
-          velocityProperties.left = [velocityProperties.left, 0];
-          velocityProperties.top = [velocityProperties.top, 0];
+        // Override max-width or max-height if needed
+        this.maxWidth = this.$el.css('max-width');
+        this.maxHeight = this.$el.css('max-height');
+        if (this.maxWidth !== 'none') {
+          animOptions.maxWidth = this.newWidth;
+        }
+        if (this.maxHeight !== 'none') {
+          animOptions.maxHeight = this.newHeight;
         }
 
-        Vel(this.el, velocityProperties, velocityOptions);
+        anim(animOptions);
       }
 
       /**
@@ -3500,14 +3521,18 @@ if (Vel) {
     }, {
       key: "_animateImageOut",
       value: function _animateImageOut() {
-        var _this12 = this;
+        var _this18 = this;
 
-        var velocityOptions = {
+        var animOptions = {
+          targets: this.el,
+          width: this.originalWidth,
+          height: this.originalHeight,
+          left: 0,
+          top: 0,
           duration: this.options.outDuration,
-          queue: false,
-          ease: 'easeOutQuad',
+          easing: 'easeOutQuad',
           complete: function () {
-            _this12.placeholder.css({
+            _this18.placeholder.css({
               height: '',
               width: '',
               position: '',
@@ -3515,26 +3540,34 @@ if (Vel) {
               left: ''
             });
 
-            _this12.$el.removeAttr('style');
-            _this12.$el.attr('style', _this12.originInlineStyles);
+            // Revert to width or height attribute
+            if (_this18.attrWidth) {
+              _this18.$el.attr('width', _this18.attrWidth);
+            }
+            if (_this18.attrHeight) {
+              _this18.$el.attr('height', _this18.attrHeight);
+            }
+
+            _this18.$el.removeAttr('style');
+            _this18.originInlineStyles && _this18.$el.attr('style', _this18.originInlineStyles);
 
             // Remove class
-            _this12.$el.removeClass('active');
-            _this12.doneAnimating = true;
+            _this18.$el.removeClass('active');
+            _this18.doneAnimating = true;
 
             // Remove overflow overrides on ancestors
-            if (_this12.ancestorsChanged.length) {
-              _this12.ancestorsChanged.css('overflow', '');
+            if (_this18.ancestorsChanged.length) {
+              _this18.ancestorsChanged.css('overflow', '');
+            }
+
+            // onCloseEnd callback
+            if (typeof _this18.options.onCloseEnd === 'function') {
+              _this18.options.onCloseEnd.call(_this18, _this18.el);
             }
           }
         };
 
-        Vel(this.el, {
-          width: this.originalWidth,
-          height: this.originalHeight,
-          left: 0,
-          top: 0
-        }, velocityOptions);
+        anim(animOptions);
       }
 
       /**
@@ -3546,7 +3579,7 @@ if (Vel) {
       value: function _updateVars() {
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
-        this.caption = this.el.getAttribute('data-caption') || "";
+        this.caption = this.el.getAttribute('data-caption') || '';
       }
 
       /**
@@ -3556,7 +3589,7 @@ if (Vel) {
     }, {
       key: "open",
       value: function open() {
-        var _this13 = this;
+        var _this19 = this;
 
         this._updateVars();
         this.originalWidth = this.el.getBoundingClientRect().width;
@@ -3566,6 +3599,11 @@ if (Vel) {
         this.doneAnimating = false;
         this.$el.addClass('active');
         this.overlayActive = true;
+
+        // onOpenStart callback
+        if (typeof this.options.onOpenStart === 'function') {
+          this.options.onOpenStart.call(this, this.el);
+        }
 
         // Set positioning for placeholder
         this.placeholder.css({
@@ -3585,12 +3623,24 @@ if (Vel) {
           'will-change': 'left, top, width, height'
         });
 
+        // Change from width or height attribute to css
+        this.attrWidth = this.$el.attr('width');
+        this.attrHeight = this.$el.attr('height');
+        if (this.attrWidth) {
+          this.$el.css('width', this.attrWidth + 'px');
+          this.$el.removeAttr('width');
+        }
+        if (this.attrHeight) {
+          this.$el.css('width', this.attrHeight + 'px');
+          this.$el.removeAttr('height');
+        }
+
         // Add overlay
         this.$overlay = $('<div id="materialbox-overlay"></div>').css({
           opacity: 0
         }).one('click', function () {
-          if (_this13.doneAnimating) {
-            _this13.close();
+          if (_this19.doneAnimating) {
+            _this19.close();
           }
         });
 
@@ -3606,16 +3656,33 @@ if (Vel) {
           top: -1 * overlayOffset.top + 'px'
         });
 
+        anim.remove(this.el);
+        anim.remove(this.$overlay[0]);
+
         // Animate Overlay
-        Vel(this.$overlay[0], { opacity: 1 }, { duration: this.options.inDuration, queue: false, ease: 'easeOutQuad' });
+        anim({
+          targets: this.$overlay[0],
+          opacity: 1,
+          duration: this.options.inDuration,
+          easing: 'easeOutQuad'
+        });
 
         // Add and animate caption if it exists
-        if (this.caption !== "") {
+        if (this.caption !== '') {
+          if (this.$photocaption) {
+            anim.remove(this.$photoCaption[0]);
+          }
           this.$photoCaption = $('<div class="materialbox-caption"></div>');
           this.$photoCaption.text(this.caption);
           $('body').append(this.$photoCaption);
-          this.$photoCaption.css({ "display": "inline" });
-          Vel(this.$photoCaption[0], { opacity: 1 }, { duration: this.options.inDuration, queue: false, ease: 'easeOutQuad' });
+          this.$photoCaption.css({ display: 'inline' });
+
+          anim({
+            targets: this.$photoCaption[0],
+            opacity: 1,
+            duration: this.options.inDuration,
+            easing: 'easeOutQuad'
+          });
         }
 
         // Resize Image
@@ -3654,15 +3721,21 @@ if (Vel) {
     }, {
       key: "close",
       value: function close() {
-        var _this14 = this;
+        var _this20 = this;
 
         this._updateVars();
         this.doneAnimating = false;
 
-        Vel(this.el, 'stop');
-        Vel(this.$overlay[0], 'stop');
-        if (this.caption !== "") {
-          Vel(this.$photoCaption[0], 'stop');
+        // onCloseStart callback
+        if (typeof this.options.onCloseStart === 'function') {
+          this.options.onCloseStart.call(this, this.el);
+        }
+
+        anim.remove(this.el);
+        anim.remove(this.$overlay[0]);
+
+        if (this.caption !== '') {
+          anim.remove(this.$photoCaption[0]);
         }
 
         // disable exit handlers
@@ -3670,28 +3743,36 @@ if (Vel) {
         window.removeEventListener('resize', this._handleWindowResizeBound);
         window.removeEventListener('keyup', this._handleWindowEscapeBound);
 
-        Vel(this.$overlay[0], { opacity: 0 }, { duration: this.options.outDuration, queue: false, ease: 'easeOutQuad', complete: function () {
-            _this14.overlayActive = false;
-            _this14.$overlay.remove();
-          } });
+        anim({
+          targets: this.$overlay[0],
+          opacity: 0,
+          duration: this.options.outDuration,
+          easing: 'easeOutQuad',
+          complete: function () {
+            _this20.overlayActive = false;
+            _this20.$overlay.remove();
+          }
+        });
 
         this._animateImageOut();
 
         // Remove Caption + reset css settings on image
-        if (this.caption !== "") {
-          Vel(this.$photoCaption[0], { opacity: 0 }, { duration: this.options.outDuration, queue: false, ease: 'easeOutQuad', complete: function () {
-              _this14.$photoCaption.remove();
-            } });
+        if (this.caption !== '') {
+          anim({
+            targets: this.$photoCaption[0],
+            opacity: 0,
+            duration: this.options.outDuration,
+            easing: 'easeOutQuad',
+            complete: function () {
+              _this20.$photoCaption.remove();
+            }
+          });
         }
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Materialbox(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Materialbox.__proto__ || Object.getPrototypeOf(Materialbox), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -3712,40 +3793,51 @@ if (Vel) {
     }]);
 
     return Materialbox;
-  }();
+  }(Component);
 
   M.Materialbox = Materialbox;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Materialbox, 'materialbox', 'M_Materialbox');
   }
-})(cash, M.Vel);
+})(cash, M.anime);
 ;(function ($) {
   'use strict';
 
-  var _defaults = {};
+  var _defaults = {
+    responsiveThreshold: 0 // breakpoint for swipeable
+  };
 
-  var Parallax = function () {
+  var Parallax = function (_Component5) {
+    _inherits(Parallax, _Component5);
+
     function Parallax(el, options) {
       _classCallCheck(this, Parallax);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Parallax) {
-        el.M_Parallax.destroy();
-      }
+      var _this21 = _possibleConstructorReturn(this, (Parallax.__proto__ || Object.getPrototypeOf(Parallax)).call(this, Parallax, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Parallax = this;
+      _this21.el.M_Parallax = _this21;
 
-      this.options = $.extend({}, Parallax.defaults, options);
+      /**
+       * Options for the Parallax
+       * @member Parallax#options
+       * @prop {Number} responsiveThreshold
+       */
+      _this21.options = $.extend({}, Parallax.defaults, options);
+      _this21._enabled = window.innerWidth > _this21.options.responsiveThreshold;
 
-      this.$img = this.$el.find('img').first();
-      this._updateParallax();
-      this._setupEventHandlers();
-      this._setupStyles();
+      _this21.$img = _this21.$el.find('img').first();
+      _this21.$img.each(function () {
+        var el = this;
+        if (el.complete) $(el).trigger('load');
+      });
 
-      Parallax._parallaxes.push(this);
+      _this21._updateParallax();
+      _this21._setupEventHandlers();
+      _this21._setupStyles();
+
+      Parallax._parallaxes.push(_this21);
+      return _this21;
     }
 
     _createClass(Parallax, [{
@@ -3755,7 +3847,13 @@ if (Vel) {
       /**
        * Teardown component
        */
-      value: function destroy() {}
+      value: function destroy() {
+        Parallax._parallaxes.splice(Parallax._parallaxes.indexOf(this), 1);
+        this.$img[0].style.transform = '';
+        this._removeEventHandlers();
+
+        this.$el[0].M_Parallax = undefined;
+      }
     }, {
       key: "_setupEventHandlers",
       value: function _setupEventHandlers() {
@@ -3765,6 +3863,19 @@ if (Vel) {
         if (Parallax._parallaxes.length === 0) {
           Parallax._handleScrollThrottled = M.throttle(Parallax._handleScroll, 5);
           window.addEventListener('scroll', Parallax._handleScrollThrottled);
+
+          Parallax._handleWindowResizeThrottled = M.throttle(Parallax._handleWindowResize, 5);
+          window.addEventListener('resize', Parallax._handleWindowResizeThrottled);
+        }
+      }
+    }, {
+      key: "_removeEventHandlers",
+      value: function _removeEventHandlers() {
+        this.$img[0].removeEventListener('load', this._handleImageLoadBound);
+
+        if (Parallax._parallaxes.length === 0) {
+          window.removeEventListener('scroll', Parallax._handleScrollThrottled);
+          window.removeEventListener('resize', Parallax._handleWindowResizeThrottled);
         }
       }
     }, {
@@ -3776,10 +3887,6 @@ if (Vel) {
       key: "_handleImageLoad",
       value: function _handleImageLoad() {
         this._updateParallax();
-        this.$img.each(function () {
-          var el = this;
-          if (el.complete) $(el).trigger("load");
-        });
       }
     }, {
       key: "_updateParallax",
@@ -3795,18 +3902,16 @@ if (Vel) {
         var percentScrolled = (windowBottom - top) / (containerHeight + windowHeight);
         var parallax = parallaxDist * percentScrolled;
 
-        if (bottom > scrollTop && top < scrollTop + windowHeight) {
+        if (!this._enabled) {
+          this.$img[0].style.transform = '';
+        } else if (bottom > scrollTop && top < scrollTop + windowHeight) {
           this.$img[0].style.transform = "translate3D(-50%, " + parallax + "px, 0)";
         }
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Parallax(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Parallax.__proto__ || Object.getPrototypeOf(Parallax), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -3828,6 +3933,14 @@ if (Vel) {
         }
       }
     }, {
+      key: "_handleWindowResize",
+      value: function _handleWindowResize() {
+        for (var i = 0; i < Parallax._parallaxes.length; i++) {
+          var parallaxInstance = Parallax._parallaxes[i];
+          parallaxInstance._enabled = window.innerWidth > parallaxInstance.options.responsiveThreshold;
+        }
+      }
+    }, {
       key: "defaults",
       get: function () {
         return _defaults;
@@ -3835,7 +3948,7 @@ if (Vel) {
     }]);
 
     return Parallax;
-  }();
+  }(Component);
 
   /**
    * @static
@@ -3851,7 +3964,7 @@ if (Vel) {
     M.initializeJqueryWrapper(Parallax, 'parallax', 'M_Parallax');
   }
 })(cash);
-;(function ($, Vel) {
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
@@ -3866,7 +3979,9 @@ if (Vel) {
    *
    */
 
-  var Tabs = function () {
+  var Tabs = function (_Component6) {
+    _inherits(Tabs, _Component6);
+
     /**
      * Construct Tabs instance
      * @constructor
@@ -3876,45 +3991,38 @@ if (Vel) {
     function Tabs(el, options) {
       _classCallCheck(this, Tabs);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Tabs) {
-        el.M_Tabs.destroy();
-      }
+      var _this22 = _possibleConstructorReturn(this, (Tabs.__proto__ || Object.getPrototypeOf(Tabs)).call(this, Tabs, el, options));
+
+      _this22.el.M_Tabs = _this22;
 
       /**
-       * The jQuery element
-       * @type {jQuery}
-       */
-      this.$el = $(el);
-
-      this.el = el;
-
-      /**
-       * Options for the carousel
+       * Options for the Tabs
        * @member Tabs#options
        * @prop {Number} duration
        * @prop {Function} onShow
        * @prop {Boolean} swipeable
        * @prop {Number} responsiveThreshold
        */
-      this.options = $.extend({}, Tabs.defaults, options);
-
-      this.el.M_Tabs = this;
+      _this22.options = $.extend({}, Tabs.defaults, options);
 
       // Setup
-      this.$tabLinks = this.$el.children('li.tab').children('a');
-      this.index = 0;
-      this._setTabsAndTabWidth();
-      this._setupActiveTabLink();
-      this._createIndicator();
+      _this22.$tabLinks = _this22.$el.children('li.tab').children('a');
+      _this22.index = 0;
+      _this22._setupActiveTabLink();
 
-      if (this.options.swipeable) {
-        this._setupSwipeableTabs();
+      // Setup tabs content
+      if (_this22.options.swipeable) {
+        _this22._setupSwipeableTabs();
       } else {
-        this._setupNormalTabs();
+        _this22._setupNormalTabs();
       }
 
-      this._setupEventHandlers();
+      // Setup tabs indicator after content to ensure accurate widths
+      _this22._setTabsAndTabWidth();
+      _this22._createIndicator();
+
+      _this22._setupEventHandlers();
+      return _this22;
     }
 
     _createClass(Tabs, [{
@@ -3985,7 +4093,7 @@ if (Vel) {
     }, {
       key: "_handleTabClick",
       value: function _handleTabClick(e) {
-        var _this15 = this;
+        var _this23 = this;
 
         var tab = $(e.target).closest('li.tab');
         var tabLink = $(e.target).closest('a');
@@ -4001,11 +4109,9 @@ if (Vel) {
         }
 
         // Act as regular link if target attribute is specified.
-        if (!!tabLink.attr("target")) {
+        if (!!tabLink.attr('target')) {
           return;
         }
-
-        this._setTabsAndTabWidth();
 
         // Make the old tab inactive.
         this.$activeTabLink.removeClass('active');
@@ -4025,25 +4131,28 @@ if (Vel) {
         if (this.options.swipeable) {
           if (this._tabsCarousel) {
             this._tabsCarousel.set(this.index, function () {
-              if (typeof _this15.options.onShow === "function") {
-                _this15.options.onShow.call(_this15, _this15.$content[0]);
+              if (typeof _this23.options.onShow === 'function') {
+                _this23.options.onShow.call(_this23, _this23.$content[0]);
               }
             });
           }
         } else {
-          if (this.$content !== undefined) {
+          if (this.$content.length) {
             this.$content[0].style.display = 'block';
             this.$content.addClass('active');
             if (typeof this.options.onShow === 'function') {
               this.options.onShow.call(this, this.$content[0]);
             }
 
-            if ($oldContent !== undefined && !$oldContent.is(this.$content)) {
+            if ($oldContent.length && !$oldContent.is(this.$content)) {
               $oldContent[0].style.display = 'none';
               $oldContent.removeClass('active');
             }
           }
         }
+
+        // Update widths after content is swapped (scrollbar bugfix)
+        this._setTabsAndTabWidth();
 
         // Update indicator
         this._animateIndicator(prevIndex);
@@ -4059,7 +4168,7 @@ if (Vel) {
     }, {
       key: "_createIndicator",
       value: function _createIndicator() {
-        var _this16 = this;
+        var _this24 = this;
 
         var indicator = document.createElement('li');
         indicator.classList.add('indicator');
@@ -4068,8 +4177,8 @@ if (Vel) {
         this._indicator = indicator;
 
         setTimeout(function () {
-          _this16._indicator.style.left = _this16._calcLeftPos(_this16.$activeTabLink) + 'px';
-          _this16._indicator.style.right = _this16._calcRightPos(_this16.$activeTabLink) + 'px';
+          _this24._indicator.style.left = _this24._calcLeftPos(_this24.$activeTabLink) + 'px';
+          _this24._indicator.style.right = _this24._calcRightPos(_this24.$activeTabLink) + 'px';
         }, 0);
       }
 
@@ -4109,10 +4218,10 @@ if (Vel) {
     }, {
       key: "_setupSwipeableTabs",
       value: function _setupSwipeableTabs() {
-        var _this17 = this;
+        var _this25 = this;
 
         // Change swipeable according to responsive threshold
-        if (window.innerWidth > options.responsiveThreshold) {
+        if (window.innerWidth > this.options.responsiveThreshold) {
           this.options.swipeable = false;
         }
 
@@ -4128,21 +4237,27 @@ if (Vel) {
         $tabsWrapper.append($tabsContent);
         $tabsContent[0].style.display = '';
 
-        this._tabsCarousel = new M.Carousel($tabsWrapper[0], {
+        // Keep active tab index to set initial carousel slide
+        var activeTabIndex = this.$activeTabLink.closest('.tab').index();
+
+        this._tabsCarousel = M.Carousel.init($tabsWrapper[0], {
           fullWidth: true,
           noWrap: true,
           onCycleTo: function (item) {
-            var prevIndex = _this17.index;
-            _this17.index = $(item).index();
-            _this17.$activeTabLink.removeClass('active');
-            _this17.$activeTabLink = _this17.$tabLinks.eq(_this17.index);
-            _this17.$activeTabLink.addClass('active');
-            _this17._animateIndicator(prevIndex);
-            if (typeof _this17.options.onShow === "function") {
-              _this17.options.onShow.call(_this17, _this17.$content);
+            var prevIndex = _this25.index;
+            _this25.index = $(item).index();
+            _this25.$activeTabLink.removeClass('active');
+            _this25.$activeTabLink = _this25.$tabLinks.eq(_this25.index);
+            _this25.$activeTabLink.addClass('active');
+            _this25._animateIndicator(prevIndex);
+            if (typeof _this25.options.onShow === 'function') {
+              _this25.options.onShow.call(_this25, _this25.$content[0]);
             }
           }
         });
+
+        // Set initial carousel slide to active tab
+        this._tabsCarousel.set(activeTabIndex);
       }
 
       /**
@@ -4209,7 +4324,7 @@ if (Vel) {
 
       /**
        * Finds right attribute for indicator based on active tab.
-       * @param {jQuery} el
+       * @param {cash} el
        */
 
     }, {
@@ -4220,13 +4335,19 @@ if (Vel) {
 
       /**
        * Finds left attribute for indicator based on active tab.
-       * @param {jQuery} el
+       * @param {cash} el
        */
 
     }, {
       key: "_calcLeftPos",
       value: function _calcLeftPos(el) {
         return Math.floor(el.position().left);
+      }
+    }, {
+      key: "updateTabIndicator",
+      value: function updateTabIndicator() {
+        this._setTabsAndTabWidth();
+        this._animateIndicator(this.index);
       }
 
       /**
@@ -4237,25 +4358,31 @@ if (Vel) {
     }, {
       key: "_animateIndicator",
       value: function _animateIndicator(prevIndex) {
-        var velOptions = {
-          duration: this.options.duration,
-          queue: false,
-          easing: 'easeOutQuad'
-        };
-        var velOptionsLeft = void 0,
-            velOptionsRight = void 0;
+        var leftDelay = 0,
+            rightDelay = 0;
 
         if (this.index - prevIndex >= 0) {
-          velOptionsLeft = $.extend({}, velOptions, { delay: 90 });
-          velOptionsRight = velOptions;
+          leftDelay = 90;
         } else {
-          velOptionsLeft = velOptions;
-          velOptionsRight = $.extend({}, velOptions, { delay: 90 });
+          rightDelay = 90;
         }
 
-        // Animate with velocity
-        Vel(this._indicator, { left: this._calcLeftPos(this.$activeTabLink) }, velOptionsLeft);
-        Vel(this._indicator, { right: this._calcRightPos(this.$activeTabLink) }, velOptionsRight);
+        // Animate
+        var animOptions = {
+          targets: this._indicator,
+          left: {
+            value: this._calcLeftPos(this.$activeTabLink),
+            delay: leftDelay
+          },
+          right: {
+            value: this._calcRightPos(this.$activeTabLink),
+            delay: rightDelay
+          },
+          duration: this.options.duration,
+          easing: 'easeOutQuad'
+        };
+        anim.remove(this._indicator);
+        anim(animOptions);
       }
 
       /**
@@ -4273,12 +4400,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Tabs(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Tabs.__proto__ || Object.getPrototypeOf(Tabs), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -4299,15 +4422,15 @@ if (Vel) {
     }]);
 
     return Tabs;
-  }();
+  }(Component);
 
-  window.M.Tabs = Tabs;
+  M.Tabs = Tabs;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Tabs, 'tabs', 'M_Tabs');
   }
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
@@ -4315,8 +4438,8 @@ if (Vel) {
     enterDelay: 0,
     html: null,
     margin: 5,
-    inDuration: 300,
-    outDuration: 250,
+    inDuration: 250,
+    outDuration: 200,
     position: 'bottom',
     transitionMovement: 10
   };
@@ -4326,7 +4449,9 @@ if (Vel) {
    *
    */
 
-  var Tooltip = function () {
+  var Tooltip = function (_Component7) {
+    _inherits(Tooltip, _Component7);
+
     /**
      * Construct Tooltip instance
      * @constructor
@@ -4336,20 +4461,17 @@ if (Vel) {
     function Tooltip(el, options) {
       _classCallCheck(this, Tooltip);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Tooltip) {
-        el.M_Tooltip.destroy();
-      }
+      var _this26 = _possibleConstructorReturn(this, (Tooltip.__proto__ || Object.getPrototypeOf(Tooltip)).call(this, Tooltip, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Tooltip = this;
-      this.options = $.extend({}, Tooltip.defaults, options);
+      _this26.el.M_Tooltip = _this26;
+      _this26.options = $.extend({}, Tooltip.defaults, options);
 
-      this.isOpen = false;
-      this.isHovered = false;
-      this._appendTooltipEl();
-      this._setupEventHandlers();
+      _this26.isOpen = false;
+      _this26.isHovered = false;
+      _this26.isFocused = false;
+      _this26._appendTooltipEl();
+      _this26._setupEventHandlers();
+      return _this26;
     }
 
     _createClass(Tooltip, [{
@@ -4362,7 +4484,7 @@ if (Vel) {
       value: function destroy() {
         $(this.tooltipEl).remove();
         this._removeEventHandlers();
-        this.$el[0].M_Tooltip = undefined;
+        this.el.M_Tooltip = undefined;
       }
     }, {
       key: "_appendTooltipEl",
@@ -4385,29 +4507,35 @@ if (Vel) {
     }, {
       key: "_setupEventHandlers",
       value: function _setupEventHandlers() {
-        this.handleMouseEnterBound = this._handleMouseEnter.bind(this);
-        this.handleMouseLeaveBound = this._handleMouseLeave.bind(this);
-        this.$el[0].addEventListener('mouseenter', this.handleMouseEnterBound);
-        this.$el[0].addEventListener('mouseleave', this.handleMouseLeaveBound);
+        this._handleMouseEnterBound = this._handleMouseEnter.bind(this);
+        this._handleMouseLeaveBound = this._handleMouseLeave.bind(this);
+        this._handleFocusBound = this._handleFocus.bind(this);
+        this._handleBlurBound = this._handleBlur.bind(this);
+        this.el.addEventListener('mouseenter', this._handleMouseEnterBound);
+        this.el.addEventListener('mouseleave', this._handleMouseLeaveBound);
+        this.el.addEventListener('focus', this._handleFocusBound, true);
+        this.el.addEventListener('blur', this._handleBlurBound, true);
       }
     }, {
       key: "_removeEventHandlers",
       value: function _removeEventHandlers() {
-        this.$el[0].removeEventListener('mouseenter', this.handleMouseEnterBound);
-        this.$el[0].removeEventListener('mouseleave', this.handleMouseLeaveBound);
+        this.el.removeEventListener('mouseenter', this._handleMouseEnterBound);
+        this.el.removeEventListener('mouseleave', this._handleMouseLeaveBound);
+        this.el.removeEventListener('focus', this._handleFocusBound, true);
+        this.el.removeEventListener('blur', this._handleBlurBound, true);
       }
     }, {
       key: "open",
-      value: function open() {
+      value: function open(isManual) {
         if (this.isOpen) {
           return;
         }
-
+        isManual = isManual === undefined ? true : undefined; // Default value true
         this.isOpen = true;
         // Update tooltip content with HTML attribute options
         this.options = $.extend({}, this.options, this._getAttributeOptions());
         this._updateTooltipContent();
-        this._setEnterDelayTimeout();
+        this._setEnterDelayTimeout(isManual);
       }
     }, {
       key: "close",
@@ -4416,27 +4544,29 @@ if (Vel) {
           return;
         }
 
+        this.isHovered = false;
+        this.isFocused = false;
         this.isOpen = false;
         this._setExitDelayTimeout();
       }
 
       /**
-        * Create timeout which delays when the tooltip closes
-        */
+       * Create timeout which delays when the tooltip closes
+       */
 
     }, {
       key: "_setExitDelayTimeout",
       value: function _setExitDelayTimeout() {
-        var _this18 = this;
+        var _this27 = this;
 
         clearTimeout(this._exitDelayTimeout);
 
         this._exitDelayTimeout = setTimeout(function () {
-          if (_this18.isHovered) {
+          if (_this27.isHovered || _this27.isFocused) {
             return;
-          } else {
-            _this18._animateOut();
           }
+
+          _this27._animateOut();
         }, this.options.exitDelay);
       }
 
@@ -4446,23 +4576,23 @@ if (Vel) {
 
     }, {
       key: "_setEnterDelayTimeout",
-      value: function _setEnterDelayTimeout() {
-        var _this19 = this;
+      value: function _setEnterDelayTimeout(isManual) {
+        var _this28 = this;
 
         clearTimeout(this._enterDelayTimeout);
 
         this._enterDelayTimeout = setTimeout(function () {
-          if (!_this19.isHovered) {
+          if (!_this28.isHovered && !_this28.isFocused && !isManual) {
             return;
-          } else {
-            _this19._animateIn();
           }
+
+          _this28._animateIn();
         }, this.options.enterDelay);
       }
     }, {
       key: "_positionTooltip",
       value: function _positionTooltip() {
-        var origin = this.$el[0],
+        var origin = this.el,
             tooltip = this.tooltipEl,
             originHeight = origin.offsetHeight,
             originWidth = origin.offsetWidth,
@@ -4475,8 +4605,8 @@ if (Vel) {
 
         this.xMovement = 0, this.yMovement = 0;
 
-        targetTop = origin.offsetTop;
-        targetLeft = origin.offsetLeft;
+        targetTop = origin.getBoundingClientRect().top + M.getDocumentScrollTop();
+        targetLeft = origin.getBoundingClientRect().left + M.getDocumentScrollLeft();
 
         if (this.options.position === 'top') {
           targetTop += -tooltipHeight - margin;
@@ -4532,56 +4662,73 @@ if (Vel) {
           newY -= newY + height - window.innerHeight;
         }
 
-        return { x: newX + scrollLeft, y: newY + scrollTop };
+        return {
+          x: newX + scrollLeft,
+          y: newY + scrollTop
+        };
       }
     }, {
       key: "_animateIn",
       value: function _animateIn() {
         this._positionTooltip();
         this.tooltipEl.style.visibility = 'visible';
-        Vel(this.tooltipEl, 'stop');
-        Vel(this.tooltipEl, {
+        anim.remove(this.tooltipEl);
+        anim({
+          targets: this.tooltipEl,
           opacity: 1,
           translateX: this.xMovement,
-          translateY: this.yMovement
-        }, {
+          translateY: this.yMovement,
           duration: this.options.inDuration,
-          easing: 'easeOutCubic',
-          queue: false
+          easing: 'easeOutCubic'
         });
       }
     }, {
       key: "_animateOut",
       value: function _animateOut() {
-        Vel(this.tooltipEl, 'stop');
-        Vel(this.tooltipEl, {
+        anim.remove(this.tooltipEl);
+        anim({
+          targets: this.tooltipEl,
           opacity: 0,
           translateX: 0,
-          translateY: 0
-        }, {
+          translateY: 0,
           duration: this.options.outDuration,
-          easing: 'easeOutCubic',
-          queue: false
+          easing: 'easeOutCubic'
         });
       }
     }, {
       key: "_handleMouseEnter",
       value: function _handleMouseEnter() {
         this.isHovered = true;
-        this.open();
+        this.isFocused = false; // Allows close of tooltip when opened by focus.
+        this.open(false);
       }
     }, {
       key: "_handleMouseLeave",
       value: function _handleMouseLeave() {
         this.isHovered = false;
+        this.isFocused = false; // Allows close of tooltip when opened by focus.
+        this.close();
+      }
+    }, {
+      key: "_handleFocus",
+      value: function _handleFocus() {
+        if (M.tabPressed) {
+          this.isFocused = true;
+          this.open(false);
+        }
+      }
+    }, {
+      key: "_handleBlur",
+      value: function _handleBlur() {
+        this.isFocused = false;
         this.close();
       }
     }, {
       key: "_getAttributeOptions",
       value: function _getAttributeOptions() {
         var attributeOptions = {};
-        var tooltipTextOption = this.$el[0].getAttribute('data-tooltip');
-        var positionOption = this.$el[0].getAttribute('data-position');
+        var tooltipTextOption = this.el.getAttribute('data-tooltip');
+        var positionOption = this.el.getAttribute('data-position');
 
         if (tooltipTextOption) {
           attributeOptions.html = tooltipTextOption;
@@ -4594,12 +4741,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Tooltip(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Tooltip.__proto__ || Object.getPrototypeOf(Tooltip), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -4620,14 +4763,14 @@ if (Vel) {
     }]);
 
     return Tooltip;
-  }();
+  }(Component);
 
   M.Tooltip = Tooltip;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Tooltip, 'tooltip', 'M_Tooltip');
   }
-})(cash, M.Vel);
+})(cash, M.anime);
 ; /*!
   * Waves v0.6.4
   * http://fian.my.id/Waves
@@ -4961,7 +5104,7 @@ if (Vel) {
     Waves.displayEffect();
   }, false);
 })(window);
-;(function ($, Vel) {
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
@@ -5005,6 +5148,7 @@ if (Vel) {
       var toastElement = this._createToast();
       toastElement.M_Toast = this;
       this.el = toastElement;
+      this.$el = $(toastElement);
       this._animateIn();
       this._setTimer();
     }
@@ -5051,10 +5195,12 @@ if (Vel) {
       key: "_animateIn",
       value: function _animateIn() {
         // Animate toast in
-        Vel(this.el, { top: 0, opacity: 1 }, {
-          duration: 300,
-          easing: 'easeOutCubic',
-          queue: false
+        anim({
+          targets: this.el,
+          top: 0,
+          opacity: 1,
+          duration: this.options.inDuration,
+          easing: 'easeOutCubic'
         });
       }
 
@@ -5066,18 +5212,18 @@ if (Vel) {
     }, {
       key: "_setTimer",
       value: function _setTimer() {
-        var _this20 = this;
+        var _this29 = this;
 
         if (this.timeRemaining !== Infinity) {
           this.counterInterval = setInterval(function () {
             // If toast is not being dragged, decrease its time remaining
-            if (!_this20.panning) {
-              _this20.timeRemaining -= 20;
+            if (!_this29.panning) {
+              _this29.timeRemaining -= 20;
             }
 
             // Animate toast out
-            if (_this20.timeRemaining <= 0) {
-              _this20.dismiss();
+            if (_this29.timeRemaining <= 0) {
+              _this29.dismiss();
             }
           }, 20);
         }
@@ -5090,7 +5236,7 @@ if (Vel) {
     }, {
       key: "dismiss",
       value: function dismiss() {
-        var _this21 = this;
+        var _this30 = this;
 
         window.clearInterval(this.counterInterval);
         var activationDistance = this.el.offsetWidth * this.options.activationPercent;
@@ -5101,18 +5247,20 @@ if (Vel) {
           this.el.style.opacity = 0;
         }
 
-        Vel(this.el, { opacity: 0, marginTop: '-40px' }, {
+        anim({
+          targets: this.el,
+          opacity: 0,
+          marginTop: -40,
           duration: this.options.outDuration,
           easing: 'easeOutExpo',
-          queue: false,
           complete: function () {
             // Call the optional callback
-            if (typeof _this21.options.completeCallback === 'function') {
-              _this21.options.completeCallback();
+            if (typeof _this30.options.completeCallback === 'function') {
+              _this30.options.completeCallback();
             }
             // Remove toast from DOM
-            _this21.el.parentNode.removeChild(_this21.el);
-            Toast._toasts.splice(Toast._toasts.indexOf(_this21), 1);
+            _this30.$el.remove();
+            Toast._toasts.splice(Toast._toasts.indexOf(_this30), 1);
             if (Toast._toasts.length === 0) {
               Toast._removeContainer();
             }
@@ -5165,7 +5313,7 @@ if (Vel) {
         document.removeEventListener('mousemove', Toast._onDragMove);
         document.removeEventListener('mouseup', Toast._onDragEnd);
 
-        Toast._container.parentNode.removeChild(Toast._container);
+        $(Toast._container).remove();
         Toast._container = null;
       }
 
@@ -5306,8 +5454,8 @@ if (Vel) {
   M.toast = function (options) {
     return new Toast(options);
   };
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
@@ -5318,14 +5466,17 @@ if (Vel) {
     onOpenStart: null,
     onOpenEnd: null,
     onCloseStart: null,
-    onCloseEnd: null
+    onCloseEnd: null,
+    preventScrolling: true
   };
 
   /**
    * @class
    */
 
-  var Sidenav = function () {
+  var Sidenav = function (_Component8) {
+    _inherits(Sidenav, _Component8);
+
     /**
      * Construct Sidenav instance and set up overlay
      * @constructor
@@ -5335,15 +5486,10 @@ if (Vel) {
     function Sidenav(el, options) {
       _classCallCheck(this, Sidenav);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Sidenav) {
-        el.M_Sidenav.destroy();
-      }
+      var _this31 = _possibleConstructorReturn(this, (Sidenav.__proto__ || Object.getPrototypeOf(Sidenav)).call(this, Sidenav, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Sidenav = this;
-      this.id = this.$el.attr('id');
+      _this31.el.M_Sidenav = _this31;
+      _this31.id = _this31.$el.attr('id');
 
       /**
        * Options for the Sidenav
@@ -5357,33 +5503,38 @@ if (Vel) {
        * @prop {Function} onCloseStart - Function called when sidenav starts exiting
        * @prop {Function} onCloseEnd - Function called when sidenav finishes exiting
        */
-      this.options = $.extend({}, Sidenav.defaults, options);
+      _this31.options = $.extend({}, Sidenav.defaults, options);
 
       /**
        * Describes open/close state of Sidenav
        * @type {Boolean}
        */
-      this.isOpen = false;
+      _this31.isOpen = false;
 
       /**
        * Describes if Sidenav is fixed
        * @type {Boolean}
        */
-      this.isFixed = this.el.classList.contains('sidenav-fixed');
+      _this31.isFixed = _this31.el.classList.contains('sidenav-fixed');
 
       /**
        * Describes if Sidenav is being draggeed
        * @type {Boolean}
        */
-      this.isDragged = false;
+      _this31.isDragged = false;
 
-      this._createOverlay();
-      this._createDragTarget();
-      this._setupEventHandlers();
-      this._setupClasses();
-      this._setupFixed();
+      // Window size variables for window resize checks
+      _this31.lastWindowWidth = window.innerWidth;
+      _this31.lastWindowHeight = window.innerHeight;
 
-      Sidenav._sidenavs.push(this);
+      _this31._createOverlay();
+      _this31._createDragTarget();
+      _this31._setupEventHandlers();
+      _this31._setupClasses();
+      _this31._setupFixed();
+
+      Sidenav._sidenavs.push(_this31);
+      return _this31;
     }
 
     _createClass(Sidenav, [{
@@ -5395,9 +5546,11 @@ if (Vel) {
        */
       value: function destroy() {
         this._removeEventHandlers();
+        this._enableBodyScrolling();
         this._overlay.parentNode.removeChild(this._overlay);
         this.dragTarget.parentNode.removeChild(this.dragTarget);
         this.el.M_Sidenav = undefined;
+        this.el.style.transform = '';
 
         var index = Sidenav._sidenavs.indexOf(this);
         if (index >= 0) {
@@ -5486,7 +5639,7 @@ if (Vel) {
 
       /**
        * Set variables needed at the beggining of drag
-       * and stop any current Velocity transition.
+       * and stop any current transition.
        * @param {Event} e
        */
 
@@ -5500,8 +5653,10 @@ if (Vel) {
         this._time = Date.now();
         this._width = this.el.getBoundingClientRect().width;
         this._overlay.style.display = 'block';
-        Vel(this.el, 'stop');
-        Vel(this._overlay, 'stop');
+        this._initialScrollTop = this.isOpen ? this.el.scrollTop : M.getDocumentScrollTop();
+        this._verticallyScrolling = false;
+        anim.remove(this.el);
+        anim.remove(this._overlay);
       }
 
       /**
@@ -5513,10 +5668,14 @@ if (Vel) {
       key: "_dragMoveUpdate",
       value: function _dragMoveUpdate(e) {
         var clientX = e.targetTouches[0].clientX;
+        var currentScrollTop = this.isOpen ? this.el.scrollTop : M.getDocumentScrollTop();
         this.deltaX = Math.abs(this._xPos - clientX);
         this._xPos = clientX;
         this.velocityX = this.deltaX / (Date.now() - this._time);
         this._time = Date.now();
+        if (this._initialScrollTop !== currentScrollTop) {
+          this._verticallyScrolling = true;
+        }
       }
 
       /**
@@ -5527,6 +5686,11 @@ if (Vel) {
     }, {
       key: "_handleDragTargetDrag",
       value: function _handleDragTargetDrag(e) {
+        // Check if draggable
+        if (!this.options.draggable || this._isCurrentlyFixed() || this._verticallyScrolling) {
+          return;
+        }
+
         // If not being dragged, set initial drag start variables
         if (!this.isDragged) {
           this._startDrag(e);
@@ -5575,13 +5739,14 @@ if (Vel) {
       key: "_handleDragTargetRelease",
       value: function _handleDragTargetRelease() {
         if (this.isDragged) {
-          if (this.percentOpen > .5) {
+          if (this.percentOpen > 0.2) {
             this.open();
           } else {
             this._animateOut();
           }
 
           this.isDragged = false;
+          this._verticallyScrolling = false;
         }
       }
 
@@ -5594,6 +5759,10 @@ if (Vel) {
       key: "_handleCloseDrag",
       value: function _handleCloseDrag(e) {
         if (this.isOpen) {
+          // Check if draggable
+          if (!this.options.draggable || this._isCurrentlyFixed() || this._verticallyScrolling) {
+            return;
+          }
 
           // If not being dragged, set initial drag start variables
           if (!this.isDragged) {
@@ -5637,13 +5806,14 @@ if (Vel) {
       key: "_handleCloseRelease",
       value: function _handleCloseRelease() {
         if (this.isOpen && this.isDragged) {
-          if (this.percentOpen > .5) {
+          if (this.percentOpen > 0.8) {
             this._animateIn();
           } else {
             this.close();
           }
 
           this.isDragged = false;
+          this._verticallyScrolling = false;
         }
       }
 
@@ -5655,7 +5825,7 @@ if (Vel) {
       key: "_handleCloseTriggerClick",
       value: function _handleCloseTriggerClick(e) {
         var $closeTrigger = $(e.target).closest('.sidenav-close');
-        if ($closeTrigger.length) {
+        if ($closeTrigger.length && !this._isCurrentlyFixed()) {
           this.close();
         }
       }
@@ -5667,11 +5837,17 @@ if (Vel) {
     }, {
       key: "_handleWindowResize",
       value: function _handleWindowResize() {
-        if (window.innerWidth > 992) {
-          this.open();
-        } else {
-          this.close();
+        // Only handle horizontal resizes
+        if (this.lastWindowWidth !== window.innerWidth) {
+          if (window.innerWidth > 992) {
+            this.open();
+          } else {
+            this.close();
+          }
         }
+
+        this.lastWindowWidth = window.innerWidth;
+        this.lastWindowHeight = window.innerHeight;
       }
     }, {
       key: "_setupClasses",
@@ -5690,9 +5866,14 @@ if (Vel) {
     }, {
       key: "_setupFixed",
       value: function _setupFixed() {
-        if (this.isFixed && window.innerWidth > 992) {
+        if (this._isCurrentlyFixed()) {
           this.open();
         }
+      }
+    }, {
+      key: "_isCurrentlyFixed",
+      value: function _isCurrentlyFixed() {
+        return this.isFixed && window.innerWidth > 992;
       }
     }, {
       key: "_createDragTarget",
@@ -5729,15 +5910,22 @@ if (Vel) {
         }
 
         // Handle fixed Sidenav
-        if (this.isFixed && window.innerWidth > 992) {
-          Vel(this.el, 'stop');
-          Vel(this.el, { translateX: 0 }, { duration: 0, queue: false });
+        if (this._isCurrentlyFixed()) {
+          anim.remove(this.el);
+          anim({
+            targets: this.el,
+            translateX: 0,
+            duration: 0,
+            easing: 'easeOutQuad'
+          });
           this._enableBodyScrolling();
           this._overlay.style.display = 'none';
 
           // Handle non-fixed Sidenav
         } else {
-          this._preventBodyScrolling();
+          if (this.options.preventScrolling) {
+            this._preventBodyScrolling();
+          }
 
           if (!this.isDragged || this.percentOpen != 1) {
             this._animateIn();
@@ -5759,7 +5947,7 @@ if (Vel) {
         }
 
         // Handle fixed Sidenav
-        if (this.isFixed && window.innerWidth > 992) {
+        if (this._isCurrentlyFixed()) {
           var transformX = this.options.edge === 'left' ? '-105%' : '105%';
           this.el.style.transform = "translateX(" + transformX + ")";
 
@@ -5783,20 +5971,26 @@ if (Vel) {
     }, {
       key: "_animateSidenavIn",
       value: function _animateSidenavIn() {
-        var _this22 = this;
+        var _this32 = this;
 
         var slideOutPercent = this.options.edge === 'left' ? -1 : 1;
         if (this.isDragged) {
           slideOutPercent = this.options.edge === 'left' ? slideOutPercent + this.percentOpen : slideOutPercent - this.percentOpen;
         }
 
-        Vel(this.el, 'stop');
-        Vel(this.el, { 'translateX': [0, slideOutPercent * 100 + "%"] }, { duration: this.options.inDuration, queue: false, easing: 'easeOutQuad', complete: function () {
+        anim.remove(this.el);
+        anim({
+          targets: this.el,
+          translateX: [slideOutPercent * 100 + "%", 0],
+          duration: this.options.inDuration,
+          easing: 'easeOutQuad',
+          complete: function () {
             // Run onOpenEnd callback
-            if (typeof _this22.options.onOpenEnd === 'function') {
-              _this22.options.onOpenEnd.call(_this22, _this22.el);
+            if (typeof _this32.options.onOpenEnd === 'function') {
+              _this32.options.onOpenEnd.call(_this32, _this32.el);
             }
-          } });
+          }
+        });
       }
     }, {
       key: "_animateOverlayIn",
@@ -5805,11 +5999,18 @@ if (Vel) {
         if (this.isDragged) {
           start = this.percentOpen;
         } else {
-          Vel.hook(this._overlay, 'display', 'block');
+          $(this._overlay).css({
+            display: 'block'
+          });
         }
 
-        Vel(this._overlay, 'stop');
-        Vel(this._overlay, { opacity: [1, start] }, { duration: this.options.inDuration, queue: false, easing: 'easeOutQuad' });
+        anim.remove(this._overlay);
+        anim({
+          targets: this._overlay,
+          opacity: [start, 1],
+          duration: this.options.inDuration,
+          easing: 'easeOutQuad'
+        });
       }
     }, {
       key: "_animateOut",
@@ -5820,7 +6021,7 @@ if (Vel) {
     }, {
       key: "_animateSidenavOut",
       value: function _animateSidenavOut() {
-        var _this23 = this;
+        var _this33 = this;
 
         var endPercent = this.options.edge === 'left' ? -1 : 1;
         var slideOutPercent = 0;
@@ -5828,28 +6029,40 @@ if (Vel) {
           slideOutPercent = this.options.edge === 'left' ? endPercent + this.percentOpen : endPercent - this.percentOpen;
         }
 
-        Vel(this.el, 'stop');
-        Vel(this.el, { 'translateX': [endPercent * 105 + "%", slideOutPercent * 100 + "%"] }, { duration: this.options.outDuration, queue: false, easing: 'easeOutQuad', complete: function () {
+        anim.remove(this.el);
+        anim({
+          targets: this.el,
+          translateX: [slideOutPercent * 100 + "%", endPercent * 105 + "%"],
+          duration: this.options.outDuration,
+          easing: 'easeOutQuad',
+          complete: function () {
             // Run onOpenEnd callback
-            if (typeof _this23.options.onCloseEnd === 'function') {
-              _this23.options.onCloseEnd.call(_this23, _this23.el);
+            if (typeof _this33.options.onCloseEnd === 'function') {
+              _this33.options.onCloseEnd.call(_this33, _this33.el);
             }
-          } });
+          }
+        });
       }
     }, {
       key: "_animateOverlayOut",
       value: function _animateOverlayOut() {
-        Vel(this._overlay, 'stop');
-        Vel(this._overlay, 'fadeOut', { duration: this.options.outDuration, queue: false, easing: 'easeOutQuad' });
+        var _this34 = this;
+
+        anim.remove(this._overlay);
+        anim({
+          targets: this._overlay,
+          opacity: 0,
+          duration: this.options.outDuration,
+          easing: 'easeOutQuad',
+          complete: function () {
+            $(_this34._overlay).css('display', 'none');
+          }
+        });
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Sidenav(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Sidenav.__proto__ || Object.getPrototypeOf(Sidenav), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -5870,7 +6083,7 @@ if (Vel) {
     }]);
 
     return Sidenav;
-  }();
+  }(Component);
 
   /**
    * @static
@@ -5881,13 +6094,13 @@ if (Vel) {
 
   Sidenav._sidenavs = [];
 
-  window.M.Sidenav = Sidenav;
+  M.Sidenav = Sidenav;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Sidenav, 'sidenav', 'M_Sidenav');
   }
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
@@ -5904,7 +6117,9 @@ if (Vel) {
    *
    */
 
-  var ScrollSpy = function () {
+  var ScrollSpy = function (_Component9) {
+    _inherits(ScrollSpy, _Component9);
+
     /**
      * Construct ScrollSpy instance
      * @constructor
@@ -5914,14 +6129,9 @@ if (Vel) {
     function ScrollSpy(el, options) {
       _classCallCheck(this, ScrollSpy);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_ScrollSpy) {
-        el.M_ScrollSpy.destroy();
-      }
+      var _this35 = _possibleConstructorReturn(this, (ScrollSpy.__proto__ || Object.getPrototypeOf(ScrollSpy)).call(this, ScrollSpy, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_ScrollSpy = this;
+      _this35.el.M_ScrollSpy = _this35;
 
       /**
        * Options for the modal
@@ -5931,16 +6141,17 @@ if (Vel) {
        * @prop {String} [activeClass='active'] - Class applied to active elements
        * @prop {Function} [getActiveElement] - Used to find active element
        */
-      this.options = $.extend({}, ScrollSpy.defaults, options);
+      _this35.options = $.extend({}, ScrollSpy.defaults, options);
 
       // setup
-      ScrollSpy._elements.push(this);
+      ScrollSpy._elements.push(_this35);
       ScrollSpy._count++;
       ScrollSpy._increment++;
-      this.tickId = -1;
-      this.id = ScrollSpy._increment;
-      this._setupEventHandlers();
-      this._handleWindowScroll();
+      _this35.tickId = -1;
+      _this35.id = ScrollSpy._increment;
+      _this35._setupEventHandlers();
+      _this35._handleWindowScroll();
+      return _this35;
     }
 
     _createClass(ScrollSpy, [{
@@ -6005,7 +6216,13 @@ if (Vel) {
           if ($trigger.is('a[href="#' + scrollspy.$el.attr('id') + '"]')) {
             e.preventDefault();
             var offset = scrollspy.$el.offset().top + 1;
-            Vel(document.body, 'scroll', { duration: 400, offset: offset - scrollspy.options.scrollOffset, easing: 'easeOutCubic' });
+
+            anim({
+              targets: [document.documentElement, document.body],
+              scrollTop: offset - scrollspy.options.scrollOffset,
+              duration: 400,
+              easing: 'easeOutCubic'
+            });
             break;
           }
         }
@@ -6087,7 +6304,7 @@ if (Vel) {
     }, {
       key: "_exit",
       value: function _exit() {
-        var _this24 = this;
+        var _this36 = this;
 
         ScrollSpy._visibleElements = ScrollSpy._visibleElements.filter(function (value) {
           return value.height() != 0;
@@ -6097,7 +6314,7 @@ if (Vel) {
           $(this.options.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).removeClass(this.options.activeClass);
 
           ScrollSpy._visibleElements = ScrollSpy._visibleElements.filter(function (el) {
-            return el.attr('id') != _this24.$el.attr('id');
+            return el.attr('id') != _this36.$el.attr('id');
           });
           if (ScrollSpy._visibleElements[0]) {
             // Check if empty
@@ -6107,12 +6324,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new ScrollSpy(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(ScrollSpy.__proto__ || Object.getPrototypeOf(ScrollSpy), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -6156,7 +6369,7 @@ if (Vel) {
     }]);
 
     return ScrollSpy;
-  }();
+  }(Component);
 
   /**
    * @static
@@ -6204,7 +6417,7 @@ if (Vel) {
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(ScrollSpy, 'scrollSpy', 'M_ScrollSpy');
   }
-})(cash, M.Vel);
+})(cash, M.anime);
 ;(function ($) {
   'use strict';
 
@@ -6224,7 +6437,9 @@ if (Vel) {
    *
    */
 
-  var Autocomplete = function () {
+  var Autocomplete = function (_Component10) {
+    _inherits(Autocomplete, _Component10);
+
     /**
      * Construct Autocomplete instance
      * @constructor
@@ -6234,14 +6449,9 @@ if (Vel) {
     function Autocomplete(el, options) {
       _classCallCheck(this, Autocomplete);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Autocomplete) {
-        el.M_Autocomplete.destroy();
-      }
+      var _this37 = _possibleConstructorReturn(this, (Autocomplete.__proto__ || Object.getPrototypeOf(Autocomplete)).call(this, Autocomplete, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Autocomplete = this;
+      _this37.el.M_Autocomplete = _this37;
 
       /**
        * Options for the autocomplete
@@ -6255,18 +6465,20 @@ if (Vel) {
        * @prop {Boolean} noWrap
        * @prop {Function} onCycleTo
        */
-      this.options = $.extend({}, Autocomplete.defaults, options);
+      _this37.options = $.extend({}, Autocomplete.defaults, options);
 
       // Setup
-      this.isOpen = false;
-      this.count = 0;
-      this.activeIndex = -1;
-      this.oldVal;
-      this.$inputField = this.$el.closest('.input-field');
-      this.$active = $();
-      this._setupDropdown();
+      _this37.isOpen = false;
+      _this37.count = 0;
+      _this37.activeIndex = -1;
+      _this37.oldVal;
+      _this37.$inputField = _this37.$el.closest('.input-field');
+      _this37.$active = $();
+      _this37._mousedown = false;
+      _this37._setupDropdown();
 
-      this._setupEventHandlers();
+      _this37._setupEventHandlers();
+      return _this37;
     }
 
     _createClass(Autocomplete, [{
@@ -6292,16 +6504,21 @@ if (Vel) {
         this._handleInputBlurBound = this._handleInputBlur.bind(this);
         this._handleInputKeyupAndFocusBound = this._handleInputKeyupAndFocus.bind(this);
         this._handleInputKeydownBound = this._handleInputKeydown.bind(this);
+        this._handleInputClickBound = this._handleInputClick.bind(this);
         this._handleContainerMousedownAndTouchstartBound = this._handleContainerMousedownAndTouchstart.bind(this);
+        this._handleContainerMouseupAndTouchendBound = this._handleContainerMouseupAndTouchend.bind(this);
 
         this.el.addEventListener('blur', this._handleInputBlurBound);
         this.el.addEventListener('keyup', this._handleInputKeyupAndFocusBound);
         this.el.addEventListener('focus', this._handleInputKeyupAndFocusBound);
         this.el.addEventListener('keydown', this._handleInputKeydownBound);
+        this.el.addEventListener('click', this._handleInputClickBound);
         this.container.addEventListener('mousedown', this._handleContainerMousedownAndTouchstartBound);
+        this.container.addEventListener('mouseup', this._handleContainerMouseupAndTouchendBound);
 
         if (typeof window.ontouchstart !== 'undefined') {
           this.container.addEventListener('touchstart', this._handleContainerMousedownAndTouchstartBound);
+          this.container.addEventListener('touchend', this._handleContainerMouseupAndTouchendBound);
         }
       }
 
@@ -6316,10 +6533,13 @@ if (Vel) {
         this.el.removeEventListener('keyup', this._handleInputKeyupAndFocusBound);
         this.el.removeEventListener('focus', this._handleInputKeyupAndFocusBound);
         this.el.removeEventListener('keydown', this._handleInputKeydownBound);
+        this.el.removeEventListener('click', this._handleInputClickBound);
         this.container.removeEventListener('mousedown', this._handleContainerMousedownAndTouchstartBound);
+        this.container.removeEventListener('mouseup', this._handleContainerMouseupAndTouchendBound);
 
         if (typeof window.ontouchstart !== 'undefined') {
           this.container.removeEventListener('touchstart', this._handleContainerMousedownAndTouchstartBound);
+          this.container.removeEventListener('touchend', this._handleContainerMouseupAndTouchendBound);
         }
       }
 
@@ -6330,9 +6550,25 @@ if (Vel) {
     }, {
       key: "_setupDropdown",
       value: function _setupDropdown() {
+        var _this38 = this;
+
         this.container = document.createElement('ul');
+        this.container.id = "autocomplete-options-" + M.guid();
         $(this.container).addClass('autocomplete-content dropdown-content');
         this.$inputField.append(this.container);
+        this.el.setAttribute('data-target', this.container.id);
+
+        this.dropdown = M.Dropdown.init(this.el, {
+          autoFocus: false,
+          closeOnClick: false,
+          coverTrigger: false,
+          onItemClick: function (itemEl) {
+            _this38.selectOption($(itemEl));
+          }
+        });
+
+        // Sketchy removal of dropdown click handler
+        this.el.removeEventListener('click', this.dropdown._handleClickBound);
       }
 
       /**
@@ -6352,7 +6588,10 @@ if (Vel) {
     }, {
       key: "_handleInputBlur",
       value: function _handleInputBlur() {
-        this._removeAutocomplete();
+        if (!this._mousedown) {
+          this.close();
+          this._resetAutocomplete();
+        }
       }
 
       /**
@@ -6376,13 +6615,9 @@ if (Vel) {
         }
 
         // Check if the input isn't empty
-        if (this.oldVal !== val) {
-          this._removeAutocomplete();
-
-          if (val.length >= this.options.minLength) {
-            this.isOpen = true;
-            this._renderDropdown(this.options.data, val);
-          }
+        // Check if focus triggered by tab
+        if (this.oldVal !== val && (M.tabPressed || e.type !== 'focus')) {
+          this.open();
         }
 
         // Update oldVal
@@ -6405,7 +6640,7 @@ if (Vel) {
             numItems = $(this.container).children('li').length;
 
         // select element on Enter
-        if (keyCode === 13 && this.activeIndex >= 0) {
+        if (keyCode === M.keys.ENTER && this.activeIndex >= 0) {
           liElement = $(this.container).children('li').eq(this.activeIndex);
           if (liElement.length) {
             this.selectOption(liElement);
@@ -6415,14 +6650,14 @@ if (Vel) {
         }
 
         // Capture up and down key
-        if (keyCode === 38 || keyCode === 40) {
+        if (keyCode === M.keys.ARROW_UP || keyCode === M.keys.ARROW_DOWN) {
           e.preventDefault();
 
-          if (keyCode === 38 && this.activeIndex > 0) {
+          if (keyCode === M.keys.ARROW_UP && this.activeIndex > 0) {
             this.activeIndex--;
           }
 
-          if (keyCode === 40 && this.activeIndex < numItems - 1) {
+          if (keyCode === M.keys.ARROW_DOWN && this.activeIndex < numItems - 1) {
             this.activeIndex++;
           }
 
@@ -6435,6 +6670,17 @@ if (Vel) {
       }
 
       /**
+       * Handle Input Click
+       * @param {Event} e
+       */
+
+    }, {
+      key: "_handleInputClick",
+      value: function _handleInputClick(e) {
+        this.open();
+      }
+
+      /**
        * Handle Container Mousedown and Touchstart
        * @param {Event} e
        */
@@ -6442,8 +6688,18 @@ if (Vel) {
     }, {
       key: "_handleContainerMousedownAndTouchstart",
       value: function _handleContainerMousedownAndTouchstart(e) {
-        var $autocompleteOption = $(e.target).closest('li');
-        this.selectOption($autocompleteOption);
+        this._mousedown = true;
+      }
+
+      /**
+       * Handle Container Mouseup and Touchend
+       * @param {Event} e
+       */
+
+    }, {
+      key: "_handleContainerMouseupAndTouchend",
+      value: function _handleContainerMouseupAndTouchend(e) {
+        this._mousedown = false;
       }
 
       /**
@@ -6454,7 +6710,7 @@ if (Vel) {
       key: "_highlight",
       value: function _highlight(string, $el) {
         var img = $el.find('img');
-        var matchStart = $el.text().toLowerCase().indexOf("" + string.toLowerCase() + ""),
+        var matchStart = $el.text().toLowerCase().indexOf('' + string.toLowerCase() + ''),
             matchEnd = matchStart + string.length - 1,
             beforeMatch = $el.text().slice(0, matchStart),
             matchText = $el.text().slice(matchStart, matchEnd + 1),
@@ -6477,16 +6733,17 @@ if (Vel) {
       }
 
       /**
-       * Remove autocomplete elements
+       * Reset autocomplete elements
        */
 
     }, {
-      key: "_removeAutocomplete",
-      value: function _removeAutocomplete() {
+      key: "_resetAutocomplete",
+      value: function _resetAutocomplete() {
         $(this.container).empty();
         this._resetCurrentElement();
         this.oldVal = null;
         this.isOpen = false;
+        this._mousedown = false;
       }
 
       /**
@@ -6500,7 +6757,8 @@ if (Vel) {
         var text = el.text().trim();
         this.el.value = text;
         this.$el.trigger('change');
-        this._removeAutocomplete();
+        this._resetAutocomplete();
+        this.close();
 
         // Handle onAutocomplete callback.
         if (typeof this.options.onAutocomplete === 'function') {
@@ -6517,9 +6775,9 @@ if (Vel) {
     }, {
       key: "_renderDropdown",
       value: function _renderDropdown(data, val) {
-        var _this25 = this;
+        var _this39 = this;
 
-        this._removeAutocomplete();
+        this._resetAutocomplete();
 
         var matchingData = [];
 
@@ -6542,17 +6800,19 @@ if (Vel) {
         }
 
         // Sort
-        var sortFunctionBound = function (a, b) {
-          return _this25.options.sortFunction(a.key.toLowerCase(), b.key.toLowerCase(), val.toLowerCase());
-        };
-        matchingData.sort(sortFunctionBound);
+        if (this.options.sortFunction) {
+          var sortFunctionBound = function (a, b) {
+            return _this39.options.sortFunction(a.key.toLowerCase(), b.key.toLowerCase(), val.toLowerCase());
+          };
+          matchingData.sort(sortFunctionBound);
+        }
 
         // Render
         for (var i = 0; i < matchingData.length; i++) {
           var _entry = matchingData[i];
           var $autocompleteOption = $('<li></li>');
           if (!!_entry.data) {
-            $autocompleteOption.append('<img src="' + _entry.data + '" class="right circle"><span>' + _entry.key + '</span>');
+            $autocompleteOption.append("<img src=\"" + _entry.data + "\" class=\"right circle\"><span>" + _entry.key + "</span>");
           } else {
             $autocompleteOption.append('<span>' + _entry.key + '</span>');
           }
@@ -6560,6 +6820,41 @@ if (Vel) {
           $(this.container).append($autocompleteOption);
           this._highlight(val, $autocompleteOption);
         }
+      }
+
+      /**
+       * Open Autocomplete Dropdown
+       */
+
+    }, {
+      key: "open",
+      value: function open() {
+        var val = this.el.value.toLowerCase();
+
+        this._resetAutocomplete();
+
+        if (val.length >= this.options.minLength) {
+          this.isOpen = true;
+          this._renderDropdown(this.options.data, val);
+        }
+
+        // Open dropdown
+        if (!this.dropdown.isOpen) {
+          this.dropdown.open();
+        } else {
+          // Recalculate dropdown when its already open
+          this.dropdown.recalculateDimensions();
+        }
+      }
+
+      /**
+       * Close Autocomplete Dropdown
+       */
+
+    }, {
+      key: "close",
+      value: function close() {
+        this.dropdown.close();
       }
 
       /**
@@ -6579,12 +6874,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Autocomplete(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Autocomplete.__proto__ || Object.getPrototypeOf(Autocomplete), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -6605,7 +6896,7 @@ if (Vel) {
     }]);
 
     return Autocomplete;
-  }();
+  }(Component);
 
   /**
    * @static
@@ -6624,7 +6915,7 @@ if (Vel) {
 ;(function ($) {
   // Function to update labels of text fields
   M.updateTextFields = function () {
-    var input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], textarea';
+    var input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], input[type=date], input[type=time], textarea';
     $(input_selector).each(function (element, index) {
       var $this = $(this);
       if (element.value.length > 0 || $(element).is(':focus') || element.autofocus || $this.attr('placeholder') !== null) {
@@ -6662,6 +6953,16 @@ if (Vel) {
   };
 
   M.textareaAutoResize = function ($textarea) {
+    // Wrap if native element
+    if ($textarea instanceof Element) {
+      $textarea = $($textarea);
+    }
+
+    if (!$textarea.length) {
+      console.error('No textarea element found');
+      return;
+    }
+
     // Textarea Auto Resize
     var hiddenDiv = $('.hiddendiv').first();
     if (!hiddenDiv.length) {
@@ -6673,7 +6974,12 @@ if (Vel) {
     var fontFamily = $textarea.css('font-family');
     var fontSize = $textarea.css('font-size');
     var lineHeight = $textarea.css('line-height');
-    var padding = $textarea.css('padding');
+
+    // Firefox can't handle padding shorthand.
+    var paddingTop = $textarea.css('padding-top');
+    var paddingRight = $textarea.css('padding-right');
+    var paddingBottom = $textarea.css('padding-bottom');
+    var paddingLeft = $textarea.css('padding-left');
 
     if (fontSize) {
       hiddenDiv.css('font-size', fontSize);
@@ -6684,8 +6990,17 @@ if (Vel) {
     if (lineHeight) {
       hiddenDiv.css('line-height', lineHeight);
     }
-    if (padding) {
-      hiddenDiv.css('padding', padding);
+    if (paddingTop) {
+      hiddenDiv.css('padding-top', paddingTop);
+    }
+    if (paddingRight) {
+      hiddenDiv.css('padding-right', paddingRight);
+    }
+    if (paddingBottom) {
+      hiddenDiv.css('padding-bottom', paddingBottom);
+    }
+    if (paddingLeft) {
+      hiddenDiv.css('padding-left', paddingLeft);
     }
 
     // Set original-height, if none
@@ -6704,10 +7019,10 @@ if (Vel) {
     // When textarea is hidden, width goes crazy.
     // Approximate with half of window size
 
-    if ($textarea.css('display') !== 'hidden') {
+    if ($textarea[0].offsetWidth > 0 && $textarea[0].offsetHeight > 0) {
       hiddenDiv.css('width', $textarea.width() + 'px');
     } else {
-      hiddenDiv.css('width', $(window).width() / 2 + 'px');
+      hiddenDiv.css('width', window.innerWidth / 2 + 'px');
     }
 
     /**
@@ -6729,7 +7044,7 @@ if (Vel) {
 
   $(document).ready(function () {
     // Text based inputs
-    var input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], textarea';
+    var input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], input[type=date], input[type=time], textarea';
 
     // Add active if form auto complete
     $(document).on('change', input_selector, function () {
@@ -6759,9 +7074,8 @@ if (Vel) {
         setTimeout(function () {
           formReset.find('select').each(function () {
             // check if initialized
-            if (this.M_Select) {
-              var reset_text = $(this).find('option[selected]').text();
-              $(this).siblings('input.select-dropdown')[0].value = reset_text;
+            if (this.M_FormSelect) {
+              $(this).trigger('change');
             }
           });
         }, 0);
@@ -6785,10 +7099,10 @@ if (Vel) {
     document.addEventListener('blur', function (e) {
       var $inputElement = $(e.target);
       if ($inputElement.is(input_selector)) {
-        var selector = ".prefix";
+        var selector = '.prefix';
 
         if ($inputElement[0].value.length === 0 && $inputElement[0].validity.badInput !== true && $inputElement.attr('placeholder') === null) {
-          selector += ", label";
+          selector += ', label';
         }
         $inputElement.siblings(selector).removeClass('active');
         M.validate_field($inputElement);
@@ -6813,20 +7127,18 @@ if (Vel) {
     $(text_area_selector).each(function () {
       var $textarea = $(this);
       /**
-       * Instead of resizing textarea on document load,
-       * store the original height and the original length
+       * Resize textarea on document load after storing
+       * the original height and the original length
        */
       $textarea.data('original-height', $textarea.height());
       $textarea.data('previous-length', this.value.length);
+      M.textareaAutoResize($textarea);
     });
 
     $(document).on('keyup', text_area_selector, function () {
       M.textareaAutoResize($(this));
     });
     $(document).on('keydown', text_area_selector, function () {
-      M.textareaAutoResize($(this));
-    });
-    $(document).on('autoresize', text_area_selector, function () {
       M.textareaAutoResize($(this));
     });
 
@@ -6839,12 +7151,12 @@ if (Vel) {
       for (var i = 0; i < files.length; i++) {
         file_names.push(files[i].name);
       }
-      path_input[0].value = file_names.join(", ");
+      path_input[0].value = file_names.join(', ');
       path_input.trigger('change');
     });
   }); // End of $(document).ready
 })(cash);
-;(function ($, Vel) {
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
@@ -6859,7 +7171,9 @@ if (Vel) {
    *
    */
 
-  var Slider = function () {
+  var Slider = function (_Component11) {
+    _inherits(Slider, _Component11);
+
     /**
      * Construct Slider instance and set up overlay
      * @constructor
@@ -6867,18 +7181,11 @@ if (Vel) {
      * @param {Object} options
      */
     function Slider(el, options) {
-      var _this26 = this;
-
       _classCallCheck(this, Slider);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Slider) {
-        el.M_Slider.destroy();
-      }
+      var _this40 = _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, Slider, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Slider = this;
+      _this40.el.M_Slider = _this40;
 
       /**
        * Options for the modal
@@ -6888,25 +7195,27 @@ if (Vel) {
        * @prop {Number} [duration=500] - Length in ms of slide transition
        * @prop {Number} [interval=6000] - Length in ms of slide interval
        */
-      this.options = $.extend({}, Slider.defaults, options);
+      _this40.options = $.extend({}, Slider.defaults, options);
 
       // setup
-      this.$slider = this.$el.find('.slides');
-      this.$slides = this.$slider.children('li');
-      this.activeIndex = this.$slider.find('.active').index();
-      if (this.activeIndex != -1) {
-        this.$active = this.$slides.eq(this.activeIndex);
+      _this40.$slider = _this40.$el.find('.slides');
+      _this40.$slides = _this40.$slider.children('li');
+      _this40.activeIndex = _this40.$slides.filter(function (item) {
+        return $(item).hasClass('active');
+      }).first().index();
+      if (_this40.activeIndex != -1) {
+        _this40.$active = _this40.$slides.eq(_this40.activeIndex);
       }
 
-      this._setSliderHeight();
+      _this40._setSliderHeight();
 
       // Set initial positions of captions
-      this.$slides.find('.caption').each(function (el) {
-        _this26._animateCaptionIn(el, 0);
+      _this40.$slides.find('.caption').each(function (el) {
+        _this40._animateCaptionIn(el, 0);
       });
 
       // Move img src into background-image
-      this.$slides.find('img').each(function (el) {
+      _this40.$slides.find('img').each(function (el) {
         var placeholderBase64 = 'data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
         if ($(el).attr('src') !== placeholderBase64) {
           $(el).css('background-image', 'url("' + $(el).attr('src') + '")');
@@ -6914,33 +7223,46 @@ if (Vel) {
         }
       });
 
-      this._setupIndicators();
+      _this40._setupIndicators();
 
       // Show active slide
-      if (this.$active) {
-        this.$active.css('display', 'block');
+      if (_this40.$active) {
+        _this40.$active.css('display', 'block');
       } else {
-        this.$slides.first().addClass('active');
-        Vel(this.$slides.first()[0], { opacity: 1 }, { duration: this.options.duration, queue: false, easing: 'easeOutQuad' });
+        _this40.$slides.first().addClass('active');
+        anim({
+          targets: _this40.$slides.first()[0],
+          opacity: 1,
+          duration: _this40.options.duration,
+          easing: 'easeOutQuad'
+        });
 
-        this.activeIndex = 0;
-        this.$active = this.$slides.eq(this.activeIndex);
+        _this40.activeIndex = 0;
+        _this40.$active = _this40.$slides.eq(_this40.activeIndex);
 
         // Update indicators
-        if (this.options.indicators) {
-          this.$indicators.eq(this.activeIndex).addClass('active');
+        if (_this40.options.indicators) {
+          _this40.$indicators.eq(_this40.activeIndex).addClass('active');
         }
       }
 
       // Adjust height to current slide
-      this.$active.find('img').each(function (el) {
-        Vel(_this26.$active.find('.caption')[0], { opacity: 1, translateX: 0, translateY: 0 }, { duration: _this26.options.duration, queue: false, easing: 'easeOutQuad' });
+      _this40.$active.find('img').each(function (el) {
+        anim({
+          targets: _this40.$active.find('.caption')[0],
+          opacity: 1,
+          translateX: 0,
+          translateY: 0,
+          duration: _this40.options.duration,
+          easing: 'easeOutQuad'
+        });
       });
 
-      this._setupEventHandlers();
+      _this40._setupEventHandlers();
 
       // auto scroll
-      this.start();
+      _this40.start();
+      return _this40;
     }
 
     _createClass(Slider, [{
@@ -6964,14 +7286,14 @@ if (Vel) {
     }, {
       key: "_setupEventHandlers",
       value: function _setupEventHandlers() {
-        var _this27 = this;
+        var _this41 = this;
 
         this._handleIntervalBound = this._handleInterval.bind(this);
         this._handleIndicatorClickBound = this._handleIndicatorClick.bind(this);
 
         if (this.options.indicators) {
           this.$indicators.each(function (el) {
-            el.addEventListener('click', _this27._handleIndicatorClickBound);
+            el.addEventListener('click', _this41._handleIndicatorClickBound);
           });
         }
       }
@@ -6983,11 +7305,11 @@ if (Vel) {
     }, {
       key: "_removeEventHandlers",
       value: function _removeEventHandlers() {
-        var _this28 = this;
+        var _this42 = this;
 
         if (this.options.indicators) {
           this.$indicators.each(function (el) {
-            el.removeEventListener('click', _this28._handleIndicatorClickBound);
+            el.removeEventListener('click', _this42._handleIndicatorClickBound);
           });
         }
       }
@@ -7012,7 +7334,8 @@ if (Vel) {
       key: "_handleInterval",
       value: function _handleInterval() {
         var newActiveIndex = this.$slider.find('.active').index();
-        if (this.$slides.length === newActiveIndex + 1) newActiveIndex = 0; // loop to start
+        if (this.$slides.length === newActiveIndex + 1) newActiveIndex = 0;
+        // loop to start
         else newActiveIndex += 1;
 
         this.set(newActiveIndex);
@@ -7027,19 +7350,22 @@ if (Vel) {
     }, {
       key: "_animateCaptionIn",
       value: function _animateCaptionIn(caption, duration) {
-        var velocityOptions = {
-          opacity: 0
+        var animOptions = {
+          targets: caption,
+          opacity: 0,
+          duration: duration,
+          easing: 'easeOutQuad'
         };
 
         if ($(caption).hasClass('center-align')) {
-          velocityOptions.translateY = -100;
+          animOptions.translateY = -100;
         } else if ($(caption).hasClass('right-align')) {
-          velocityOptions.translateX = 100;
+          animOptions.translateX = 100;
         } else if ($(caption).hasClass('left-align')) {
-          velocityOptions.translateX = -100;
+          animOptions.translateX = -100;
         }
 
-        Vel(caption, velocityOptions, { duration: duration, queue: false });
+        anim(animOptions);
       }
 
       /**
@@ -7068,13 +7394,13 @@ if (Vel) {
     }, {
       key: "_setupIndicators",
       value: function _setupIndicators() {
-        var _this29 = this;
+        var _this43 = this;
 
         if (this.options.indicators) {
           this.$indicators = $('<ul class="indicators"></ul>');
           this.$slides.each(function (el, index) {
             var $indicator = $('<li class="indicator-item"></li>');
-            _this29.$indicators.append($indicator[0]);
+            _this43.$indicators.append($indicator[0]);
           });
           this.$el.append(this.$indicators[0]);
           this.$indicators = this.$indicators.children('li.indicator-item');
@@ -7099,7 +7425,7 @@ if (Vel) {
     }, {
       key: "set",
       value: function set(index) {
-        var _this30 = this;
+        var _this44 = this;
 
         // Wrap around indices.
         if (index >= this.$slides.length) index = 0;else if (index < 0) index = this.$slides.length - 1;
@@ -7108,14 +7434,25 @@ if (Vel) {
         if (this.activeIndex != index) {
           this.$active = this.$slides.eq(this.activeIndex);
           var $caption = this.$active.find('.caption');
-
           this.$active.removeClass('active');
-          Vel(this.$active[0], { opacity: 0 }, { duration: this.options.duration, queue: false, easing: 'easeOutQuad',
+
+          anim({
+            targets: this.$active[0],
+            opacity: 0,
+            duration: this.options.duration,
+            easing: 'easeOutQuad',
             complete: function () {
-              _this30.$slides.not('.active').each(function (el) {
-                Vel(el, { opacity: 0, translateX: 0, translateY: 0 }, { duration: 0, queue: false });
+              _this44.$slides.not('.active').each(function (el) {
+                anim({
+                  targets: el,
+                  opacity: 0,
+                  translateX: 0,
+                  translateY: 0,
+                  duration: 0,
+                  easing: 'easeOutQuad'
+                });
               });
-            }.bind(this)
+            }
           });
 
           this._animateCaptionIn($caption[0], this.options.duration);
@@ -7126,8 +7463,22 @@ if (Vel) {
             this.$indicators.eq(index).addClass('active');
           }
 
-          Vel(this.$slides.eq(index)[0], { opacity: 1 }, { duration: this.options.duration, queue: false, easing: 'easeOutQuad' });
-          Vel(this.$slides.eq(index).find('.caption')[0], { opacity: 1, translateX: 0, translateY: 0 }, { duration: this.options.duration, delay: this.options.duration, queue: false, easing: 'easeOutQuad' });
+          anim({
+            targets: this.$slides.eq(index)[0],
+            opacity: 1,
+            duration: this.options.duration,
+            easing: 'easeOutQuad'
+          });
+
+          anim({
+            targets: this.$slides.eq(index).find('.caption')[0],
+            opacity: 1,
+            translateX: 0,
+            translateY: 0,
+            duration: this.options.duration,
+            delay: this.options.duration,
+            easing: 'easeOutQuad'
+          });
 
           this.$slides.eq(index).addClass('active');
           this.activeIndex = index;
@@ -7189,12 +7540,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Slider(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Slider.__proto__ || Object.getPrototypeOf(Slider), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -7215,15 +7562,15 @@ if (Vel) {
     }]);
 
     return Slider;
-  }();
+  }(Component);
 
   M.Slider = Slider;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Slider, 'slider', 'M_Slider');
   }
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($, anim) {
   $(document).on('click', '.card', function (e) {
     if ($(this).children('.card-reveal').length) {
       var $card = $(e.target).closest('.card');
@@ -7233,25 +7580,31 @@ if (Vel) {
       var $cardReveal = $(this).find('.card-reveal');
       if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
         // Make Reveal animate down and display none
-        Vel($cardReveal, { translateY: 0 }, {
+        anim({
+          targets: $cardReveal[0],
+          translateY: 0,
           duration: 225,
-          queue: false,
           easing: 'easeInOutQuad',
-          complete: function () {
-            $(this).css({ display: 'none' });
+          complete: function (anim) {
+            var el = anim.animatables[0].target;
+            $(el).css({ display: 'none' });
             $card.css('overflow', $card.data('initialOverflow'));
           }
         });
       } else if ($(e.target).is($('.card .activator')) || $(e.target).is($('.card .activator i'))) {
         $card.css('overflow', 'hidden');
         $cardReveal.css({ display: 'block' });
-        Vel($cardReveal, 'stop');
-        Vel($cardReveal, { translateY: '-100%' }, { duration: 300, queue: false, easing: 'easeInOutQuad' });
+        anim({
+          targets: $cardReveal[0],
+          translateY: '-100%',
+          duration: 300,
+          easing: 'easeInOutQuad'
+        });
       }
     }
   });
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($) {
   'use strict';
 
   var _defaults = {
@@ -7276,7 +7629,9 @@ if (Vel) {
    *
    */
 
-  var Chips = function () {
+  var Chips = function (_Component12) {
+    _inherits(Chips, _Component12);
+
     /**
      * Construct Chips instance and set up overlay
      * @constructor
@@ -7286,14 +7641,9 @@ if (Vel) {
     function Chips(el, options) {
       _classCallCheck(this, Chips);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Chips) {
-        el.M_Chips.destroy();
-      }
+      var _this45 = _possibleConstructorReturn(this, (Chips.__proto__ || Object.getPrototypeOf(Chips)).call(this, Chips, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Chips = this;
+      _this45.el.M_Chips = _this45;
 
       /**
        * Options for the modal
@@ -7303,34 +7653,34 @@ if (Vel) {
        * @prop {String} secondaryPlaceholder
        * @prop {Object} autocompleteOptions
        */
-      this.options = $.extend({}, Chips.defaults, options);
+      _this45.options = $.extend({}, Chips.defaults, options);
 
-      this.$el.addClass('chips input-field');
-      this.chipsData = [];
-      this.$chips = $();
-      this.$input = this.$el.find('input');
-      this.$input.addClass('input');
-      this.hasAutocomplete = Object.keys(this.options.autocompleteOptions).length > 0;
+      _this45.$el.addClass('chips input-field');
+      _this45.chipsData = [];
+      _this45.$chips = $();
+      _this45._setupInput();
+      _this45.hasAutocomplete = Object.keys(_this45.options.autocompleteOptions).length > 0;
 
       // Set input id
-      if (!this.$input.attr('id')) {
-        this.$input.attr('id', M.guid());
+      if (!_this45.$input.attr('id')) {
+        _this45.$input.attr('id', M.guid());
       }
 
       // Render initial chips
-      if (this.options.data.length) {
-        this.chipsData = this.options.data;
-        this._renderChips(this.chipsData);
+      if (_this45.options.data.length) {
+        _this45.chipsData = _this45.options.data;
+        _this45._renderChips(_this45.chipsData);
       }
 
       // Setup autocomplete if needed
-      if (this.hasAutocomplete) {
-        this._setupAutocomplete();
+      if (_this45.hasAutocomplete) {
+        _this45._setupAutocomplete();
       }
 
-      this._setPlaceholder();
-      this._setupLabel();
-      this._setupEventHandlers();
+      _this45._setPlaceholder();
+      _this45._setupLabel();
+      _this45._setupEventHandlers();
+      return _this45;
     }
 
     _createClass(Chips, [{
@@ -7464,7 +7814,9 @@ if (Vel) {
           }
 
           e.preventDefault();
-          this.addChip({ tag: this.$input[0].value });
+          this.addChip({
+            tag: this.$input[0].value
+          });
           this.$input[0].value = '';
 
           // delete or left
@@ -7521,7 +7873,7 @@ if (Vel) {
         }
 
         // move input to end
-        this.$el.append(this.$input);
+        this.$el.append(this.$input[0]);
       }
 
       /**
@@ -7531,15 +7883,33 @@ if (Vel) {
     }, {
       key: "_setupAutocomplete",
       value: function _setupAutocomplete() {
-        var _this31 = this;
+        var _this46 = this;
 
         this.options.autocompleteOptions.onAutocomplete = function (val) {
-          _this31.addChip({ tag: val });
-          _this31.$input[0].value = '';
-          _this31.$input[0].focus();
+          _this46.addChip({
+            tag: val
+          });
+          _this46.$input[0].value = '';
+          _this46.$input[0].focus();
         };
 
-        this.autocomplete = M.Autocomplete.init(this.$input, this.options.autocompleteOptions)[0];
+        this.autocomplete = M.Autocomplete.init(this.$input[0], this.options.autocompleteOptions);
+      }
+
+      /**
+       * Setup Input
+       */
+
+    }, {
+      key: "_setupInput",
+      value: function _setupInput() {
+        this.$input = this.$el.find('input');
+        if (!this.$input.length) {
+          this.$input = $('<input></input>');
+          this.$el.append(this.$input);
+        }
+
+        this.$input.addClass('input');
       }
 
       /**
@@ -7586,9 +7956,9 @@ if (Vel) {
             }
           }
           return !exists;
-        } else {
-          return false;
         }
+
+        return false;
       }
 
       /**
@@ -7623,7 +7993,7 @@ if (Vel) {
     }, {
       key: "deleteChip",
       value: function deleteChip(chipIndex) {
-        // let chip = this.chips[chipIndex];
+        var $chip = this.$chips.eq(chipIndex);
         this.$chips.eq(chipIndex).remove();
         this.$chips = this.$chips.filter(function (el) {
           return $(el).index() >= 0;
@@ -7633,7 +8003,7 @@ if (Vel) {
 
         // fire chipDelete callback
         if (typeof this.options.onChipDelete === 'function') {
-          this.options.onChipDelete.call(this, this.$el, this.$chip);
+          this.options.onChipDelete.call(this, this.$el, $chip[0]);
         }
       }
 
@@ -7651,29 +8021,13 @@ if (Vel) {
 
         // fire chipSelect callback
         if (typeof this.options.onChipSelect === 'function') {
-          this.options.onChipSelect.call(this, this.$el, this.$chip);
+          this.options.onChipSelect.call(this, this.$el, $chip[0]);
         }
-      }
-
-      /**
-       * Deselect chip
-       * @param {Number} chip
-       */
-
-    }, {
-      key: "deselectChip",
-      value: function deselectChip(chipIndex) {
-        var $chip = this.$chips.eq(chipIndex);
-        this._selectedChip = null;
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Chips(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Chips.__proto__ || Object.getPrototypeOf(Chips), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -7710,7 +8064,9 @@ if (Vel) {
             var index = currChips._selectedChip.index();
             currChips.deleteChip(index);
             currChips._selectedChip = null;
-            selectIndex = index - 1;
+
+            // Make sure selectIndex doesn't go negative
+            selectIndex = Math.max(index - 1, 0);
           }
 
           if (currChips.chipsData.length) {
@@ -7775,7 +8131,7 @@ if (Vel) {
     }]);
 
     return Chips;
-  }();
+  }(Component);
 
   /**
    * @static
@@ -7808,7 +8164,8 @@ if (Vel) {
   var _defaults = {
     top: 0,
     bottom: Infinity,
-    offset: 0
+    offset: 0,
+    onPositionChange: null
   };
 
   /**
@@ -7816,7 +8173,9 @@ if (Vel) {
    *
    */
 
-  var Pushpin = function () {
+  var Pushpin = function (_Component13) {
+    _inherits(Pushpin, _Component13);
+
     /**
      * Construct Pushpin instance
      * @constructor
@@ -7826,25 +8185,21 @@ if (Vel) {
     function Pushpin(el, options) {
       _classCallCheck(this, Pushpin);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Pushpin) {
-        el.M_Pushpin.destroy();
-      }
+      var _this47 = _possibleConstructorReturn(this, (Pushpin.__proto__ || Object.getPrototypeOf(Pushpin)).call(this, Pushpin, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Pushpin = this;
+      _this47.el.M_Pushpin = _this47;
 
       /**
        * Options for the modal
        * @member Pushpin#options
        */
-      this.options = $.extend({}, Pushpin.defaults, options);
+      _this47.options = $.extend({}, Pushpin.defaults, options);
 
-      this.originalOffset = this.el.offsetTop;
-      Pushpin._pushpins.push(this);
-      this._setupEventHandlers();
-      this._updatePosition();
+      _this47.originalOffset = _this47.el.offsetTop;
+      Pushpin._pushpins.push(_this47);
+      _this47._setupEventHandlers();
+      _this47._updatePosition();
+      return _this47;
     }
 
     _createClass(Pushpin, [{
@@ -7880,9 +8235,13 @@ if (Vel) {
 
         if (this.options.top <= scrolled && this.options.bottom >= scrolled && !this.el.classList.contains('pinned')) {
           this._removePinClasses();
-
           this.el.style.top = this.options.offset + "px";
           this.el.classList.add('pinned');
+
+          // onPositionChange callback
+          if (typeof this.options.onPositionChange === 'function') {
+            this.options.onPositionChange.call(this, 'pinned');
+          }
         }
 
         // Add pin-top (when scrolled position is above top)
@@ -7890,6 +8249,11 @@ if (Vel) {
           this._removePinClasses();
           this.el.style.top = 0;
           this.el.classList.add('pin-top');
+
+          // onPositionChange callback
+          if (typeof this.options.onPositionChange === 'function') {
+            this.options.onPositionChange.call(this, 'pin-top');
+          }
         }
 
         // Add pin-bottom (when scrolled position is below bottom)
@@ -7897,21 +8261,25 @@ if (Vel) {
           this._removePinClasses();
           this.el.classList.add('pin-bottom');
           this.el.style.top = this.options.bottom - this.originalOffset + "px";
+
+          // onPositionChange callback
+          if (typeof this.options.onPositionChange === 'function') {
+            this.options.onPositionChange.call(this, 'pin-bottom');
+          }
         }
       }
     }, {
       key: "_removePinClasses",
       value: function _removePinClasses() {
-        this.el.classList.remove('pin-top', 'pinned', 'pin-bottom');
+        // IE 11 bug (can't remove multiple classes in one line)
+        this.el.classList.remove('pin-top');
+        this.el.classList.remove('pinned');
+        this.el.classList.remove('pin-bottom');
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Pushpin(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Pushpin.__proto__ || Object.getPrototypeOf(Pushpin), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -7940,7 +8308,7 @@ if (Vel) {
     }]);
 
     return Pushpin;
-  }();
+  }(Component);
 
   /**
    * @static
@@ -7956,7 +8324,7 @@ if (Vel) {
     M.initializeJqueryWrapper(Pushpin, 'pushpin', 'M_Pushpin');
   }
 })(cash);
-;(function ($, Vel) {
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {
@@ -7972,7 +8340,9 @@ if (Vel) {
    *
    */
 
-  var FloatingActionButton = function () {
+  var FloatingActionButton = function (_Component14) {
+    _inherits(FloatingActionButton, _Component14);
+
     /**
      * Construct FloatingActionButton instance
      * @constructor
@@ -7982,14 +8352,9 @@ if (Vel) {
     function FloatingActionButton(el, options) {
       _classCallCheck(this, FloatingActionButton);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_FloatingActionButton) {
-        el.M_FloatingActionButton.destroy();
-      }
+      var _this48 = _possibleConstructorReturn(this, (FloatingActionButton.__proto__ || Object.getPrototypeOf(FloatingActionButton)).call(this, FloatingActionButton, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_FloatingActionButton = this;
+      _this48.el.M_FloatingActionButton = _this48;
 
       /**
        * Options for the fab
@@ -7998,27 +8363,28 @@ if (Vel) {
        * @prop {Boolean} [hoverEnabled=true] - Enable hover vs click
        * @prop {Boolean} [toolbarEnabled=false] - Enable toolbar transition
        */
-      this.options = $.extend({}, FloatingActionButton.defaults, options);
+      _this48.options = $.extend({}, FloatingActionButton.defaults, options);
 
-      this.isOpen = false;
-      this.$anchor = this.$el.children('a').first();
-      this.$menu = this.$el.children('ul').first();
-      this.$floatingBtns = this.$el.find('ul .btn-floating');
-      this.$floatingBtnsReverse = this.$el.find('ul .btn-floating').reverse();
-      if (this.options.direction === 'top') {
-        this.$el.addClass('direction-top');
-        this.offsetY = 40;
-      } else if (this.options.direction === 'right') {
-        this.$el.addClass('direction-right');
-        this.offsetX = -40;
-      } else if (this.options.direction === 'bottom') {
-        this.$el.addClass('direction-bottom');
-        this.offsetY = -40;
+      _this48.isOpen = false;
+      _this48.$anchor = _this48.$el.children('a').first();
+      _this48.$menu = _this48.$el.children('ul').first();
+      _this48.$floatingBtns = _this48.$el.find('ul .btn-floating');
+      _this48.$floatingBtnsReverse = _this48.$el.find('ul .btn-floating').reverse();
+      _this48.offsetY = 0;
+      _this48.offsetX = 0;
+
+      _this48.$el.addClass("direction-" + _this48.options.direction);
+      if (_this48.options.direction === 'top') {
+        _this48.offsetY = 40;
+      } else if (_this48.options.direction === 'right') {
+        _this48.offsetX = -40;
+      } else if (_this48.options.direction === 'bottom') {
+        _this48.offsetY = -40;
       } else {
-        this.$el.addClass('direction-left');
-        this.offsetX = 40;
+        _this48.offsetX = 40;
       }
-      this._setupEventHandlers();
+      _this48._setupEventHandlers();
+      return _this48;
     }
 
     _createClass(FloatingActionButton, [{
@@ -8141,15 +8507,22 @@ if (Vel) {
     }, {
       key: "_animateInFAB",
       value: function _animateInFAB() {
+        var _this49 = this;
+
         this.$el.addClass('active');
-        Vel.hook(this.$floatingBtns, 'scaleX', 0.4);
-        Vel.hook(this.$floatingBtns, 'scaleY', 0.4);
-        Vel.hook(this.$floatingBtns, 'translateY', this.offsetY + 'px');
-        Vel.hook(this.$floatingBtns, 'translateX', this.offsetX + 'px');
 
         var time = 0;
-        this.$floatingBtnsReverse.each(function () {
-          Vel(this, { opacity: "1", scaleX: 1, scaleY: 1, translateY: 0, translateX: 0 }, { duration: 80, delay: time });
+        this.$floatingBtnsReverse.each(function (el) {
+          anim({
+            targets: el,
+            opacity: 1,
+            scale: [0.4, 1],
+            translateY: [_this49.offsetY, 0],
+            translateX: [_this49.offsetX, 0],
+            duration: 275,
+            delay: time,
+            easing: 'easeInOutQuad'
+          });
           time += 40;
         });
       }
@@ -8161,9 +8534,23 @@ if (Vel) {
     }, {
       key: "_animateOutFAB",
       value: function _animateOutFAB() {
-        this.$el.removeClass('active');
-        Vel(this.$floatingBtns, 'stop');
-        Vel(this.$floatingBtns, { opacity: "0", scaleX: .4, scaleY: .4, translateY: this.offsetY, translateX: this.offsetX }, { duration: 80 });
+        var _this50 = this;
+
+        this.$floatingBtnsReverse.each(function (el) {
+          anim.remove(el);
+          anim({
+            targets: el,
+            opacity: 0,
+            scale: 0.4,
+            translateY: _this50.offsetY,
+            translateX: _this50.offsetX,
+            duration: 175,
+            easing: 'easeOutQuad',
+            complete: function () {
+              _this50.$el.removeClass('active');
+            }
+          });
+        });
       }
 
       /**
@@ -8173,7 +8560,7 @@ if (Vel) {
     }, {
       key: "_animateInToolbar",
       value: function _animateInToolbar() {
-        var _this32 = this;
+        var _this51 = this;
 
         var scaleFactor = void 0;
         var windowWidth = window.innerWidth;
@@ -8209,18 +8596,18 @@ if (Vel) {
         });
 
         setTimeout(function () {
-          _this32.$el.css({
+          _this51.$el.css({
             transform: '',
             transition: 'transform .2s cubic-bezier(0.550, 0.085, 0.680, 0.530), background-color 0s linear .2s'
           });
-          _this32.$anchor.css({
+          _this51.$anchor.css({
             overflow: 'visible',
             transform: '',
             transition: 'transform .2s'
           });
 
           setTimeout(function () {
-            _this32.$el.css({
+            _this51.$el.css({
               overflow: 'hidden',
               'background-color': fabColor
             });
@@ -8228,14 +8615,14 @@ if (Vel) {
               transform: 'scale(' + scaleFactor + ')',
               transition: 'transform .2s cubic-bezier(0.550, 0.055, 0.675, 0.190)'
             });
-            _this32.$menu.children('li').children('a').css({
+            _this51.$menu.children('li').children('a').css({
               opacity: 1
             });
 
             // Scroll to close.
-            _this32._handleDocumentClickBound = _this32._handleDocumentClick.bind(_this32);
-            window.addEventListener('scroll', _this32._handleCloseBound, true);
-            document.body.addEventListener('click', _this32._handleDocumentClickBound, true);
+            _this51._handleDocumentClickBound = _this51._handleDocumentClick.bind(_this51);
+            window.addEventListener('scroll', _this51._handleCloseBound, true);
+            document.body.addEventListener('click', _this51._handleDocumentClickBound, true);
           }, 100);
         }, 0);
       }
@@ -8247,12 +8634,12 @@ if (Vel) {
     }, {
       key: "_animateOutToolbar",
       value: function _animateOutToolbar() {
-        var _this33 = this;
+        var _this52 = this;
 
         var windowWidth = window.innerWidth;
         var windowHeight = window.innerHeight;
         var backdrop = this.$el.find('.fab-backdrop');
-        var fabColor = anchor.css('background-color');
+        var fabColor = this.$anchor.css('background-color');
 
         this.offsetX = this.btnLeft - windowWidth / 2 + this.btnWidth / 2;
         this.offsetY = windowHeight - this.btnBottom;
@@ -8278,26 +8665,26 @@ if (Vel) {
           backdrop.remove();
 
           // Set initial state.
-          _this33.$el.css({
+          _this52.$el.css({
             'text-align': '',
             width: '',
             bottom: '',
             left: '',
             overflow: '',
             'background-color': '',
-            transform: 'translate3d(' + -_this33.offsetX + 'px,0,0)'
+            transform: 'translate3d(' + -_this52.offsetX + 'px,0,0)'
           });
-          _this33.$anchor.css({
+          _this52.$anchor.css({
             overflow: '',
-            transform: 'translate3d(0,' + _this33.offsetY + 'px,0)'
+            transform: 'translate3d(0,' + _this52.offsetY + 'px,0)'
           });
 
           setTimeout(function () {
-            _this33.$el.css({
+            _this52.$el.css({
               transform: 'translate3d(0,0,0)',
               transition: 'transform .2s'
             });
-            _this33.$anchor.css({
+            _this52.$anchor.css({
               transform: 'translate3d(0,0,0)',
               transition: 'transform .2s cubic-bezier(0.550, 0.055, 0.675, 0.190)'
             });
@@ -8306,12 +8693,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new FloatingActionButton(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(FloatingActionButton.__proto__ || Object.getPrototypeOf(FloatingActionButton), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -8332,25 +8715,23 @@ if (Vel) {
     }]);
 
     return FloatingActionButton;
-  }();
+  }(Component);
 
   M.FloatingActionButton = FloatingActionButton;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(FloatingActionButton, 'floatingActionButton', 'M_FloatingActionButton');
   }
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash, M.anime);
+;(function ($) {
   'use strict';
 
   var _defaults = {
+    // Close when date is selected
+    autoClose: false,
 
     // the default output format for the input field value
-    format: 'YYYY-MM-DD',
-
-    // the toString function which gets passed a current date object and format
-    // and returns a string
-    toString: null,
+    format: 'mmm dd, yyyy',
 
     // Used to create date object from current input string
     parse: null,
@@ -8396,17 +8777,20 @@ if (Vel) {
     // Specify a DOM element to render the calendar in
     container: null,
 
+    // Show clear button
+    showClearBtn: false,
+
     // internationalization
     i18n: {
+      cancel: 'Cancel',
       clear: 'Clear',
-      today: 'Today',
       done: 'Ok',
       previousMonth: '‹',
       nextMonth: '›',
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       weekdaysAbbrev: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     },
 
@@ -8425,7 +8809,9 @@ if (Vel) {
    *
    */
 
-  var Datepicker = function () {
+  var Datepicker = function (_Component15) {
+    _inherits(Datepicker, _Component15);
+
     /**
      * Construct Datepicker instance and set up overlay
      * @constructor
@@ -8435,47 +8821,51 @@ if (Vel) {
     function Datepicker(el, options) {
       _classCallCheck(this, Datepicker);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Datepicker) {
-        el.M_Datepicker.destroy();
+      var _this53 = _possibleConstructorReturn(this, (Datepicker.__proto__ || Object.getPrototypeOf(Datepicker)).call(this, Datepicker, el, options));
+
+      _this53.el.M_Datepicker = _this53;
+
+      _this53.options = $.extend({}, Datepicker.defaults, options);
+
+      // make sure i18n defaults are not lost when only few i18n option properties are passed
+      if (!!options && options.hasOwnProperty('i18n') && typeof options.i18n === 'object') {
+        _this53.options.i18n = $.extend({}, Datepicker.defaults.i18n, options.i18n);
       }
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Datepicker = this;
+      // Remove time component from minDate and maxDate options
+      if (_this53.options.minDate) _this53.options.minDate.setHours(0, 0, 0, 0);
+      if (_this53.options.maxDate) _this53.options.maxDate.setHours(0, 0, 0, 0);
 
-      this.options = $.extend({}, Datepicker.defaults, options);
+      _this53.id = M.guid();
 
-      this.id = M.guid();
+      _this53._setupVariables();
+      _this53._insertHTMLIntoDOM();
+      _this53._setupModal();
 
-      this._setupVariables();
-      this._insertHTMLIntoDOM();
-      this._setupModal();
+      _this53._setupEventHandlers();
 
-      this._setupEventHandlers();
-
-      if (!this.options.defaultDate) {
-        this.options.defaultDate = new Date(Date.parse(this.el.value));
-        this.options.setDefaultDate = true;
+      if (!_this53.options.defaultDate) {
+        _this53.options.defaultDate = new Date(Date.parse(_this53.el.value));
       }
 
-      var defDate = this.options.defaultDate;
-
+      var defDate = _this53.options.defaultDate;
       if (Datepicker._isDate(defDate)) {
-        if (this.options.setDefaultDate) {
-          this.setDate(defDate, true);
+        if (_this53.options.setDefaultDate) {
+          _this53.setDate(defDate, true);
+          _this53.setInputValue();
         } else {
-          this.gotoDate(defDate);
+          _this53.gotoDate(defDate);
         }
       } else {
-        this.gotoDate(new Date());
+        _this53.gotoDate(new Date());
       }
 
       /**
        * Describes open/close state of datepicker
        * @type {Boolean}
        */
-      this.isOpen = false;
+      _this53.isOpen = false;
+      return _this53;
     }
 
     _createClass(Datepicker, [{
@@ -8485,17 +8875,38 @@ if (Vel) {
       /**
        * Teardown component
        */
-      value: function destroy() {}
+      value: function destroy() {
+        this._removeEventHandlers();
+        this.modal.destroy();
+        $(this.modalEl).remove();
+        this.destroySelects();
+        this.el.M_Datepicker = undefined;
+      }
+    }, {
+      key: "destroySelects",
+      value: function destroySelects() {
+        var oldYearSelect = this.calendarEl.querySelector('.orig-select-year');
+        if (oldYearSelect) {
+          M.FormSelect.getInstance(oldYearSelect).destroy();
+        }
+        var oldMonthSelect = this.calendarEl.querySelector('.orig-select-month');
+        if (oldMonthSelect) {
+          M.FormSelect.getInstance(oldMonthSelect).destroy();
+        }
+      }
     }, {
       key: "_insertHTMLIntoDOM",
       value: function _insertHTMLIntoDOM() {
-        this.clearBtn.innerHTML = this.options.i18n.clear;
-        this.todayBtn.innerHTML = this.options.i18n.today;
-        this.doneBtn.innerHTML = this.options.i18n.done;
+        if (this.options.showClearBtn) {
+          $(this.clearBtn).css({ visibility: '' });
+          this.clearBtn.innerHTML = this.options.i18n.clear;
+        }
 
-        var containerEl = document.querySelector(this.options.container);
-        if (this.options.container && !!containerEl) {
-          this.$modalEl.appendTo(containerEl);
+        this.doneBtn.innerHTML = this.options.i18n.done;
+        this.cancelBtn.innerHTML = this.options.i18n.cancel;
+
+        if (this.options.container) {
+          this.$modalEl.appendTo(this.options.container);
         } else {
           this.$modalEl.insertBefore(this.el);
         }
@@ -8503,26 +8914,34 @@ if (Vel) {
     }, {
       key: "_setupModal",
       value: function _setupModal() {
-        var _this34 = this;
+        var _this54 = this;
 
         this.modalEl.id = 'modal-' + this.id;
-        this.modal = new M.Modal(this.modalEl, {
-          complete: function () {
-            _this34.isOpen = false;
+        this.modal = M.Modal.init(this.modalEl, {
+          onCloseEnd: function () {
+            _this54.isOpen = false;
           }
         });
       }
     }, {
       key: "toString",
       value: function toString(format) {
+        var _this55 = this;
+
         format = format || this.options.format;
         if (!Datepicker._isDate(this.date)) {
           return '';
         }
-        if (this.options.toString) {
-          return this.options.toString(this.date, format);
-        }
-        return this.date.toDateString();
+
+        var formatArray = format.split(/(d{1,4}|m{1,4}|y{4}|yy|!.)/g);
+        var formattedDate = formatArray.map(function (label) {
+          if (_this55.formats[label]) {
+            return _this55.formats[label]();
+          }
+
+          return label;
+        }).join('');
+        return formattedDate;
       }
     }, {
       key: "setDate",
@@ -8556,7 +8975,7 @@ if (Vel) {
         this.gotoDate(this.date);
 
         if (!preventOnSelect && typeof this.options.onSelect === 'function') {
-          this.options.onSelect.call(this, this.getDate());
+          this.options.onSelect.call(this, this.date);
         }
       }
     }, {
@@ -8605,9 +9024,6 @@ if (Vel) {
             month: date.getMonth(),
             year: date.getFullYear()
           }];
-          // if (this.options.mainCalendar === 'right') {
-          //   this.calendars[0].month += 1 - this.options.numberOfMonths;
-          // }
         }
 
         this.adjustCalendars();
@@ -8616,12 +9032,6 @@ if (Vel) {
       key: "adjustCalendars",
       value: function adjustCalendars() {
         this.calendars[0] = this.adjustCalendar(this.calendars[0]);
-        // for (let c = 1; c < this.options.numberOfMonths; c++) {
-        //   this.calendars[c] = this.adjustCalendar({
-        //     month: this.calendars[0].month + c,
-        //     year: this.calendars[0].year
-        //   });
-        // }
         this.draw();
       }
     }, {
@@ -8765,12 +9175,12 @@ if (Vel) {
         if (opts.isEndRange) {
           arr.push('is-endrange');
         }
-        return '<td data-day="' + opts.day + '" class="' + arr.join(' ') + '" aria-selected="' + ariaSelected + '">' + '<button class="datepicker-day-button" type="button" ' + 'data-pika-year="' + opts.year + '" data-pika-month="' + opts.month + '" data-pika-day="' + opts.day + '">' + opts.day + '</button>' + '</td>';
+        return "<td data-day=\"" + opts.day + "\" class=\"" + arr.join(' ') + "\" aria-selected=\"" + ariaSelected + "\">" + ("<button class=\"datepicker-day-button\" type=\"button\" data-year=\"" + opts.year + "\" data-month=\"" + opts.month + "\" data-day=\"" + opts.day + "\">" + opts.day + "</button>") + '</td>';
       }
     }, {
       key: "renderRow",
       value: function renderRow(days, isRTL, isRowSelected) {
-        return '<tr class="pika-row' + (isRowSelected ? ' is-selected' : '') + '">' + (isRTL ? days.reverse() : days).join('') + '</tr>';
+        return '<tr class="datepicker-row' + (isRowSelected ? ' is-selected' : '') + '">' + (isRTL ? days.reverse() : days).join('') + '</tr>';
       }
     }, {
       key: "renderTable",
@@ -8783,7 +9193,7 @@ if (Vel) {
         var i = void 0,
             arr = [];
         for (i = 0; i < 7; i++) {
-          arr.push('<th scope="col"><abbr title="' + this.renderDayName(opts, i) + '">' + this.renderDayName(opts, i, true) + '</abbr></th>');
+          arr.push("<th scope=\"col\"><abbr title=\"" + this.renderDayName(opts, i) + "\">" + this.renderDayName(opts, i, true) + "</abbr></th>");
         }
         return '<thead><tr>' + (opts.isRTL ? arr.reverse() : arr).join('') + '</tr></thead>';
       }
@@ -8811,8 +9221,7 @@ if (Vel) {
           arr.push('<option value="' + (year === refYear ? i - c : 12 + i - c) + '"' + (i === month ? ' selected="selected"' : '') + (isMinYear && i < opts.minMonth || isMaxYear && i > opts.maxMonth ? 'disabled="disabled"' : '') + '>' + opts.i18n.months[i] + '</option>');
         }
 
-        // monthHtml = '<div class="pika-label">' + opts.i18n.months[month] + '<select class="pika-select pika-select-month" tabindex="-1">' + arr.join('') + '</select></div>';
-        monthHtml = '<select class="pika-select pika-select-month" tabindex="-1">' + arr.join('') + '</select>';
+        monthHtml = '<select class="datepicker-select orig-select-month" tabindex="-1">' + arr.join('') + '</select>';
 
         if ($.isArray(opts.yearRange)) {
           i = opts.yearRange[0];
@@ -8824,14 +9233,14 @@ if (Vel) {
 
         for (arr = []; i < j && i <= opts.maxYear; i++) {
           if (i >= opts.minYear) {
-            arr.push('<option value="' + i + '"' + (i === year ? ' selected="selected"' : '') + '>' + i + '</option>');
+            arr.push("<option value=\"" + i + "\" " + (i === year ? 'selected="selected"' : '') + ">" + i + "</option>");
           }
         }
-        // yearHtml = '<div class="pika-label">' + year + opts.yearSuffix + '<select class="pika-select pika-select-year" tabindex="-1">' + arr.join('') + '</select></div>';
-        yearHtml = '<select class="pika-select pika-select-year" tabindex="-1">' + arr.join('') + '</select>';
+
+        yearHtml = "<select class=\"datepicker-select orig-select-year\" tabindex=\"-1\">" + arr.join('') + "</select>";
 
         var leftArrow = '<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/><path d="M0-.5h24v24H0z" fill="none"/></svg>';
-        html += '<button class="month-prev' + (prev ? '' : ' is-disabled') + '" type="button">' + leftArrow + '</button>';
+        html += "<button class=\"month-prev" + (prev ? '' : ' is-disabled') + "\" type=\"button\">" + leftArrow + "</button>";
 
         html += '<div class="selects-container">';
         if (opts.showMonthAfterYear) {
@@ -8849,10 +9258,8 @@ if (Vel) {
           next = false;
         }
 
-        // if (c === (this.options.numberOfMonths - 1) ) {
         var rightArrow = '<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/><path d="M0-.25h24v24H0z" fill="none"/></svg>';
-        html += '<button class="month-next' + (next ? '' : ' is-disabled') + '" type="button">' + rightArrow + '</button>';
-        // }
+        html += "<button class=\"month-next" + (next ? '' : ' is-disabled') + "\" type=\"button\">" + rightArrow + "</button>";
 
         return html += '</div>';
       }
@@ -8888,18 +9295,32 @@ if (Vel) {
           }
         }
 
-        randId = 'pika-title-' + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2);
+        randId = 'datepicker-title-' + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2);
 
         for (var c = 0; c < 1; c++) {
           this._renderDateDisplay();
           html += this.renderTitle(this, c, this.calendars[c].year, this.calendars[c].month, this.calendars[0].year, randId) + this.render(this.calendars[c].year, this.calendars[c].month, randId);
         }
 
+        this.destroySelects();
+
         this.calendarEl.innerHTML = html;
 
         // Init Materialize Select
-        new M.Select(this.calendarEl.querySelector('.pika-select-year'), { classes: 'select-year' });
-        new M.Select(this.calendarEl.querySelector('.pika-select-month'), { classes: 'select-month' });
+        var yearSelect = this.calendarEl.querySelector('.orig-select-year');
+        var monthSelect = this.calendarEl.querySelector('.orig-select-month');
+        M.FormSelect.init(yearSelect, {
+          classes: 'select-year',
+          dropdownOptions: { container: document.body, constrainWidth: false }
+        });
+        M.FormSelect.init(monthSelect, {
+          classes: 'select-month',
+          dropdownOptions: { container: document.body, constrainWidth: false }
+        });
+
+        // Add change handlers for select
+        yearSelect.addEventListener('change', this._handleYearChange.bind(this));
+        monthSelect.addEventListener('change', this._handleMonthChange.bind(this));
 
         if (typeof this.options.onDraw === 'function') {
           this.options.onDraw(this);
@@ -8918,30 +9339,73 @@ if (Vel) {
         this._handleInputChangeBound = this._handleInputChange.bind(this);
         this._handleCalendarClickBound = this._handleCalendarClick.bind(this);
         this._finishSelectionBound = this._finishSelection.bind(this);
-        this._handleTodayClickBound = this._handleTodayClick.bind(this);
-        this._handleClearClickBound = this._handleClearClick.bind(this);
+        this._handleMonthChange = this._handleMonthChange.bind(this);
+        this._closeBound = this.close.bind(this);
 
         this.el.addEventListener('click', this._handleInputClickBound);
         this.el.addEventListener('keydown', this._handleInputKeydownBound);
         this.el.addEventListener('change', this._handleInputChangeBound);
         this.calendarEl.addEventListener('click', this._handleCalendarClickBound);
         this.doneBtn.addEventListener('click', this._finishSelectionBound);
-        this.todayBtn.addEventListener('click', this._handleTodayClickBound);
-        this.clearBtn.addEventListener('click', this._handleClearClickBound);
+        this.cancelBtn.addEventListener('click', this._closeBound);
+
+        if (this.options.showClearBtn) {
+          this._handleClearClickBound = this._handleClearClick.bind(this);
+          this.clearBtn.addEventListener('click', this._handleClearClickBound);
+        }
       }
     }, {
       key: "_setupVariables",
       value: function _setupVariables() {
+        var _this56 = this;
+
         this.$modalEl = $(Datepicker._template);
         this.modalEl = this.$modalEl[0];
 
-        this.calendarEl = this.modalEl.querySelector('.pika-single');
+        this.calendarEl = this.modalEl.querySelector('.datepicker-calendar');
 
         this.yearTextEl = this.modalEl.querySelector('.year-text');
         this.dateTextEl = this.modalEl.querySelector('.date-text');
-        this.clearBtn = this.modalEl.querySelector('.datepicker-clear');
-        this.todayBtn = this.modalEl.querySelector('.datepicker-today');
+        if (this.options.showClearBtn) {
+          this.clearBtn = this.modalEl.querySelector('.datepicker-clear');
+        }
         this.doneBtn = this.modalEl.querySelector('.datepicker-done');
+        this.cancelBtn = this.modalEl.querySelector('.datepicker-cancel');
+
+        this.formats = {
+          d: function () {
+            return _this56.date.getDate();
+          },
+          dd: function () {
+            var d = _this56.date.getDate();
+            return (d < 10 ? '0' : '') + d;
+          },
+          ddd: function () {
+            return _this56.options.i18n.weekdaysShort[_this56.date.getDay()];
+          },
+          dddd: function () {
+            return _this56.options.i18n.weekdays[_this56.date.getDay()];
+          },
+          m: function () {
+            return _this56.date.getMonth() + 1;
+          },
+          mm: function () {
+            var m = _this56.date.getMonth() + 1;
+            return (m < 10 ? '0' : '') + m;
+          },
+          mmm: function () {
+            return _this56.options.i18n.monthsShort[_this56.date.getMonth()];
+          },
+          mmmm: function () {
+            return _this56.options.i18n.months[_this56.date.getMonth()];
+          },
+          yy: function () {
+            return ('' + _this56.date.getFullYear()).slice(2);
+          },
+          yyyy: function () {
+            return _this56.date.getFullYear();
+          }
+        };
       }
 
       /**
@@ -8979,31 +9443,16 @@ if (Vel) {
         var $target = $(e.target);
         if (!$target.hasClass('is-disabled')) {
           if ($target.hasClass('datepicker-day-button') && !$target.hasClass('is-empty') && !$target.parent().hasClass('is-disabled')) {
-            this.setDate(new Date(e.target.getAttribute('data-pika-year'), e.target.getAttribute('data-pika-month'), e.target.getAttribute('data-pika-day')));
+            this.setDate(new Date(e.target.getAttribute('data-year'), e.target.getAttribute('data-month'), e.target.getAttribute('data-day')));
+            if (this.options.autoClose) {
+              this._finishSelection();
+            }
           } else if ($target.closest('.month-prev').length) {
             this.prevMonth();
           } else if ($target.closest('.month-next').length) {
             this.nextMonth();
           }
         }
-        // if (!$target.hasClass('pika-select')) {
-        //   // if this is touch event prevent mouse events emulation
-        //   // if (e.preventDefault) {
-        //   //   e.preventDefault();
-        //   // } else {
-        //   //   e.returnValue = false;
-        //   //   return false;
-        //   // }
-        // } else {
-        //   this._c = true;
-        // }
-      }
-    }, {
-      key: "_handleTodayClick",
-      value: function _handleTodayClick() {
-        this.date = new Date();
-        this.setInputValue();
-        this.close();
       }
     }, {
       key: "_handleClearClick",
@@ -9012,50 +9461,42 @@ if (Vel) {
         this.setInputValue();
         this.close();
       }
+    }, {
+      key: "_handleMonthChange",
+      value: function _handleMonthChange(e) {
+        this.gotoMonth(e.target.value);
+      }
+    }, {
+      key: "_handleYearChange",
+      value: function _handleYearChange(e) {
+        this.gotoYear(e.target.value);
+      }
 
-      // _onChange(e) {
-      //   e = e || window.event;
-      //   let target = e.target || e.srcElement;
-      //   if (!target) {
-      //     return;
-      //   }
-      //   if (hasClass(target, 'pika-select-month')) {
-      //     self.gotoMonth(target.value);
-      //   }
-      //   else if (hasClass(target, 'pika-select-year')) {
-      //     self.gotoYear(target.value);
-      //   }
-      // }
+      /**
+       * change view to a specific month (zero-index, e.g. 0: January)
+       */
 
-      // _onKeyChange(e) {
-      //   e = e || window.event;
+    }, {
+      key: "gotoMonth",
+      value: function gotoMonth(month) {
+        if (!isNaN(month)) {
+          this.calendars[0].month = parseInt(month, 10);
+          this.adjustCalendars();
+        }
+      }
 
-      //   if (self.isVisible()) {
+      /**
+       * change view to a specific full year (e.g. "2012")
+       */
 
-      //     switch(e.keyCode){
-      //     case 13:
-      //     case 27:
-      //       if (opts.field) {
-      //         opts.field.blur();
-      //       }
-      //       break;
-      //     case 37:
-      //       e.preventDefault();
-      //       self.adjustDate('subtract', 1);
-      //       break;
-      //     case 38:
-      //       self.adjustDate('subtract', 7);
-      //       break;
-      //     case 39:
-      //       self.adjustDate('add', 1);
-      //       break;
-      //     case 40:
-      //       self.adjustDate('add', 7);
-      //       break;
-      //     }
-      //   }
-      // }
-
+    }, {
+      key: "gotoYear",
+      value: function gotoYear(year) {
+        if (!isNaN(year)) {
+          this.calendars[0].year = parseInt(year, 10);
+          this.adjustCalendars();
+        }
+      }
     }, {
       key: "_handleInputChange",
       value: function _handleInputChange(e) {
@@ -9074,30 +9515,7 @@ if (Vel) {
         if (Datepicker._isDate(date)) {
           this.setDate(date);
         }
-        // if (!self._v) {
-        //   self.show();
-        // }
       }
-
-      // _onInputBlur() {
-      //   // IE allows pika div to gain focus; catch blur the input field
-      //   let pEl = document.activeElement;
-      //   do {
-      //     if (hasClass(pEl, 'pika-single')) {
-      //       return;
-      //     }
-      //   }
-      //   while ((pEl = pEl.parentNode));
-
-      //   if (!self._c) {
-      //     self._b = sto(function() {
-      //       self.hide();
-      //     }, 50);
-      //   }
-      //   self._c = false;
-      // }
-
-
     }, {
       key: "renderDayName",
       value: function renderDayName(opts, day, abbr) {
@@ -9159,12 +9577,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Datepicker(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Datepicker.__proto__ || Object.getPrototypeOf(Datepicker), "init", this).call(this, this, els, options);
       }
     }, {
       key: "_isDate",
@@ -9224,17 +9638,17 @@ if (Vel) {
     }]);
 
     return Datepicker;
-  }();
+  }(Component);
 
-  Datepicker._template = ['<div class= "modal datepicker-modal">', '<div class="modal-content datepicker-container">', '<div class="datepicker-date-display">', '<span class="year-text"></span>', '<span class="date-text"></span>', '</div>', '<div class="datepicker-calendar-container">', '<div class="pika-single"></div>', '<div class="datepicker-footer">', '<button class="btn-flat datepicker-clear waves-effect" type="button"></button>', '<div class="confirmation-btns">', '<button class="btn-flat datepicker-today waves-effect" type="button"></button>', '<button class="btn-flat datepicker-done waves-effect" type="button"></button>', '</div>', '</div>', '</div>', '</div>', '</div>'].join('');
+  Datepicker._template = ['<div class= "modal datepicker-modal">', '<div class="modal-content datepicker-container">', '<div class="datepicker-date-display">', '<span class="year-text"></span>', '<span class="date-text"></span>', '</div>', '<div class="datepicker-calendar-container">', '<div class="datepicker-calendar"></div>', '<div class="datepicker-footer">', '<button class="btn-flat datepicker-clear waves-effect" style="visibility: hidden;" type="button"></button>', '<div class="confirmation-btns">', '<button class="btn-flat datepicker-cancel waves-effect" type="button"></button>', '<button class="btn-flat datepicker-done waves-effect" type="button"></button>', '</div>', '</div>', '</div>', '</div>', '</div>'].join('');
 
   M.Datepicker = Datepicker;
 
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Datepicker, 'datepicker', 'M_Datepicker');
   }
-})(cash, M.Vel);
-;(function ($, Vel) {
+})(cash);
+;(function ($) {
   'use strict';
 
   var _defaults = {
@@ -9245,13 +9659,26 @@ if (Vel) {
     duration: 350,
     container: null,
     defaultTime: 'now', // default time, 'now' or '13:14' e.g.
-    fromnow: 0, // Millisecond offset from the defaultTime
-    doneText: 'Ok', // done button text
-    clearText: 'Clear',
-    cancelText: 'Cancel',
+    fromNow: 0, // Millisecond offset from the defaultTime
+    showClearBtn: false,
+
+    // internationalization
+    i18n: {
+      cancel: 'Cancel',
+      clear: 'Clear',
+      done: 'Ok'
+    },
+
     autoClose: false, // auto close when minute is selected
     twelveHour: true, // change to 12 hour AM/PM clock from 24 hour
-    vibrate: true // vibrate the device when dragging clock hand
+    vibrate: true, // vibrate the device when dragging clock hand
+
+    // Callbacks
+    onOpenStart: null,
+    onOpenEnd: null,
+    onCloseStart: null,
+    onCloseEnd: null,
+    onSelect: null
   };
 
   /**
@@ -9259,29 +9686,27 @@ if (Vel) {
    *
    */
 
-  var Timepicker = function () {
+  var Timepicker = function (_Component16) {
+    _inherits(Timepicker, _Component16);
+
     function Timepicker(el, options) {
       _classCallCheck(this, Timepicker);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Timepicker) {
-        el.M_Timepicker.destroy();
-      }
+      var _this57 = _possibleConstructorReturn(this, (Timepicker.__proto__ || Object.getPrototypeOf(Timepicker)).call(this, Timepicker, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Timepicker = this;
+      _this57.el.M_Timepicker = _this57;
 
-      this.options = $.extend({}, Timepicker.defaults, options);
+      _this57.options = $.extend({}, Timepicker.defaults, options);
 
-      this.id = M.guid();
-      this._insertHTMLIntoDOM();
-      this._setupModal();
-      this._setupVariables();
-      this._setupEventHandlers();
+      _this57.id = M.guid();
+      _this57._insertHTMLIntoDOM();
+      _this57._setupModal();
+      _this57._setupVariables();
+      _this57._setupEventHandlers();
 
-      this._clockSetup();
-      this._pickerSetup();
+      _this57._clockSetup();
+      _this57._pickerSetup();
+      return _this57;
     }
 
     _createClass(Timepicker, [{
@@ -9376,6 +9801,8 @@ if (Vel) {
     }, {
       key: "_handleDocumentClickEnd",
       value: function _handleDocumentClickEnd(e) {
+        var _this58 = this;
+
         e.preventDefault();
         document.removeEventListener('mouseup', this._handleDocumentClickEndBound);
         document.removeEventListener('touchend', this._handleDocumentClickEndBound);
@@ -9389,10 +9816,14 @@ if (Vel) {
         if (this.currentView === 'hours') {
           this.showView('minutes', this.options.duration / 2);
         } else if (this.options.autoClose) {
-          this.minutesView.addClass('timepicker-dial-out');
+          $(this.minutesView).addClass('timepicker-dial-out');
           setTimeout(function () {
-            this.done();
+            _this58.done();
           }, this.options.duration / 2);
+        }
+
+        if (typeof this.options.onSelect === 'function') {
+          this.options.onSelect.call(this, this.hours, this.minutes);
         }
 
         // Unbind mousemove event
@@ -9417,11 +9848,17 @@ if (Vel) {
     }, {
       key: "_setupModal",
       value: function _setupModal() {
-        var _this35 = this;
+        var _this59 = this;
 
-        this.modal = new M.Modal(this.modalEl, {
-          complete: function () {
-            _this35.isOpen = false;
+        this.modal = M.Modal.init(this.modalEl, {
+          onOpenStart: this.options.onOpenStart,
+          onOpenEnd: this.options.onOpenEnd,
+          onCloseStart: this.options.onCloseStart,
+          onCloseEnd: function () {
+            if (typeof _this59.options.onCloseEnd === 'function') {
+              _this59.options.onCloseEnd.call(_this59);
+            }
+            _this59.isOpen = false;
           }
         });
       }
@@ -9445,11 +9882,14 @@ if (Vel) {
     }, {
       key: "_pickerSetup",
       value: function _pickerSetup() {
-        $('<button class="btn-flat timepicker-clear waves-effect" type="button" tabindex="' + (this.options.twelveHour ? '3' : '1') + '">' + this.options.clearText + '</button>').appendTo(this.footer).on('click', this.clear.bind(this));
+        var $clearBtn = $("<button class=\"btn-flat timepicker-clear waves-effect\" style=\"visibility: hidden;\" type=\"button\" tabindex=\"" + (this.options.twelveHour ? '3' : '1') + "\">" + this.options.i18n.clear + "</button>").appendTo(this.footer).on('click', this.clear.bind(this));
+        if (this.options.showClearBtn) {
+          $clearBtn.css({ visibility: '' });
+        }
 
         var confirmationBtnsContainer = $('<div class="confirmation-btns"></div>');
-        $('<button class="btn-flat timepicker-close waves-effect" type="button" tabindex="' + (this.options.twelveHour ? '3' : '1') + '">' + this.options.cancelText + '</button>').appendTo(confirmationBtnsContainer).on('click', this.close.bind(this));
-        $('<button class="btn-flat timepicker-close waves-effect" type="button" tabindex="' + (this.options.twelveHour ? '3' : '1') + '">' + this.options.doneText + '</button>').appendTo(confirmationBtnsContainer).on('click', this.done.bind(this));
+        $('<button class="btn-flat timepicker-close waves-effect" type="button" tabindex="' + (this.options.twelveHour ? '3' : '1') + '">' + this.options.i18n.cancel + '</button>').appendTo(confirmationBtnsContainer).on('click', this.close.bind(this));
+        $('<button class="btn-flat timepicker-close waves-effect" type="button" tabindex="' + (this.options.twelveHour ? '3' : '1') + '">' + this.options.i18n.done + '</button>').appendTo(confirmationBtnsContainer).on('click', this.done.bind(this));
         confirmationBtnsContainer.appendTo(this.footer);
       }
     }, {
@@ -9562,8 +10002,10 @@ if (Vel) {
     }, {
       key: "_updateAmPmView",
       value: function _updateAmPmView() {
-        this.$amBtn.toggleClass('text-primary', this.amOrPm === 'AM');
-        this.$pmBtn.toggleClass('text-primary', this.amOrPm === 'PM');
+        if (this.options.twelveHour) {
+          this.$amBtn.toggleClass('text-primary', this.amOrPm === 'AM');
+          this.$pmBtn.toggleClass('text-primary', this.amOrPm === 'PM');
+        }
       }
     }, {
       key: "_updateTimeFromInput",
@@ -9571,15 +10013,15 @@ if (Vel) {
         // Get the time
         var value = ((this.el.value || this.options.defaultTime || '') + '').split(':');
         if (this.options.twelveHour && !(typeof value[1] === 'undefined')) {
-          if (value[1].indexOf("AM") > 0) {
+          if (value[1].toUpperCase().indexOf('AM') > 0) {
             this.amOrPm = 'AM';
           } else {
             this.amOrPm = 'PM';
           }
-          value[1] = value[1].replace("AM", "").replace("PM", "");
+          value[1] = value[1].replace('AM', '').replace('PM', '');
         }
         if (value[0] === 'now') {
-          var now = new Date(+new Date() + this.options.fromnow);
+          var now = new Date(+new Date() + this.options.fromNow);
           value = [now.getHours(), now.getMinutes()];
           if (this.options.twelveHour) {
             this.amOrPm = value[0] >= 12 && value[0] < 24 ? 'PM' : 'AM';
@@ -9595,7 +10037,7 @@ if (Vel) {
     }, {
       key: "showView",
       value: function showView(view, delay) {
-        if (view === 'minutes' && $(this.hoursView).css("visibility") === "visible") {
+        if (view === 'minutes' && $(this.hoursView).css('visibility') === 'visible') {
           // raiseCallback(this.options.beforeHourSelect);
         }
         var isHours = view === 'hours',
@@ -9645,7 +10087,7 @@ if (Vel) {
     }, {
       key: "setHand",
       value: function setHand(x, y, roundBy5) {
-        var _this36 = this;
+        var _this60 = this;
 
         var radian = Math.atan2(x, -y),
             isHours = this.currentView === 'hours',
@@ -9700,7 +10142,7 @@ if (Vel) {
             if (!this.vibrateTimer) {
               navigator[this.vibrate](10);
               this.vibrateTimer = setTimeout(function () {
-                _this36.vibrateTimer = null;
+                _this60.vibrateTimer = null;
               }, 100);
             }
           }
@@ -9733,6 +10175,7 @@ if (Vel) {
         this.isOpen = true;
         this._updateTimeFromInput();
         this.showView('hours');
+
         this.modal.open();
       }
     }, {
@@ -9777,12 +10220,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Timepicker(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Timepicker.__proto__ || Object.getPrototypeOf(Timepicker), "init", this).call(this, this, els, options);
       }
     }, {
       key: "_addLeadingZero",
@@ -9836,7 +10275,7 @@ if (Vel) {
     }]);
 
     return Timepicker;
-  }();
+  }(Component);
 
   Timepicker._template = ['<div class= "modal timepicker-modal">', '<div class="modal-content timepicker-container">', '<div class="timepicker-digital-display">', '<div class="timepicker-text-container">', '<div class="timepicker-display-column">', '<span class="timepicker-span-hours text-primary"></span>', ':', '<span class="timepicker-span-minutes"></span>', '</div>', '<div class="timepicker-display-column timepicker-display-am-pm">', '<div class="timepicker-span-am-pm"></div>', '</div>', '</div>', '</div>', '<div class="timepicker-analog-display">', '<div class="timepicker-plate">', '<div class="timepicker-canvas"></div>', '<div class="timepicker-dial timepicker-hours"></div>', '<div class="timepicker-dial timepicker-minutes timepicker-dial-out"></div>', '</div>', '<div class="timepicker-footer"></div>', '</div>', '</div>', '</div>'].join('');
 
@@ -9845,7 +10284,7 @@ if (Vel) {
   if (M.jQueryLoaded) {
     M.initializeJqueryWrapper(Timepicker, 'timepicker', 'M_Timepicker');
   }
-})(cash, M.Vel);
+})(cash);
 ;(function ($) {
   'use strict';
 
@@ -9856,7 +10295,9 @@ if (Vel) {
    *
    */
 
-  var CharacterCounter = function () {
+  var CharacterCounter = function (_Component17) {
+    _inherits(CharacterCounter, _Component17);
+
     /**
      * Construct CharacterCounter instance
      * @constructor
@@ -9866,24 +10307,20 @@ if (Vel) {
     function CharacterCounter(el, options) {
       _classCallCheck(this, CharacterCounter);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_CharacterCounter) {
-        el.M_CharacterCounter.destroy();
-      }
+      var _this61 = _possibleConstructorReturn(this, (CharacterCounter.__proto__ || Object.getPrototypeOf(CharacterCounter)).call(this, CharacterCounter, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_CharacterCounter = this;
+      _this61.el.M_CharacterCounter = _this61;
 
       /**
        * Options for the character counter
        */
-      this.options = $.extend({}, CharacterCounter.defaults, options);
+      _this61.options = $.extend({}, CharacterCounter.defaults, options);
 
-      this.isInvalid = false;
-      this.isValidLength = false;
-      this._setupCounter();
-      this._setupEventHandlers();
+      _this61.isInvalid = false;
+      _this61.isValidLength = false;
+      _this61._setupCounter();
+      _this61._setupEventHandlers();
+      return _this61;
     }
 
     _createClass(CharacterCounter, [{
@@ -9988,12 +10425,8 @@ if (Vel) {
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new CharacterCounter(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(CharacterCounter.__proto__ || Object.getPrototypeOf(CharacterCounter), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -10014,7 +10447,7 @@ if (Vel) {
     }]);
 
     return CharacterCounter;
-  }();
+  }(Component);
 
   M.CharacterCounter = CharacterCounter;
 
@@ -10030,6 +10463,7 @@ if (Vel) {
     dist: -100, // zoom scale TODO: make this more intuitive as an option
     shift: 0, // spacing for center image
     padding: 0, // Padding between non center items
+    numVisible: 5, // Number of visible items in carousel
     fullWidth: false, // Change to full width styles
     indicators: false, // Toggle indicators
     noWrap: false, // Don't wrap around and cycle through items.
@@ -10041,7 +10475,9 @@ if (Vel) {
    *
    */
 
-  var Carousel = function () {
+  var Carousel = function (_Component18) {
+    _inherits(Carousel, _Component18);
+
     /**
      * Construct Carousel instance
      * @constructor
@@ -10049,63 +10485,57 @@ if (Vel) {
      * @param {Object} options
      */
     function Carousel(el, options) {
-      var _this37 = this;
-
       _classCallCheck(this, Carousel);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Carousel) {
-        el.M_Carousel.destroy();
-      }
+      var _this62 = _possibleConstructorReturn(this, (Carousel.__proto__ || Object.getPrototypeOf(Carousel)).call(this, Carousel, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Carousel = this;
+      _this62.el.M_Carousel = _this62;
 
       /**
        * Options for the carousel
        * @member Carousel#options
        * @prop {Number} duration
        * @prop {Number} dist
-       * @prop {number} shift
-       * @prop {number} padding
+       * @prop {Number} shift
+       * @prop {Number} padding
+       * @prop {Number} numVisible
        * @prop {Boolean} fullWidth
        * @prop {Boolean} indicators
        * @prop {Boolean} noWrap
        * @prop {Function} onCycleTo
        */
-      this.options = $.extend({}, Carousel.defaults, options);
+      _this62.options = $.extend({}, Carousel.defaults, options);
 
       // Setup
-      this.hasMultipleSlides = this.$el.find('.carousel-item').length > 1;
-      this.showIndicators = this.options.indicators && this.hasMultipleSlides;
-      this.noWrap = this.options.noWrap || !this.hasMultipleSlides;
-      this.pressed = false;
-      this.dragged = false;
-      this.offset = this.target = 0;
-      this.images = [];
-      this.itemWidth = this.$el.find('.carousel-item').first().innerWidth();
-      this.itemHeight = this.$el.find('.carousel-item').first().innerHeight();
-      this.dim = this.itemWidth * 2 + this.options.padding || 1; // Make sure dim is non zero for divisions.
-      this._autoScrollBound = this._autoScroll.bind(this);
-      this._trackBound = this._track.bind(this);
+      _this62.hasMultipleSlides = _this62.$el.find('.carousel-item').length > 1;
+      _this62.showIndicators = _this62.options.indicators && _this62.hasMultipleSlides;
+      _this62.noWrap = _this62.options.noWrap || !_this62.hasMultipleSlides;
+      _this62.pressed = false;
+      _this62.dragged = false;
+      _this62.offset = _this62.target = 0;
+      _this62.images = [];
+      _this62.itemWidth = _this62.$el.find('.carousel-item').first().innerWidth();
+      _this62.itemHeight = _this62.$el.find('.carousel-item').first().innerHeight();
+      _this62.dim = _this62.itemWidth * 2 + _this62.options.padding || 1; // Make sure dim is non zero for divisions.
+      _this62._autoScrollBound = _this62._autoScroll.bind(_this62);
+      _this62._trackBound = _this62._track.bind(_this62);
 
       // Full Width carousel setup
-      if (this.options.fullWidth) {
-        this.options.dist = 0;
-        this._setCarouselHeight();
+      if (_this62.options.fullWidth) {
+        _this62.options.dist = 0;
+        _this62._setCarouselHeight();
 
         // Offset fixed items when indicators.
-        if (this.showIndicators) {
-          this.$el.find('.carousel-fixed-item').addClass('with-indicators');
+        if (_this62.showIndicators) {
+          _this62.$el.find('.carousel-fixed-item').addClass('with-indicators');
         }
       }
 
       // Iterate through slides
-      this.$indicators = $('<ul class="indicators"></ul>');
-      this.$el.find('.carousel-item').each(function (el, i) {
-        _this37.images.push(el);
-        if (_this37.showIndicators) {
+      _this62.$indicators = $('<ul class="indicators"></ul>');
+      _this62.$el.find('.carousel-item').each(function (el, i) {
+        _this62.images.push(el);
+        if (_this62.showIndicators) {
           var $indicator = $('<li class="indicator-item"></li>');
 
           // Add active to first by default.
@@ -10113,27 +10543,31 @@ if (Vel) {
             $indicator[0].classList.add('active');
           }
 
-          _this37.$indicators.append($indicator);
+          _this62.$indicators.append($indicator);
         }
       });
-      if (this.showIndicators) {
-        this.$el.append(this.$indicators);
+      if (_this62.showIndicators) {
+        _this62.$el.append(_this62.$indicators);
       }
-      this.count = this.images.length;
+      _this62.count = _this62.images.length;
+
+      // Cap numVisible at count
+      _this62.options.numVisible = Math.min(_this62.count, _this62.options.numVisible);
 
       // Setup cross browser string
-      this.xform = 'transform';
+      _this62.xform = 'transform';
       ['webkit', 'Moz', 'O', 'ms'].every(function (prefix) {
         var e = prefix + 'Transform';
         if (typeof document.body.style[e] !== 'undefined') {
-          _this37.xform = e;
+          _this62.xform = e;
           return false;
         }
         return true;
       });
 
-      this._setupEventHandlers();
-      this._scroll(this.offset);
+      _this62._setupEventHandlers();
+      _this62._scroll(_this62.offset);
+      return _this62;
     }
 
     _createClass(Carousel, [{
@@ -10155,7 +10589,7 @@ if (Vel) {
     }, {
       key: "_setupEventHandlers",
       value: function _setupEventHandlers() {
-        var _this38 = this;
+        var _this63 = this;
 
         this._handleCarouselTapBound = this._handleCarouselTap.bind(this);
         this._handleCarouselDragBound = this._handleCarouselDrag.bind(this);
@@ -10177,7 +10611,7 @@ if (Vel) {
         if (this.showIndicators && this.$indicators) {
           this._handleIndicatorClickBound = this._handleIndicatorClick.bind(this);
           this.$indicators.find('.indicator-item').each(function (el, i) {
-            el.addEventListener('click', _this38._handleIndicatorClickBound);
+            el.addEventListener('click', _this63._handleIndicatorClickBound);
           });
         }
 
@@ -10195,7 +10629,7 @@ if (Vel) {
     }, {
       key: "_removeEventHandlers",
       value: function _removeEventHandlers() {
-        var _this39 = this;
+        var _this64 = this;
 
         if (typeof window.ontouchstart !== 'undefined') {
           this.el.removeEventListener('touchstart', this._handleCarouselTapBound);
@@ -10210,7 +10644,7 @@ if (Vel) {
 
         if (this.showIndicators && this.$indicators) {
           this.$indicators.find('.indicator-item').each(function (el, i) {
-            el.removeEventListener('click', _this39._handleIndicatorClickBound);
+            el.removeEventListener('click', _this64._handleIndicatorClickBound);
           });
         }
 
@@ -10396,7 +10830,7 @@ if (Vel) {
     }, {
       key: "_setCarouselHeight",
       value: function _setCarouselHeight(imageOnly) {
-        var _this40 = this;
+        var _this65 = this;
 
         var firstSlide = this.$el.find('.carousel-item.active').length ? this.$el.find('.carousel-item.active').first() : this.$el.find('.carousel-item').first();
         var firstImage = firstSlide.find('img').first();
@@ -10416,7 +10850,7 @@ if (Vel) {
           } else {
             // Get height when image is loaded normally
             firstImage.one('load', function (el, i) {
-              _this40.$el.css('height', el.offsetHeight + 'px');
+              _this65.$el.css('height', el.offsetHeight + 'px');
             });
           }
         } else if (!imageOnly) {
@@ -10522,7 +10956,7 @@ if (Vel) {
     }, {
       key: "_scroll",
       value: function _scroll(x) {
-        var _this41 = this;
+        var _this66 = this;
 
         // Track scrolling state
         if (!this.$el.hasClass('scrolling')) {
@@ -10532,7 +10966,7 @@ if (Vel) {
           window.clearTimeout(this.scrollingTimeout);
         }
         this.scrollingTimeout = window.setTimeout(function () {
-          _this41.$el.removeClass('scrolling');
+          _this66.$el.removeClass('scrolling');
         }, this.options.duration);
 
         // Start actual scroll
@@ -10544,8 +10978,10 @@ if (Vel) {
             el = void 0,
             alignment = void 0,
             zTranslation = void 0,
-            tweenedOpacity = void 0;
+            tweenedOpacity = void 0,
+            centerTweenedOpacity = void 0;
         var lastCenter = this.center;
+        var numVisibleOffset = 1 / this.options.numVisible;
 
         this.offset = typeof x === 'number' ? x : this.offset;
         this.center = Math.floor((this.offset + this.dim / 2) / this.dim);
@@ -10554,11 +10990,13 @@ if (Vel) {
         tween = -dir * delta * 2 / this.dim;
         half = this.count >> 1;
 
-        if (!this.options.fullWidth) {
+        if (this.options.fullWidth) {
+          alignment = 'translateX(0)';
+          centerTweenedOpacity = 1;
+        } else {
           alignment = 'translateX(' + (this.el.clientWidth - this.itemWidth) / 2 + 'px) ';
           alignment += 'translateY(' + (this.el.clientHeight - this.itemHeight) / 2 + 'px)';
-        } else {
-          alignment = 'translateX(0)';
+          centerTweenedOpacity = 1 - numVisibleOffset * tween;
         }
 
         // Set indicator active
@@ -10581,15 +11019,8 @@ if (Vel) {
             this.$el.find('.carousel-item').removeClass('active');
             el.classList.add('active');
           }
-          el.style[this.xform] = alignment + ' translateX(' + -delta / 2 + 'px)' + ' translateX(' + dir * this.options.shift * tween * i + 'px)' + ' translateZ(' + this.options.dist * tween + 'px)';
-          el.style.zIndex = 0;
-          if (this.options.fullWidth) {
-            tweenedOpacity = 1;
-          } else {
-            tweenedOpacity = 1 - 0.2 * tween;
-          }
-          el.style.opacity = tweenedOpacity;
-          el.style.visibility = 'visible';
+          var transformString = alignment + " translateX(" + -delta / 2 + "px) translateX(" + dir * this.options.shift * tween * i + "px) translateZ(" + this.options.dist * tween + "px)";
+          this._updateItemStyle(el, centerTweenedOpacity, 0, transformString);
         }
 
         for (i = 1; i <= half; ++i) {
@@ -10599,15 +11030,13 @@ if (Vel) {
             tweenedOpacity = i === half && delta < 0 ? 1 - tween : 1;
           } else {
             zTranslation = this.options.dist * (i * 2 + tween * dir);
-            tweenedOpacity = 1 - 0.2 * (i * 2 + tween * dir);
+            tweenedOpacity = 1 - numVisibleOffset * (i * 2 + tween * dir);
           }
           // Don't show wrapped items.
           if (!this.noWrap || this.center + i < this.count) {
             el = this.images[this._wrap(this.center + i)];
-            el.style[this.xform] = alignment + ' translateX(' + (this.options.shift + (this.dim * i - delta) / 2) + 'px)' + ' translateZ(' + zTranslation + 'px)';
-            el.style.zIndex = -i;
-            el.style.opacity = tweenedOpacity;
-            el.style.visibility = 'visible';
+            var _transformString = alignment + " translateX(" + (this.options.shift + (this.dim * i - delta) / 2) + "px) translateZ(" + zTranslation + "px)";
+            this._updateItemStyle(el, tweenedOpacity, -i, _transformString);
           }
 
           // left side
@@ -10616,15 +11045,13 @@ if (Vel) {
             tweenedOpacity = i === half && delta > 0 ? 1 - tween : 1;
           } else {
             zTranslation = this.options.dist * (i * 2 - tween * dir);
-            tweenedOpacity = 1 - 0.2 * (i * 2 - tween * dir);
+            tweenedOpacity = 1 - numVisibleOffset * (i * 2 - tween * dir);
           }
           // Don't show wrapped items.
           if (!this.noWrap || this.center - i >= 0) {
             el = this.images[this._wrap(this.center - i)];
-            el.style[this.xform] = alignment + ' translateX(' + (-this.options.shift + (-this.dim * i - delta) / 2) + 'px)' + ' translateZ(' + zTranslation + 'px)';
-            el.style.zIndex = -i;
-            el.style.opacity = tweenedOpacity;
-            el.style.visibility = 'visible';
+            var _transformString2 = alignment + " translateX(" + (-this.options.shift + (-this.dim * i - delta) / 2) + "px) translateZ(" + zTranslation + "px)";
+            this._updateItemStyle(el, tweenedOpacity, -i, _transformString2);
           }
         }
 
@@ -10632,28 +11059,38 @@ if (Vel) {
         // Don't show wrapped items.
         if (!this.noWrap || this.center >= 0 && this.center < this.count) {
           el = this.images[this._wrap(this.center)];
-          el.style[this.xform] = alignment + ' translateX(' + -delta / 2 + 'px)' + ' translateX(' + dir * this.options.shift * tween + 'px)' + ' translateZ(' + this.options.dist * tween + 'px)';
-          el.style.zIndex = 0;
-          if (this.options.fullWidth) {
-            tweenedOpacity = 1;
-          } else {
-            tweenedOpacity = 1 - 0.2 * tween;
-          }
-          el.style.opacity = tweenedOpacity;
-          el.style.visibility = 'visible';
+          var _transformString3 = alignment + " translateX(" + -delta / 2 + "px) translateX(" + dir * this.options.shift * tween + "px) translateZ(" + this.options.dist * tween + "px)";
+          this._updateItemStyle(el, centerTweenedOpacity, 0, _transformString3);
         }
 
         // onCycleTo callback
         var $currItem = this.$el.find('.carousel-item').eq(this._wrap(this.center));
-        if (lastCenter !== this.center && typeof this.options.onCycleTo === "function") {
+        if (lastCenter !== this.center && typeof this.options.onCycleTo === 'function') {
           this.options.onCycleTo.call(this, $currItem[0], this.dragged);
         }
 
         // One time callback
-        if (typeof this.oneTimeCallback === "function") {
+        if (typeof this.oneTimeCallback === 'function') {
           this.oneTimeCallback.call(this, $currItem[0], this.dragged);
           this.oneTimeCallback = null;
         }
+      }
+
+      /**
+       * Cycle to target
+       * @param {Element} el
+       * @param {Number} opacity
+       * @param {Number} zIndex
+       * @param {String} transform
+       */
+
+    }, {
+      key: "_updateItemStyle",
+      value: function _updateItemStyle(el, opacity, zIndex, transform) {
+        el.style[this.xform] = transform;
+        el.style.zIndex = zIndex;
+        el.style.opacity = opacity;
+        el.style.visibility = 'visible';
       }
 
       /**
@@ -10691,7 +11128,7 @@ if (Vel) {
         }
 
         // Set one time callback
-        if (typeof callback === "function") {
+        if (typeof callback === 'function') {
           this.oneTimeCallback = callback;
         }
 
@@ -10716,12 +11153,12 @@ if (Vel) {
         }
 
         var index = this.center + n;
-        if (index > this.count || index < 0) {
+        if (index >= this.count || index < 0) {
           if (this.noWrap) {
             return;
-          } else {
-            index = this._wrap(index);
           }
+
+          index = this._wrap(index);
         }
         this._cycleTo(index);
       }
@@ -10739,12 +11176,12 @@ if (Vel) {
         }
 
         var index = this.center - n;
-        if (index > this.count || index < 0) {
+        if (index >= this.count || index < 0) {
           if (this.noWrap) {
             return;
-          } else {
-            index = this._wrap(index);
           }
+
+          index = this._wrap(index);
         }
 
         this._cycleTo(index);
@@ -10766,21 +11203,17 @@ if (Vel) {
         if (n > this.count || n < 0) {
           if (this.noWrap) {
             return;
-          } else {
-            n = this._wrap(n);
           }
+
+          n = this._wrap(n);
         }
 
         this._cycleTo(n, callback);
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new Carousel(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Carousel.__proto__ || Object.getPrototypeOf(Carousel), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -10801,7 +11234,7 @@ if (Vel) {
     }]);
 
     return Carousel;
-  }();
+  }(Component);
 
   M.Carousel = Carousel;
 
@@ -10812,49 +11245,52 @@ if (Vel) {
 ;(function ($) {
   'use strict';
 
-  var _defaults = {};
+  var _defaults = {
+    onOpen: undefined,
+    onClose: undefined
+  };
 
   /**
    * @class
    *
    */
 
-  var FeatureDiscovery = function () {
+  var TapTarget = function (_Component19) {
+    _inherits(TapTarget, _Component19);
+
     /**
-     * Construct FeatureDiscovery instance
+     * Construct TapTarget instance
      * @constructor
      * @param {Element} el
      * @param {Object} options
      */
-    function FeatureDiscovery(el, options) {
-      _classCallCheck(this, FeatureDiscovery);
+    function TapTarget(el, options) {
+      _classCallCheck(this, TapTarget);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_FeatureDiscovery) {
-        el.M_FeatureDiscovery.destroy();
-      }
+      var _this67 = _possibleConstructorReturn(this, (TapTarget.__proto__ || Object.getPrototypeOf(TapTarget)).call(this, TapTarget, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_FeatureDiscovery = this;
+      _this67.el.M_TapTarget = _this67;
 
       /**
        * Options for the select
-       * @member FeatureDiscovery#options
+       * @member TapTarget#options
+       * @prop {Function} onOpen - Callback function called when feature discovery is opened
+       * @prop {Function} onClose - Callback function called when feature discovery is closed
        */
-      this.options = $.extend({}, FeatureDiscovery.defaults, options);
+      _this67.options = $.extend({}, TapTarget.defaults, options);
 
-      this.isOpen = false;
+      _this67.isOpen = false;
 
       // setup
-      this.$origin = $('#' + this.$el.attr('data-target'));
-      this._setup();
+      _this67.$origin = $('#' + _this67.$el.attr('data-target'));
+      _this67._setup();
 
-      this._calculatePositioning();
-      this._setupEventHandlers();
+      _this67._calculatePositioning();
+      _this67._setupEventHandlers();
+      return _this67;
     }
 
-    _createClass(FeatureDiscovery, [{
+    _createClass(TapTarget, [{
       key: "destroy",
 
 
@@ -10863,7 +11299,7 @@ if (Vel) {
        */
       value: function destroy() {
         this._removeEventHandlers();
-        this.el.FeatureDiscovery = undefined;
+        this.el.TapTarget = undefined;
       }
 
       /**
@@ -10948,7 +11384,7 @@ if (Vel) {
       }
 
       /**
-       * Setup feature discovery
+       * Setup Tap Target
        */
 
     }, {
@@ -11084,7 +11520,7 @@ if (Vel) {
       }
 
       /**
-       * Open Feature Discovery
+       * Open TapTarget
        */
 
     }, {
@@ -11094,14 +11530,20 @@ if (Vel) {
           return;
         }
 
+        // onOpen callback
+        if (typeof this.options.onOpen === 'function') {
+          this.options.onOpen.call(this, this.$origin[0]);
+        }
+
         this.isOpen = true;
         this.wrapper.classList.add('open');
 
         document.body.addEventListener('click', this._handleDocumentClickBound, true);
+        document.body.addEventListener('touchend', this._handleDocumentClickBound);
       }
 
       /**
-       * Close Feature Discovery
+       * Close Tap Target
        */
 
     }, {
@@ -11111,19 +11553,21 @@ if (Vel) {
           return;
         }
 
+        // onClose callback
+        if (typeof this.options.onClose === 'function') {
+          this.options.onClose.call(this, this.$origin[0]);
+        }
+
         this.isOpen = false;
         this.wrapper.classList.remove('open');
 
         document.body.removeEventListener('click', this._handleDocumentClickBound, true);
+        document.body.removeEventListener('touchend', this._handleDocumentClickBound);
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          arr.push(new FeatureDiscovery(this, options));
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(TapTarget.__proto__ || Object.getPrototypeOf(TapTarget), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -11134,7 +11578,7 @@ if (Vel) {
       key: "getInstance",
       value: function getInstance(el) {
         var domElem = !!el.jquery ? el[0] : el;
-        return domElem.M_FeatureDiscovery;
+        return domElem.M_TapTarget;
       }
     }, {
       key: "defaults",
@@ -11143,20 +11587,21 @@ if (Vel) {
       }
     }]);
 
-    return FeatureDiscovery;
-  }();
+    return TapTarget;
+  }(Component);
 
-  M.FeatureDiscovery = FeatureDiscovery;
+  M.TapTarget = TapTarget;
 
   if (M.jQueryLoaded) {
-    M.initializeJqueryWrapper(FeatureDiscovery, 'featureDiscovery', 'M_FeatureDiscovery');
+    M.initializeJqueryWrapper(TapTarget, 'tapTarget', 'M_TapTarget');
   }
 })(cash);
 ;(function ($) {
   'use strict';
 
   var _defaults = {
-    classes: ''
+    classes: '',
+    dropdownOptions: {}
   };
 
   /**
@@ -11164,42 +11609,46 @@ if (Vel) {
    *
    */
 
-  var Select = function () {
+  var FormSelect = function (_Component20) {
+    _inherits(FormSelect, _Component20);
+
     /**
-     * Construct Select instance
+     * Construct FormSelect instance
      * @constructor
      * @param {Element} el
      * @param {Object} options
      */
-    function Select(el, options) {
-      _classCallCheck(this, Select);
+    function FormSelect(el, options) {
+      _classCallCheck(this, FormSelect);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Select) {
-        el.M_Select.destroy();
+      // Don't init if browser default version
+      var _this68 = _possibleConstructorReturn(this, (FormSelect.__proto__ || Object.getPrototypeOf(FormSelect)).call(this, FormSelect, el, options));
+
+      if (_this68.$el.hasClass('browser-default')) {
+        return _possibleConstructorReturn(_this68);
       }
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Select = this;
+      _this68.el.M_FormSelect = _this68;
 
       /**
        * Options for the select
-       * @member Select#options
+       * @member FormSelect#options
        */
-      this.options = $.extend({}, Select.defaults, options);
+      _this68.options = $.extend({}, FormSelect.defaults, options);
 
-      this.isMultiple = this.$el.prop('multiple');
+      _this68.isMultiple = _this68.$el.prop('multiple');
 
       // Setup
-      this.valuesSelected = [];
-      this.$selectedOptions = $();
-      this._setupDropdown();
+      _this68.el.tabIndex = -1;
+      _this68._keysSelected = {};
+      _this68._valueDict = {}; // Maps key to original and generated option element.
+      _this68._setupDropdown();
 
-      this._setupEventHandlers();
+      _this68._setupEventHandlers();
+      return _this68;
     }
 
-    _createClass(Select, [{
+    _createClass(FormSelect, [{
       key: "destroy",
 
 
@@ -11209,7 +11658,7 @@ if (Vel) {
       value: function destroy() {
         this._removeEventHandlers();
         this._removeDropdown();
-        this.el.M_Select = undefined;
+        this.el.M_FormSelect = undefined;
       }
 
       /**
@@ -11219,14 +11668,14 @@ if (Vel) {
     }, {
       key: "_setupEventHandlers",
       value: function _setupEventHandlers() {
-        var _this42 = this;
+        var _this69 = this;
 
         this._handleSelectChangeBound = this._handleSelectChange.bind(this);
         this._handleOptionClickBound = this._handleOptionClick.bind(this);
         this._handleInputClickBound = this._handleInputClick.bind(this);
 
         $(this.dropdownOptions).find('li:not(.optgroup)').each(function (el) {
-          el.addEventListener('click', _this42._handleOptionClickBound);
+          el.addEventListener('click', _this69._handleOptionClickBound);
         });
         this.el.addEventListener('change', this._handleSelectChangeBound);
         this.input.addEventListener('click', this._handleInputClickBound);
@@ -11239,14 +11688,13 @@ if (Vel) {
     }, {
       key: "_removeEventHandlers",
       value: function _removeEventHandlers() {
-        var _this43 = this;
+        var _this70 = this;
 
         $(this.dropdownOptions).find('li:not(.optgroup)').each(function (el) {
-          el.removeEventListener('click', _this43._handleOptionClickBound);
+          el.removeEventListener('click', _this70._handleOptionClickBound);
         });
         this.el.removeEventListener('change', this._handleSelectChangeBound);
         this.input.removeEventListener('click', this._handleInputClickBound);
-        this.input.removeEventListener('focus', this._handleInputFocusBound);
       }
 
       /**
@@ -11270,23 +11718,31 @@ if (Vel) {
       value: function _handleOptionClick(e) {
         e.preventDefault();
         var option = $(e.target).closest('li')[0];
-        var optionIndex = $(this.dropdownOptions).find('li:not(.optgroup)').index(option);
-        if (!$(option).hasClass('disabled') && !$(option).hasClass('optgroup')) {
+        var key = option.id;
+        if (!$(option).hasClass('disabled') && !$(option).hasClass('optgroup') && key.length) {
           var selected = true;
 
           if (this.isMultiple) {
-            var checkbox = $(option).find('input[type="checkbox"]');
-            checkbox.prop('checked', !checkbox.prop('checked'));
-            selected = this._toggleEntryFromArray(optionIndex);
+            // Deselect placeholder option if still selected.
+            var placeholderOption = $(this.dropdownOptions).find('li.disabled.selected');
+            if (placeholderOption.length) {
+              placeholderOption.removeClass('selected');
+              placeholderOption.find('input[type="checkbox"]').prop('checked', false);
+              this._toggleEntryFromArray(placeholderOption[0].id);
+            }
+            selected = this._toggleEntryFromArray(key);
           } else {
-            $(this.dropdownOptions).find('li').removeClass('active');
-            $(option).toggleClass('active');
-            this.input.value = option.textContent;
+            $(this.dropdownOptions).find('li').removeClass('selected');
+            $(option).toggleClass('selected', selected);
           }
 
-          this._activateOption($(this.dropdownOptions), option);
-          this.$el.find('option').eq(optionIndex).prop('selected', selected);
-          this.$el.trigger('change');
+          // Set selected on original select option
+          // Only trigger if selected state changed
+          var prevSelected = $(this._valueDict[key].el).prop('selected');
+          if (prevSelected !== selected) {
+            $(this._valueDict[key].el).prop('selected', selected);
+            this.$el.trigger('change');
+          }
         }
 
         e.stopPropagation();
@@ -11312,11 +11768,10 @@ if (Vel) {
     }, {
       key: "_setupDropdown",
       value: function _setupDropdown() {
-        var _this44 = this;
+        var _this71 = this;
 
         this.wrapper = document.createElement('div');
-        this.wrapper.classList.add();
-        $(this.wrapper).addClass('select-wrapper' + ' ' + this.options.classes);
+        $(this.wrapper).addClass('select-wrapper ' + this.options.classes);
         this.$el.before($(this.wrapper));
         this.wrapper.appendChild(this.el);
 
@@ -11336,25 +11791,21 @@ if (Vel) {
             if ($(el).is('option')) {
               // Direct descendant option.
               var optionEl = void 0;
-              if (_this44.isMultiple) {
-                optionEl = _this44._appendOptionWithIcon(_this44.$el, el, 'multiple');
+              if (_this71.isMultiple) {
+                optionEl = _this71._appendOptionWithIcon(_this71.$el, el, 'multiple');
               } else {
-                optionEl = _this44._appendOptionWithIcon(_this44.$el, el);
+                optionEl = _this71._appendOptionWithIcon(_this71.$el, el);
               }
 
-              if ($(el).prop('selected')) {
-                _this44.$selectedOptions.add(optionEl);
-              }
+              _this71._addOptionToValueDict(el, optionEl);
             } else if ($(el).is('optgroup')) {
               // Optgroup.
               var selectOptions = $(el).children('option');
-              $(_this44.dropdownOptions).append($('<li class="optgroup"><span>' + el.getAttribute('label') + '</span></li>')[0]);
+              $(_this71.dropdownOptions).append($('<li class="optgroup"><span>' + el.getAttribute('label') + '</span></li>')[0]);
 
               selectOptions.each(function (el) {
-                var optionEl = _this44._appendOptionWithIcon(_this44.$el, el, 'optgroup-option');
-                if ($(el).prop('selected')) {
-                  _this44.$selectedOptions.add(optionEl);
-                }
+                var optionEl = _this71._appendOptionWithIcon(_this71.$el, el, 'optgroup-option');
+                _this71._addOptionToValueDict(el, optionEl);
               });
             }
           });
@@ -11376,20 +11827,60 @@ if (Vel) {
         this._setValueToInput();
 
         // Add caret
-        var dropdownIcon = $('<svg class="caret" fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+        var dropdownIcon = $('<svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
         this.$el.before(dropdownIcon[0]);
 
         // Initialize dropdown
         if (!this.el.disabled) {
-          var dropdownOptions = {};
+          var dropdownOptions = $.extend({}, this.options.dropdownOptions);
+
+          // Add callback for centering selected option when dropdown content is scrollable
+          dropdownOptions.onOpenEnd = function (el) {
+            var selectedOption = $(_this71.dropdownOptions).find('.selected').first();
+
+            if (selectedOption.length) {
+              // Focus selected option in dropdown
+              M.keyDown = true;
+              _this71.dropdown.focusedIndex = selectedOption.index();
+              _this71.dropdown._focusFocusedItem();
+              M.keyDown = false;
+
+              // Handle scrolling to selected option
+              if (_this71.dropdown.isScrollable) {
+                var scrollOffset = selectedOption[0].getBoundingClientRect().top - _this71.dropdownOptions.getBoundingClientRect().top; // scroll to selected option
+                scrollOffset -= _this71.dropdownOptions.clientHeight / 2; // center in dropdown
+                _this71.dropdownOptions.scrollTop = scrollOffset;
+              }
+            }
+          };
+
           if (this.isMultiple) {
             dropdownOptions.closeOnClick = false;
           }
-          this.dropdown = new M.Dropdown(this.input, dropdownOptions);
+          this.dropdown = M.Dropdown.init(this.input, dropdownOptions);
         }
 
         // Add initial selections
         this._setSelectedStates();
+      }
+
+      /**
+       * Add option to value dict
+       * @param {Element} el  original option element
+       * @param {Element} optionEl  generated option element
+       */
+
+    }, {
+      key: "_addOptionToValueDict",
+      value: function _addOptionToValueDict(el, optionEl) {
+        var index = Object.keys(this._valueDict).length;
+        var key = this.dropdownOptions.id + index;
+        var obj = {};
+        optionEl.id = key;
+
+        obj.el = el;
+        obj.optionEl = optionEl;
+        this._valueDict[key] = obj;
       }
 
       /**
@@ -11429,9 +11920,8 @@ if (Vel) {
 
         // add icons
         var iconUrl = option.getAttribute('data-icon');
-        var classes = option.getAttribute('class');
         if (!!iconUrl) {
-          var imgEl = $('<img alt="" src="' + iconUrl + '">');
+          var imgEl = $("<img alt=\"\" src=\"" + iconUrl + "\">");
           liEl.prepend(imgEl);
         }
 
@@ -11442,80 +11932,80 @@ if (Vel) {
 
       /**
        * Toggle entry from option
-       * @param {Number} entryIndex
+       * @param {String} key  Option key
        * @return {Boolean}  if entry was added or removed
        */
 
     }, {
       key: "_toggleEntryFromArray",
-      value: function _toggleEntryFromArray(entryIndex) {
-        var index = this.valuesSelected.indexOf(entryIndex),
-            notAdded = index === -1;
+      value: function _toggleEntryFromArray(key) {
+        var notAdded = !this._keysSelected.hasOwnProperty(key);
+        var $optionLi = $(this._valueDict[key].optionEl);
 
         if (notAdded) {
-          this.valuesSelected.push(entryIndex);
+          this._keysSelected[key] = true;
         } else {
-          this.valuesSelected.splice(index, 1);
+          delete this._keysSelected[key];
         }
 
-        $(this.dropdownOptions).find('li:not(.optgroup)').eq(entryIndex).toggleClass('active');
+        $optionLi.toggleClass('selected', notAdded);
+
+        // Set checkbox checked value
+        $optionLi.find('input[type="checkbox"]').prop('checked', notAdded);
 
         // use notAdded instead of true (to detect if the option is selected or not)
-        this.$el.find('option').eq(entryIndex).prop('selected', notAdded);
+        $optionLi.prop('selected', notAdded);
 
         return notAdded;
       }
 
       /**
-       * Set value to input
+       * Set text value to input
        */
 
     }, {
       key: "_setValueToInput",
       value: function _setValueToInput() {
-        var value = '';
+        var values = [];
         var options = this.$el.find('option');
 
-        options.each(function (el, i) {
+        options.each(function (el) {
           if ($(el).prop('selected')) {
             var text = $(el).text();
-            value === '' ? value += text : value += ', ' + text;
+            values.push(text);
           }
         });
 
-        if (value === '') {
+        if (!values.length) {
           var firstDisabled = this.$el.find('option:disabled').eq(0);
-          if (firstDisabled.length) {
-            value = firstDisabled.text();
+          if (firstDisabled.length && firstDisabled[0].value === '') {
+            values.push(firstDisabled.text());
           }
         }
 
-        this.input.value = value;
+        this.input.value = values.join(', ');
       }
 
       /**
-       * Set selected state of dropdown too match actual select element
+       * Set selected state of dropdown to match actual select element
        */
 
     }, {
       key: "_setSelectedStates",
       value: function _setSelectedStates() {
-        var _this45 = this;
+        this._keysSelected = {};
 
-        this.valuesSelected = [];
-        var $onlyOptions = $(this.dropdownOptions).find('li:not(.optgroup)');
-        this.$el.find('option').each(function (el, i) {
-          var option = $onlyOptions.eq(i);
-
-          if ($(el).prop('selected')) {
-            option.find('input[type="checkbox"]').prop("checked", true);
-            _this45._activateOption($(_this45.dropdownOptions), option);
-            _this45.valuesSelected.push(i);
+        for (var key in this._valueDict) {
+          var option = this._valueDict[key];
+          var optionIsSelected = $(option.el).prop('selected');
+          $(option.optionEl).find('input[type="checkbox"]').prop('checked', optionIsSelected);
+          if (optionIsSelected) {
+            this._activateOption($(this.dropdownOptions), $(option.optionEl));
+            this._keysSelected[key] = true;
           } else {
-            option.find('input[type="checkbox"]').prop("checked", false);
-            option.removeClass('selected');
+            $(option.optionEl).removeClass('selected');
           }
-        });
+        }
       }
 
       /**
@@ -11531,21 +12021,29 @@ if (Vel) {
           if (!this.isMultiple) {
             collection.find('li.selected').removeClass('selected');
           }
-
           var option = $(newOption);
           option.addClass('selected');
         }
       }
+
+      /**
+       * Get Selected Values
+       * @return {Array}  Array of selected values
+       */
+
+    }, {
+      key: "getSelectedValues",
+      value: function getSelectedValues() {
+        var selectedValues = [];
+        for (var key in this._keysSelected) {
+          selectedValues.push(this._valueDict[key].el.value);
+        }
+        return selectedValues;
+      }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          if (!$(this).hasClass('browser-default')) {
-            arr.push(new Select(this, options));
-          }
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(FormSelect.__proto__ || Object.getPrototypeOf(FormSelect), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -11556,7 +12054,7 @@ if (Vel) {
       key: "getInstance",
       value: function getInstance(el) {
         var domElem = !!el.jquery ? el[0] : el;
-        return domElem.M_Select;
+        return domElem.M_FormSelect;
       }
     }, {
       key: "defaults",
@@ -11565,16 +12063,16 @@ if (Vel) {
       }
     }]);
 
-    return Select;
-  }();
+    return FormSelect;
+  }(Component);
 
-  M.Select = Select;
+  M.FormSelect = FormSelect;
 
   if (M.jQueryLoaded) {
-    M.initializeJqueryWrapper(Select, 'select', 'M_Select');
+    M.initializeJqueryWrapper(FormSelect, 'formSelect', 'M_FormSelect');
   }
 })(cash);
-;(function ($, Vel) {
+;(function ($, anim) {
   'use strict';
 
   var _defaults = {};
@@ -11584,7 +12082,9 @@ if (Vel) {
    *
    */
 
-  var Range = function () {
+  var Range = function (_Component21) {
+    _inherits(Range, _Component21);
+
     /**
      * Construct Range instance
      * @constructor
@@ -11594,27 +12094,23 @@ if (Vel) {
     function Range(el, options) {
       _classCallCheck(this, Range);
 
-      // If exists, destroy and reinitialize
-      if (!!el.M_Range) {
-        el.M_Range.destroy();
-      }
+      var _this72 = _possibleConstructorReturn(this, (Range.__proto__ || Object.getPrototypeOf(Range)).call(this, Range, el, options));
 
-      this.el = el;
-      this.$el = $(el);
-      this.el.M_Range = this;
+      _this72.el.M_Range = _this72;
 
       /**
        * Options for the range
        * @member Range#options
        */
-      this.options = $.extend({}, Range.defaults, options);
+      _this72.options = $.extend({}, Range.defaults, options);
 
-      this._mousedown = false;
+      _this72._mousedown = false;
 
       // Setup
-      this._setupThumb();
+      _this72._setupThumb();
 
-      this._setupEventHandlers();
+      _this72._setupEventHandlers();
+      return _this72;
     }
 
     _createClass(Range, [{
@@ -11767,13 +12263,16 @@ if (Vel) {
           var marginLeft = 7 + paddingLeft + 'px';
 
           if ($(this.thumb).hasClass('active')) {
-            Vel(this.thumb, 'stop');
-            Vel(this.thumb, {
-              height: '0px',
-              width: '0px',
-              top: '10px',
-              marginLeft: marginLeft
-            }, { duration: 100 });
+            anim.remove(this.thumb);
+            anim({
+              targets: this.thumb,
+              height: 0,
+              width: 0,
+              top: 10,
+              easing: 'easeOutQuad',
+              marginLeft: marginLeft,
+              duration: 100
+            });
           }
           $(this.thumb).removeClass('active');
         }
@@ -11813,12 +12312,16 @@ if (Vel) {
       value: function _showRangeBubble() {
         var paddingLeft = parseInt($(this.thumb).parent().css('padding-left'));
         var marginLeft = -7 + paddingLeft + 'px'; // TODO: fix magic number?
-        Vel(this.thumb, {
-          height: "30px",
-          width: "30px",
-          top: "-30px",
-          marginLeft: marginLeft
-        }, { duration: 300, easing: 'easeOutExpo' });
+        anim.remove(this.thumb);
+        anim({
+          targets: this.thumb,
+          height: 30,
+          width: 30,
+          top: -30,
+          marginLeft: marginLeft,
+          duration: 300,
+          easing: 'easeOutQuint'
+        });
       }
 
       /**
@@ -11830,21 +12333,15 @@ if (Vel) {
       key: "_calcRangeOffset",
       value: function _calcRangeOffset() {
         var width = this.$el.width() - 15;
-        var max = parseFloat(this.$el.attr('max'));
-        var min = parseFloat(this.$el.attr('min'));
+        var max = parseFloat(this.$el.attr('max')) || 100; // Range default max
+        var min = parseFloat(this.$el.attr('min')) || 0; // Range default min
         var percent = (parseFloat(this.$el.val()) - min) / (max - min);
         return percent * width;
       }
     }], [{
       key: "init",
-      value: function init($els, options) {
-        var arr = [];
-        $els.each(function () {
-          if (!$(this).hasClass('browser-default')) {
-            arr.push(new Range(this, options));
-          }
-        });
-        return arr;
+      value: function init(els, options) {
+        return _get(Range.__proto__ || Object.getPrototypeOf(Range), "init", this).call(this, this, els, options);
       }
 
       /**
@@ -11865,7 +12362,7 @@ if (Vel) {
     }]);
 
     return Range;
-  }();
+  }(Component);
 
   M.Range = Range;
 
@@ -11873,5 +12370,5 @@ if (Vel) {
     M.initializeJqueryWrapper(Range, 'range', 'M_Range');
   }
 
-  Range.init($('input[type=range'));
-})(cash, M.Vel);
+  Range.init($('input[type=range]'));
+})(cash, M.anime);
