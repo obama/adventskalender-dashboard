@@ -3,7 +3,7 @@
 
   "name": "Adventskalender Dashboard",
   "description": "Macht das Teilnehmen an Gewinnspiel-Adventskalendern angenehmer.",
-  "version": "1.1",
+  "version": "1.2",
   "author": "Putin",
   "icons": {
     "64": "img/64x64.png",
