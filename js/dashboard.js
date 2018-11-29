@@ -54,7 +54,7 @@ $(document).ready(function () {
       // filter out sites that are already added
       m = m.filter(e => !(e in pages));
       if (m.length == 0) {
-        infoModal({header:'Fehler',text:'Alle links bereits vorhanden.'});
+        infoModal({header:'Fehler', text:'Alle links bereits vorhanden.'});
         return;
       }
       // if HTML is found add automatically even if only 1 link, for text/plain expect 2 or more links
@@ -66,7 +66,7 @@ $(document).ready(function () {
         savePages();
         e.stopPropagation();
         e.preventDefault();
-        infoModal({header:'Links hinzugefügt',text: m.length+' Links wurden hinzugefügt.' });
+        infoModal({header:'Links hinzugefügt', text: m.length+' Links wurden hinzugefügt.' });
       }
     } else {
       infoModal({header:'Fehler', text:'Die Zwischenablage enthielt keine text oder html daten.' })
@@ -100,6 +100,44 @@ $(document).ready(function () {
     else {
       infoModal({header: 'Fehler', text:'es ist ein Fehler aufgetreten oder die Liste ist leer.'})
     }
+  });
+
+  $('#importmydealz').click(e => {
+    let xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', p => {
+      console.log(p.target.responseText);
+
+      // TODO: refactor, weil selber code wie im paste event..
+      // filter out mydealz redirect - URL will be grabbed from title attribute instead
+      let m = (p.target.responseText.match(/((https?:\/\/|[^\/]www\.)[\w%=\?!\.\/\-#\[\]\+@\$&\(\);,\*']+)/g) || []);
+      // sort to remove duplicate entries
+      m = m.filter(w => w.indexOf('mydealz.de/visit/') < 0).sort().filter(function(item, pos, ary) { return !pos || item != ary[pos - 1]; })
+      if (m.length == 0) {
+        infoModal({header:'Fehler', text:'keine Links gefunden. (Hinweis: mydealz redirects werden rausgefiltert xD bitte echte URL finden.)'});
+        return;
+      }
+      // filter out sites that are already added
+      m = m.filter(e => !(e in pages));
+      if (m.length == 0) {
+        infoModal({header:'Fehler', text:'Alle links bereits vorhanden.'});
+        return;
+      }
+      m.forEach((v, i) => addPage(v));
+      buildPageCollection();
+      savePages();
+      infoModal({header:'Links hinzugefügt', text: m.length+' Links wurden hinzugefügt.' });
+
+      $('#importmydealz').removeClass('disabled');
+    });
+    
+    xhr.addEventListener('error', err => {
+      infoModal({header:'Fehler', text:'Es ist ein Fehler aufgetreten.'});
+      console.log(err)
+      $('#importmydealz').removeClass('disabled');
+    })
+    xhr.open('GET', 'https://bluvado.de/advent18/parser.php?methode=linksOnly');
+    xhr.send();
+    $('#importmydealz').addClass('disabled');
   });
 
   loadPages();
