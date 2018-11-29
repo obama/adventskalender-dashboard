@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $('.datepicker').datepicker({
     format: 'DD.MM.YYYY',
-    yearRange: [1930, 2017]
+    yearRange: [1930, 2018]
   });
 
   // module for auto saving the form data in the "my info"
@@ -11,7 +11,7 @@ $(document).ready(function () {
   $('.modal').modal();
 
   $('.card-image-image')
-    .css('background-image', `url(${chrome.extension.getURL("img/bg1.jpg")})`);
+    .css('background-image', `url(${chrome.extension.getURL("img/"+["bg1.jpg", "bg2.png"][(new Date()).getDay() % 2])})`);
 
   $('#btnStart').click((e) => {
     console.log('sending start message')
@@ -32,6 +32,47 @@ $(document).ready(function () {
       }
     });
   });
+
+
+  document.forms.addPage.url.addEventListener('paste', (e) => {
+    let p = '', count = 0, m = null;
+    console.log(e.clipboardData.types)
+    if (e.clipboardData.types.includes('text/html')) {
+      p = e.clipboardData.getData('text/html');
+    } else if (e.clipboardData.types.includes('text/plain')) {
+      p = e.clipboardData.getData('text/plain');
+    }
+    if (p != '') {
+      // filter out mydealz redirect - URL will be grabbed from title attribute instead
+      m = (p.match(/((https?:\/\/|[^\/]www\.)[\w%=\?!\.\/\-#\[\]\+@\$&\(\);,\*']+)/g) || []);
+      // sort to remove duplicate entries
+      m = m.filter(w => w.indexOf('mydealz.de/visit/') < 0).sort().filter(function(item, pos, ary) { return !pos || item != ary[pos - 1]; })
+      if (m.length == 0) {
+        infoModal({header:'Fehler', text:'keine Links in der Zwischenablage gefunden. (Hinweis: mydealz redirects werden rausgefiltert xD bitte echte URL finden.)'});
+        return;
+      }
+      // filter out sites that are already added
+      m = m.filter(e => !(e in pages));
+      if (m.length == 0) {
+        infoModal({header:'Fehler',text:'Alle links bereits vorhanden.'});
+        return;
+      }
+      // if HTML is found add automatically even if only 1 link, for text/plain expect 2 or more links
+      if ((e.clipboardData.types.includes('text/html') && m.length > 0) || m.length > 1)  {
+        m.forEach((v, i) => addPage(v));
+        // clear form and save data
+        document.forms.addPage.elements[0].value = '';
+        buildPageCollection();
+        savePages();
+        e.stopPropagation();
+        e.preventDefault();
+        infoModal({header:'Links hinzugefügt',text: m.length+' Links wurden hinzugefügt.' });
+      }
+    } else {
+      infoModal({header:'Fehler', text:'Die Zwischenablage enthielt keine text oder html daten.' })
+    }
+  });
+
 
   $('#addPage').click((e) => {
     let f = document.forms.addPage;
@@ -127,7 +168,7 @@ var addPage = function (site, opt = {}) {
   if (site in pages) {
     infoModal({
       header: 'Fehler',
-      text: 'Seite bereits vorhanden'
+      text: `Seite ${site} bereits vorhanden`
     });
     return;
   }
