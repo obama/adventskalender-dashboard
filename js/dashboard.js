@@ -114,22 +114,23 @@ $(document).ready(function () {
       m = m.filter(w => w.indexOf('mydealz.de/visit/') < 0).sort().filter(function(item, pos, ary) { return !pos || item != ary[pos - 1]; })
       if (m.length == 0) {
         infoModal({header:'Fehler', text:'keine Links gefunden. (Hinweis: mydealz redirects werden rausgefiltert xD bitte echte URL finden.)'});
+        $('#importmydealz').removeClass('disabled');
         return;
       }
       // filter out sites that are already added
       m = m.filter(e => !(e in pages));
       if (m.length == 0) {
         infoModal({header:'Fehler', text:'Alle links bereits vorhanden.'});
+        $('#importmydealz').removeClass('disabled');
         return;
       }
       m.forEach((v, i) => addPage(v));
       buildPageCollection();
       savePages();
       infoModal({header:'Links hinzugefügt', text: m.length+' Links wurden hinzugefügt.' });
-
       $('#importmydealz').removeClass('disabled');
     });
-    
+
     xhr.addEventListener('error', err => {
       infoModal({header:'Fehler', text:'Es ist ein Fehler aufgetreten.'});
       console.log(err)

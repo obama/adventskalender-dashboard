@@ -1,9 +1,8 @@
 // https://github.com/bfred-it/webext-options-sync
 
 class OptionsSync {
-	constructor(storageName = 'options', type = 'local') {
-        this.storageName = storageName;
-        this.storageType = type;
+	constructor(storageName = 'options') {
+		this.storageName = storageName;
 	}
 
 	define(defs) {
@@ -20,16 +19,17 @@ class OptionsSync {
 	}
 
 	async _applyDefinition(defs) {
-		const options = await this.getAll();
+		const options = Object.assign({}, defs.defaults, await this.getAll());
 
-		console.info('Existing options:', options);
+		console.group('Appling definitions');
+		console.info('Current options:', options);
 		if (defs.migrations.length > 0) {
 			console.info('Running', defs.migrations.length, 'migrations');
 			defs.migrations.forEach(migrate => migrate(options, defs.defaults));
 		}
+		console.groupEnd();
 
-		const newOptions = Object.assign(defs.defaults, options);
-		this.setAll(newOptions);
+		this.setAll(options);
 	}
 
 	_parseNumbers(options) {
@@ -43,7 +43,7 @@ class OptionsSync {
 
 	getAll() {
 		return new Promise(resolve => {
-			chrome.storage[this.storageType].get(this.storageName,
+			chrome.storage.sync.get(this.storageName,
 				keys => resolve(keys[this.storageName] || {})
 			);
 		}).then(this._parseNumbers);
@@ -51,7 +51,7 @@ class OptionsSync {
 
 	setAll(newOptions) {
 		return new Promise(resolve => {
-			chrome.storage[this.storageType].set({
+			chrome.storage.sync.set({
 				[this.storageName]: newOptions,
 			}, resolve);
 		});
@@ -65,18 +65,30 @@ class OptionsSync {
 	syncForm(form) {
 		if (typeof form === 'string') {
 			form = document.querySelector(form);
-        }
-		this.getAll().then(options => OptionsSync._applyToForm(options, form), (e)=>{console.log('error',e)});
+		}
+		this.getAll().then(options => OptionsSync._applyToForm(options, form));
 		form.addEventListener('input', e => this._handleFormUpdates(e));
 		form.addEventListener('change', e => this._handleFormUpdates(e));
+		chrome.storage.onChanged.addListener((changes, namespace) => {
+			if (namespace === 'sync') {
+				for (const key of Object.keys(changes)) {
+					const {newValue} = changes[key];
+					if (key === this.storageName) {
+						OptionsSync._applyToForm(newValue, form);
+						return;
+					}
+				}
+			}
+		});
 	}
 
 	static _applyToForm(options, form) {
+		console.group('Updating form');
 		for (const name of Object.keys(options)) {
 			const els = form.querySelectorAll(`[name="${name}"]`);
 			const [field] = els;
 			if (field) {
-				console.info('Set option', name, 'to', options[name]);
+				console.info(name, ':', options[name]);
 				switch (field.type) {
 					case 'checkbox':
 						field.checked = options[name];
@@ -96,17 +108,18 @@ class OptionsSync {
 				console.warn('Stored option {', name, ':', options[name], '} was not found on the page');
 			}
 		}
+		console.groupEnd();
 	}
 
 	_handleFormUpdates({target: el}) {
-		const name = el.name;
-		let value = el.value;
+		const {name} = el;
+		let {value} = el;
 		if (!name || !el.validity.valid) {
 			return;
 		}
 		switch (el.type) {
 			case 'select-one':
-				value = el.options[el.selectedIndex].value;
+				value = el.options[el.selectedIndex].value; // eslint-disable-line prefer-destructuring
 				break;
 			case 'checkbox':
 				value = el.checked;
@@ -116,7 +129,7 @@ class OptionsSync {
 		console.info('Saving option', el.name, 'to', value);
 		this.set({
 			[name]: value,
-		}, (e)=>{console.log('failed saving',e)});
+		});
 	}
 }
 
@@ -129,6 +142,18 @@ OptionsSync.migrations = {
 		}
 	}
 };
+
+if (typeof HTMLElement !== 'undefined') {
+	class OptionsSyncElement extends HTMLElement {
+		constructor() {
+			super();
+			new OptionsSync(this.getAttribute('storageName') || undefined).syncForm(this);
+		}
+	}
+	try {
+		customElements.define('options-sync', OptionsSyncElement);
+	} catch (error) {/* */}
+}
 
 if (typeof module === 'object') {
 	module.exports = OptionsSync;
