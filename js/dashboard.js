@@ -14,6 +14,10 @@ $(document).ready(function () {
     .css('background-image', `url(${chrome.extension.getURL("img/"+["bg1.jpg", "bg2.png"][(new Date()).getDay() % 2])})`);
 
   $('#btnStart').click((e) => {
+    if (Object.keys(pages).length == 0) {
+      infoModal({header:'Fehler', text:'Du hast noch keine Seiten hinzugefügt. Unter Einstellungen kannst du die Liste von MyDealz runterladen.'});
+      return;
+    }
     console.log('sending start message')
     chrome.runtime.sendMessage({
       startRun: true
