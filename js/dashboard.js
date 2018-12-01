@@ -208,14 +208,20 @@ var fillJSONTextarea = function() {
 }
 
 var addPage = function (site, opt = {}) {
-  if (site in pages) {
+  // strip trailing /
+  let s = site;
+  if (site.substring(site.length-1, site.length) == '/') {
+    s = site.substring(0, site.length-1);
+  }
+  if (s in pages) {
     infoModal({
       header: 'Fehler',
-      text: `Seite ${site} bereits vorhanden`
+      text: `Seite ${s} bereits vorhanden`
     });
     return;
   }
-  pages[site] = opt;
+  pages[s] = opt;
+  // call buildPagesList() etc outside this function
 }
 
 // load saved pages
