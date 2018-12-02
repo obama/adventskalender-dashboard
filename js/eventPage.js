@@ -227,6 +227,9 @@ chrome.runtime.onMessage.addListener(
       savePages();
       sendResponse(pages[run.currentURL].active);
     }
+    else if (request.getRunInfo == true) {
+      sendResponse(run);
+    }
     else {
       console.log('unknown message ', request);
     }

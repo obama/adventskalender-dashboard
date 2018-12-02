@@ -1,4 +1,17 @@
 window.onload = (e) => {
+    $('head').append(
+        $('<style>').text(`@font-face {
+          font-family: 'Material Icons';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Material Icons'),
+              local('MaterialIcons-Regular'),
+              url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.woff2")}) format('woff2'),
+              url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.ttf")}) format('truetype'),
+              url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.woff")}) format('woff')
+      }`)
+      )
+
     document.getElementById('open').onclick = function(e) {
         chrome.tabs.create({
             url: 'dashboard.html'
@@ -20,6 +33,44 @@ window.onload = (e) => {
         addClass(e.target, 'disabled');   
         window.close();     
     };
+
+
+    document.querySelector('#deactPage').onclick = function (e) {
+        chrome.runtime.sendMessage({
+            toogleDeactivateCurrent: true
+        }, (e) => {
+            console.log('deactivate', e);
+            if (e === false) {
+                alert('Seite wurde deaktiviert. Sie wird beim nächsten mal nicht mehr aufgerufen. Im Dashboard kannst du sie wieder aktivieren.');
+                document.querySelector('#deactPage').data['tooltip'] = 'Aktiviere die Seite wieder.';
+                document.querySelector('#deactPage i').innerHTML = 'add_box';
+            }
+            else {
+                document.querySelector('#deactPage').title = 'Deaktiviere die Seite.';
+                document.querySelector('#deactPage i').innerHTML = 'report';
+            }
+        });
+    };
+
+    document.querySelector('#skipPage').onclick = function (e) {
+        let p = chrome.runtime.sendMessage({
+            next: 'skip'
+        }, (e) => {
+            console.log("response: ", e)
+        });
+        addClass(e.target, 'disabled');
+    };
+
+    $('.tooltipped').tooltip();
+
+    let p = chrome.runtime.sendMessage({
+        getRunInfo: true
+    }, (e) => {
+        console.log("response: ", e)
+        if (e.i > 0 && e.i < Object.keys(e.pages).length) {
+            $('.hide').removeClass('hide');
+        }
+    });
 };
 
 

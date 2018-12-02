@@ -7,6 +7,7 @@
     <title>Adventskalender</title>
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/popup.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/materialize.min.js"></script>
     <script src="js/browser-polyfill.min.js"></script>
     <script src="js/popup.js"></script>
@@ -14,18 +15,25 @@
 <body>
     <div class="container center-align">
         <div class="row">
-            <div class="col s12">
-                <a class="waves-effect waves-light btn blue tooltipped" id="open" title="öffne das dashboard">Dashboard</a>
+            <div class="col s2">
+                <a class="waves-effect waves-light btn-floating blue tooltipped" id="open" data-tooltip="Dashboard öffnen">
+                    <i class="material-icons">home</i></a>
             </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <a href="#" class="waves-effect waves-light btn blue tooltipped" id="fillForm" title="füllt das formular aus, falls der andere knopf überdeckt ist">Fill in form</a>
+            <div class="col s2">
+                <a href="#" class="waves-effect waves-light btn-floating black tooltipped hide" id="fillForm" data-tooltip="Formular ausfüllen">
+                    <i class="material-icons">check_box</i></a>
             </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <a href="#" class="waves-effect waves-light btn blue tooltipped" id="nextPage" title="falls die bar nicht läd kommst du hiermit zu nächsten seite">next page</a>
+            <div class="col s2">
+                <a href="#" class="waves-effect waves-light btn-floating grey darken-2 tooltipped hide" id="deactPage" data-tooltip="Deaktiviere Seite">
+                    <i class="material-icons">report</i></a>
+            </div>
+            <div class="col s2">
+                <a href="#" class="waves-effect waves-light btn-floating red darken-2 tooltipped hide" id="skipPage" data-tooltip="Überspringe Seite">
+                    <i class="material-icons">redo</i></a>
+            </div>
+            <div class="col s2">
+                <a href="#" class="waves-effect waves-light btn-floating red tooltipped hide" id="nextPage" data-tooltip="Nächste Seite">
+                    <i class="material-icons">keyboard_arrow_right</i></a>
             </div>
         </div>
     </div>
