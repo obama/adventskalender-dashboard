@@ -327,7 +327,7 @@ var buildPageCollection = function (active = '') {
       .appendTo(list)
   }
 }
-
+var activeLi = null; // for remembering which <li> was opened after rebuilding the list
 var buildPageCollapsible = function (activePage = '') {
   $('#cardPageList h4').text(`Seiten: ${Object.keys(pages).length}`);
   let list = $('#pageList');
@@ -405,4 +405,7 @@ var buildPageCollapsible = function (activePage = '') {
     .appendTo(list)
   }
   $('.collapsible').collapsible();
+  $('.collapsible li').click(e => {
+
+  });
 }
