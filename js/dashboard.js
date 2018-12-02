@@ -35,6 +35,7 @@ $(document).ready(function () {
     chrome.runtime.sendMessage({
       startRun: true
     },(e)=>{
+      console.log(e)
       if (e && e.resume) {
         confirmModal({
           header:'Fortsetzen?', 
@@ -160,6 +161,7 @@ $(document).ready(function () {
 
   loadPages();
 
+  
   chrome.storage.onChanged.addListener(function (changes, namespace) {
     if (namespace == 'local') {
       for (key in changes) {
@@ -261,8 +263,18 @@ var deletePage = function (page) {
   savePages();
 }
 
+var toggleDeactivate = function (page) {
+  if (typeof pages[page].active == 'undefined') {
+    pages[page].active = false;
+    return;
+  }
+  pages[page].active = !pages[page].active;
+  return pages[page].active;
+}
 
-var buildPageCollection = function () {
+
+var buildPageCollection = function (active = '') {
+  return buildPageCollapsible(active);
   $('#cardPageList h4').text(`Seiten: ${Object.keys(pages).length}`);
 
   let list = $('#pageList');
@@ -314,4 +326,82 @@ var buildPageCollection = function () {
       )
       .appendTo(list)
   }
+}
+
+var buildPageCollapsible = function (activePage = '') {
+  $('#cardPageList h4').text(`Seiten: ${Object.keys(pages).length}`);
+  let list = $('#pageList');
+  list.removeClass('collection').addClass('collapsible');
+  list.empty();
+  for (let o of Object.keys(pages).reverse()) {
+    //console.log('adding ', o)
+    let isActive = typeof pages[o].active == 'undefined' || pages[o].active;
+
+    $('<li>')
+    .addClass(o == activePage ? 'active' : '')
+    .append(
+      $('<div>').addClass('collapsible-header')
+      .append(
+        $('<i>')
+        .addClass('material-icons')
+        .text('settings')
+      )
+      .append(
+        $('<a>')
+        .attr('href', o)
+        .attr('target', 'viewer')
+        .text(o)
+      )
+    )
+    .append(
+      $('<div>').addClass('collapsible-body')
+      .append(
+        $('<div>').addClass('row')
+        .append(
+          $('<div>').addClass('col s6')
+          .append(
+            $('<a>')
+            .addClass('btn')
+            .addClass('waves-effect waves-light red')
+            .text('LÖSCHEN')
+            .append(
+              $('<i>').addClass('material-icons left').text('delete')
+            )
+            .click((e) => {
+              confirmModal({
+                header: 'Löschen bestätigen',
+                text: `${o} wirklich löschen?`,
+                yes: () => {
+                  deletePage(o);
+                  buildPageCollection();
+                }
+              })
+            })
+          )
+        )
+        .append(
+          $('<div>').addClass('col s6')
+          .append(
+            $('<a>')
+            .addClass('btn')
+            .addClass('waves-effect waves-light grey darken-2')
+            .text(isActive ? 'DEAKTIVIEREN' : 'AKTIVIEREN')
+            .append(
+              $('<i>').addClass('material-icons left').text(isActive ? 'report' : 'add_box')
+            )
+            .click((e) => {
+              isActive = toggleDeactivate(o);
+              $(e.target).text(isActive ? 'DEAKTIVIEREN' : 'AKTIVIEREN').append(
+                $('<i>').addClass('material-icons left').text(isActive ? 'report' : 'add_box')
+              )
+              savePages();
+              //buildPageCollection();
+            })
+          )
+        )
+      )
+    )
+    .appendTo(list)
+  }
+  $('.collapsible').collapsible();
 }

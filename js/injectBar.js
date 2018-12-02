@@ -44,6 +44,16 @@ function insert() {
                             </a>
                         </li>
                         <li>
+                            <a id="advCalDeak" class="btn-floating waves-effect waves-light grey darken-1" title="deaktiviere diese seite">
+                                <i class="material-icons">report</i>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="advCalSkip" class="btn-floating waves-effect waves-light red darken-2" title="überspringe diese seite">
+                                <i class="material-icons">redo</i>
+                            </a>
+                        </li>
+                        <li>
                             <a id="advCalNext" class="btn-floating waves-effect waves-light red" title="nächste seite">
                                 <i class="material-icons">keyboard_arrow_right</i>
                             </a>
@@ -77,6 +87,32 @@ function insert() {
             advCal.note = t;
             document.querySelector('.brand-logo.center').insertAdjacentHTML('beforeend', `<span class="small"> Notiz: ${advCal.note}</span>`);
         })
+    };
+
+    document.querySelector('#advCalDeak').onclick = function (e) {
+        chrome.runtime.sendMessage({
+            toogleDeactivateCurrent: true
+        }, (e) => {
+            console.log('deactivate', e);
+            if (e === false) {
+                alert('Seite wurde deaktiviert. Sie wird beim nächsten mal nicht mehr aufgerufen. Im Dashboard kannst du sie wieder aktivieren.');
+                document.querySelector('#advCalDeak').title = 'Aktiviere die Seite wieder.';
+                document.querySelector('#advCalDeak i').innerHTML = 'add_box';
+            }
+            else {
+                document.querySelector('#advCalDeak').title = 'Deaktiviere die Seite.';
+                document.querySelector('#advCalDeak i').innerHTML = 'report';
+            }
+        });
+    };
+
+    document.querySelector('#advCalSkip').onclick = function (e) {
+        let p = chrome.runtime.sendMessage({
+            next: 'skip'
+        }, (e) => {
+            console.log("response: ", e)
+        });
+        addClass(document.querySelector('#advCalSkip'), 'disabled');
     };
 
     document.querySelector('#advCalForm').onclick = function (e) {
