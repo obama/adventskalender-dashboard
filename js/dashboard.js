@@ -348,6 +348,7 @@ var buildPageCollapsible = function (activePage = '') {
       )
       .append(
         $('<a>')
+        .addClass(isActive ? 'blue-text' : 'grey-text')
         .attr('href', o)
         .attr('target', 'viewer')
         .text(o)
