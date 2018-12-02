@@ -13,6 +13,19 @@ $(document).ready(function () {
   $('.card-image-image')
     .css('background-image', `url(${chrome.extension.getURL("img/"+["bg1.jpg", "bg2.png"][(new Date()).getDay() % 2])})`);
 
+  $('head').append(
+    $('<style>').text(`@font-face {
+      font-family: 'Material Icons';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Material Icons'),
+          local('MaterialIcons-Regular'),
+          url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.woff2")}) format('woff2'),
+          url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.ttf")}) format('truetype'),
+          url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.woff")}) format('woff')
+  }`)
+  )
+
   $('#btnStart').click((e) => {
     if (Object.keys(pages).length == 0) {
       infoModal({header:'Fehler', text:'Du hast noch keine Seiten hinzugefügt. Unter Einstellungen kannst du die Liste von MyDealz runterladen.'});
