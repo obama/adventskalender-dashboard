@@ -218,8 +218,8 @@ chrome.runtime.onMessage.addListener(
     }
     else if (request.toogleDeactivateCurrent == true) {
       console.log('de/activating '+run.currentURL)
-      if (typeof pages[currentURL].active == 'undefined') {
-        pages[currentURL].active = false;
+      if (typeof pages[run.currentURL].active == 'undefined') {
+        pages[run.currentURL].active = false;
       } 
       else {
         pages[run.currentURL].active = !pages[run.currentURL].active;
