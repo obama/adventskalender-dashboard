@@ -107,6 +107,12 @@ var createRunnerTab = function (index) {
   });
 };
 
+chrome.tabs.onRemoved.addListener((id, info) => {
+  if (id == run.tab.id) {
+    run.tab = null;
+  }
+});
+
 // inserts code the bar with the next-button into the website
 var insertBar = function () {
   // insert the CSS

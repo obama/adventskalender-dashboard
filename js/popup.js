@@ -67,7 +67,8 @@ window.onload = (e) => {
         getRunInfo: true
     }, (e) => {
         console.log("response: ", e)
-        if (e.i > 0 && e.i < Object.keys(e.pages).length) {
+        if (e.tab != null && e.i >= 0 && e.i < Object.keys(e.pages).length) {
+            $('body').css('width', '300px');
             $('.hide').removeClass('hide');
         }
     });
