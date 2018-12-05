@@ -97,8 +97,8 @@ var createRunnerTab = function (index) {
     run.setIndex(i);
     console.log(run)
     // wait till tab is finished loading before inserting code
-    if (!browser.webNavigation.onCompleted.hasListener(nextSiteLoaded)) {
-      browser.webNavigation.onCompleted.addListener(nextSiteLoaded, {
+    if (!browser.webNavigation.onDOMContentLoaded.hasListener(nextSiteLoaded)) {
+      browser.webNavigation.onDOMContentLoaded.addListener(nextSiteLoaded, {
         url: [{
           urlMatches: '.+'
         }]
