@@ -108,7 +108,7 @@ var createRunnerTab = function (index) {
 };
 
 chrome.tabs.onRemoved.addListener((id, info) => {
-  if (id == run.tab.id) {
+  if (run && run.tab && id == run.tab.id) {
     run.tab = null;
   }
 });
