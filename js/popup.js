@@ -31,7 +31,7 @@ window.onload = (e) => {
     document.getElementById('nextPage').onclick = function(e) {
         let p = browser.runtime.sendMessage({next:true});
         addClass(e.target, 'disabled');   
-        window.close();     
+        window.close(); 
     };
 
 
@@ -58,7 +58,7 @@ window.onload = (e) => {
         }, (e) => {
             console.log("response: ", e)
         });
-        addClass(e.target, 'disabled');
+        window.close(); 
     };
 
     $('.tooltipped').tooltip();
