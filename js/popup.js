@@ -13,9 +13,7 @@ window.onload = (e) => {
       )
 
     document.getElementById('open').onclick = function(e) {
-        chrome.tabs.create({
-            url: 'dashboard.html'
-        });
+        browser.runtime.sendMessage({openDashboard:true});
         window.close();
     };
 
@@ -67,7 +65,7 @@ window.onload = (e) => {
         getRunInfo: true
     }, (e) => {
         console.log("response: ", e)
-        if (e.tab != null && e.i >= 0 && e.i < Object.keys(e.pages).length) {
+        if (e && e.tab != null && e.i >= 0 && e.i < Object.keys(e.pages).length) {
             $('body').css('width', '300px');
             $('.hide').removeClass('hide');
         }

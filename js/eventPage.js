@@ -4,6 +4,7 @@
 var install = function (e) {
   if (['install', 'update'].indexOf(e.reason) >= 0) {
     console.log(e.reason +'d adventskalender tashboard')
+    win = null;
     pages = {}; // TODO create localstorage with presets here
     // run is a object holding information about the position of the current visited adventskalender and holds a copy of pages, so that you can manipulate the actual pages object
     run = {
@@ -107,9 +108,15 @@ var createRunnerTab = function (index) {
   });
 };
 
-chrome.tabs.onRemoved.addListener((id, info) => {
+browser.tabs.onRemoved.addListener((id, info) => {
   if (run && run.tab && id == run.tab.id) {
     run.tab = null;
+  }
+});
+
+browser.windows.onRemoved.addListener((id, info) => {
+  if (id == win) {
+    win = null;
   }
 });
 
@@ -236,6 +243,24 @@ chrome.runtime.onMessage.addListener(
     else if (request.getRunInfo == true) {
       sendResponse(run);
     }
+    else if (request.openDashboard == true) {
+      if (win == null) {
+        let p = browser.windows.create({
+          url: 'dashboard.html',
+          state: 'maximized'
+        });
+        p.then(e => {
+          win = e.id; 
+        }, e => {console.log(e)});
+      }
+      else {
+        browser.windows.update(
+          win,
+          {
+            focused: true
+          });
+      }
+    } 
     else {
       console.log('unknown message ', request);
     }
