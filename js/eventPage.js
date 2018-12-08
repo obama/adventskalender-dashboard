@@ -76,9 +76,13 @@ var savePages = function () {
 
 // is called when the tab is completed loading a website
 var nextSiteLoaded = function (e) {
-  if (win == e.windowId && run.tab && e.tabId == run.tab.id && e.url != 'about:blank' && e.frameId == 0) {
-    insertBar();
-  }
+  browser.tabs.get(e.tabId)
+  .then(p => {
+    if (win == p.windowId && run.tab && p.id == run.tab.id && p.url != 'about:blank' && e.frameId == 0) {
+      console.log('trying to inject bar')
+      insertBar();
+    }
+  }, err => console.log(err));
 }
 
 var createRunnerTab = function (index) {
@@ -109,7 +113,7 @@ var createRunnerTab = function (index) {
 };
 
 browser.tabs.onRemoved.addListener((id, info) => {
-  if (run && run.tab && id == run.tab.id) {
+  if (typeof run != 'undefined' && run.tab && id == run.tab.id) {
     run.tab = null;
   }
 });
