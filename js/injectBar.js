@@ -22,6 +22,41 @@ function removeClass(el, className) {
 
 function insert() {
     document.querySelector('head').insertAdjacentHTML('afterbegin', '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">');
+    // using packaged font doesnt work somehow 
+    /*document.querySelector('head').insertAdjacentHTML('afterbegin', `
+    <style type="text/css">    
+    @font-face {
+          font-family: 'Material Icons';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Material Icons'),
+              local('MaterialIcons-Regular'),
+              url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.woff2")}) format('woff2'),
+              url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.ttf")}) format('truetype'),
+              url(${chrome.extension.getURL("fonts/material-icons/MaterialIcons-Regular.woff")}) format('woff')
+    }
+    .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; 
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+      }
+    </style>`);*/
+
+    if (advCal.nextURL != null) {
+        document.querySelector('head').insertAdjacentHTML('afterbegin', `<link rel="preload" as="document" href="${advCal.nextURL}">`);
+    }
+
 
     document.querySelector('body')
         .insertAdjacentHTML('afterbegin',

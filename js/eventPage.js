@@ -142,11 +142,14 @@ var insertBar = function () {
     },
     form: run.currentPage.form,
     myData: myData,
-    formsFilled: false
+    formsFilled: false,
+    nextURL: run.i+1 < run.numPages() ? Object.keys(run.pages)[run.i+1] : null
   };
+
   browser.tabs.executeScript(run.tab.id, {
     code: `advCal = ${JSON.stringify(o)}`
   });
+
   // insert the JS
   let pp = browser.tabs.executeScript(run.tab.id, {
     file: 'js/injectBar.js'
