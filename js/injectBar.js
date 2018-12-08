@@ -54,7 +54,7 @@ function insert() {
     </style>`);*/
 
     if (advCal.nextURL != null) {
-        document.querySelector('head').insertAdjacentHTML('afterbegin', `<link rel="preload" as="document" href="${advCal.nextURL}">`);
+        document.querySelector('head').insertAdjacentHTML('afterbegin', `<link rel="preload" as="document" crossorigin="use-credentials" href="${advCal.nextURL}">`);
     }
 
 
