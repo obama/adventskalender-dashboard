@@ -76,8 +76,7 @@ var savePages = function () {
 
 // is called when the tab is completed loading a website
 var nextSiteLoaded = function (e) {
-  console.log(e)
-  if (win == e.windowId && e.tabId == run.tab.id && e.url != 'about:blank' && e.frameId == 0) {
+  if (win == e.windowId && run.tab && e.tabId == run.tab.id && e.url != 'about:blank' && e.frameId == 0) {
     insertBar();
   }
 }
