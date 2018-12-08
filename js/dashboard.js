@@ -143,10 +143,15 @@ $(document).ready(function () {
         $('#importmydealz').removeClass('disabled');
         return;
       }
-      m.forEach((v, i) => addPage(v));
+      let count = 0;
+      m.forEach((v, i) => {
+        if (addPage(v)) {
+          count++;
+        }
+      });
       buildPageCollection();
       savePages();
-      infoModal({header:'Links hinzugefügt', text: m.length+' Links wurden hinzugefügt.' });
+      infoModal({header:'Links hinzugefügt', text: count+' Links wurden hinzugefügt.' });
       $('#importmydealz').removeClass('disabled');
     });
 
@@ -234,9 +239,10 @@ var addPage = function (site, opt = {}) {
       header: 'Fehler',
       text: `Seite ${s} bereits vorhanden`
     });
-    return;
+    return false;
   }
   pages[s] = opt;
+  return true;
   // call buildPagesList() etc outside this function
 }
 
