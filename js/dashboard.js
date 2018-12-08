@@ -26,7 +26,7 @@ $(document).ready(function () {
   }`)
   )
 
-  $('#btnStart').click((e) => {
+  $('#btnStart').click((ev) => {
     if (Object.keys(pages).length == 0) {
       infoModal({header:'Fehler', text:'Du hast noch keine Seiten hinzugefügt. Unter Einstellungen kannst du die Liste von MyDealz runterladen.'});
       return;
@@ -35,7 +35,8 @@ $(document).ready(function () {
     chrome.runtime.sendMessage({
       startRun: true
     },(e)=>{
-      console.log(e)
+      console.log(e);
+      $(ev.target).parent().removeClass('pulse');
       if (e && e.resume) {
         confirmModal({
           header:'Fortsetzen?', 
