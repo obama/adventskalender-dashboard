@@ -86,19 +86,21 @@ var nextSiteLoaded = function (e) {
 }
 
 var createRunnerTab = function (index) {
-  let i = index, pk = Object.keys(pages);
-  while (i < pk.length && pages[pk[i]].active === false) {
-    i+=1;
+  let i = index, 
+      _pages = Object.keys(pages).filter((v, i) => pages[v].active || typeof pages[v].active == 'undefined'),
+      y = {};
+  for (let x of _pages) {
+    y[x] = JSON.parse(JSON.stringify(pages[x]));
   }
   let p = browser.tabs.create({
-    url: pk[i],
+    url: _pages[i],
     windowId: win
   });
   p.then((tab) => {
     console.log('tab created', tab)
     // reset the run object
     run.tab = tab;
-    run.pages = JSON.parse(JSON.stringify(pages)); // copy the pages object
+    run.pages = y; // copy the pages object but only active pages
     run.setIndex(i);
     console.log(run)
     // wait till tab is finished loading before inserting code
