@@ -70,12 +70,12 @@ function insert() {
                     <ul class="right hide-on-med-and-down" style="display:block">
                         <li>
                             <a id="advCalForm" class="btn-floating waves-effect waves-light black" title="fülle die felder aus und speichere sie">
-                                <i class="material-icons">check_box</i>
+                                <i class="material-icons">save</i>
                             </a>
                         </li>
                         <li>
                             <a id="advCalNote" class="btn-floating waves-effect waves-light green" title="notiz hinzufügen">
-                                <i class="material-icons">edit</i>
+                                <i class="material-icons">add_comment</i>
                             </a>
                         </li>
                         <li>
@@ -150,7 +150,16 @@ function insert() {
         addClass(document.querySelector('#advCalSkip'), 'disabled');
     };
 
-    document.querySelector('#advCalForm').onclick = function (e) {
+    var advCalForm = document.querySelector('#advCalForm');
+
+    console.log(advCal.form)
+    if (typeof advCal.form != 'undefined') {
+        let i = advCalForm.querySelector('i');
+        i.innerHTML = 'edit';
+        i.title = 'Fülle Formular mit zuvor gespeicherten Daten aus bzw. speichere geänderte Daten';
+    }
+
+    advCalForm.onclick = function (e) {
         // define alias names for form fields here:
         let mappings = {
             houseno: ['streetnumber'],
@@ -162,6 +171,7 @@ function insert() {
         let iframes = document.querySelectorAll('iframe'),
             l = [];
         // for now only for forms in the document ignore frames
+        // to make iframes work we probably need to make a content script that is injected into subframes, not try to access them
         /*for (let x of iframes) {
             l.push(x);
         }*/
@@ -170,7 +180,6 @@ function insert() {
         for (let i of l) {
             //console.log(i, i.contentWindow)
             let inputs = i.querySelectorAll('input,select');
-            console.log(inputs, f)
             for (let x of inputs) {
                 if (!advCal.formsFilled) {
                     if (x.type == 'hidden') {
@@ -179,7 +188,6 @@ function insert() {
                     // some forms dont have name but id, fix that?
                     //console.log(x,x.name,x.id)
                     if (!x.name && x.id) {
-                        console.log('setting name for ',x)
                         x.name = x.id;
                     }
 
@@ -208,18 +216,22 @@ function insert() {
                         }
                         x.value = val;
                     }
-                    else if (!x.value) {
+                    else if (!x.value || x.value == '') {
                         if (f[x.name]) {
                             x.value = f[x.name];
-                        } else if (advCal.myData[x.name.toLowerCase()]) {
-                            x.value = advCal.myData[x.name.toLowerCase()];
-                        } else {
-                            for (let m in mappings) {
-                                if (mappings[m].indexOf(x.name.toLowerCase()) >= 0) {
-                                    x.value = advCal.myData[m];
+                        }
+                        else if (typeof advCal.myData != 'undefined') {
+                            if (advCal.myData[x.name.toLowerCase()]) {
+                                x.value = advCal.myData[x.name.toLowerCase()];
+                            } 
+                            else {
+                                for (let m of mappings) {
+                                    if (mappings[m].indexOf(x.name.toLowerCase()) >= 0) {
+                                        x.value = advCal.myData[m];
+                                    }
                                 }
                             }
-                        }
+                        }                           
                     }
                 }
                 //console.log(x, x.name, x.value);
@@ -234,7 +246,6 @@ function insert() {
                 }
                 f[x.name] = saveVal;
             }
-            //console.log(f);
             // save form data
             chrome.storage.local.get('pages', (e) => {
                 let pages = e.pages;
