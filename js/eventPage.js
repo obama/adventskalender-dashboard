@@ -1,35 +1,41 @@
 /*
 * Hier sind die background skripte, d.h. das messaging und so zeug
 */
-var install = function (e) {
+function install(e) {
   if (['install', 'update'].indexOf(e.reason) >= 0) {
     console.log(e.reason +'d adventskalender tashboard')
-    win = null;
-    pages = {}; // TODO create localstorage with presets here
-    // run is a object holding information about the position of the current visited adventskalender and holds a copy of pages, so that you can manipulate the actual pages object
-    run = {
-      tab: null,
-      i: 0,
-      pages: {},
-      currentPage: null,
-      currentURL: null,
-      setIndex: (v) => {
-        run.i = v;
-        if (run.i < Object.keys(run.pages).length) {
-          run.currentURL = Object.keys(run.pages)[run.i];
-          run.currentPage = run.pages[run.currentURL];
-          return true;
-        }
-        return false;
-      },
-      nextPage: () => {
-        return run.setIndex(run.i + 1);
-      },
-      numPages: () => Object.keys(run.pages).length
-    };
-    loadPages();
   }
 }
+
+function init() {
+  win = null;
+  pages = {}; // TODO create localstorage with presets here
+  // run is a object holding information about the position of the current visited adventskalender and holds a copy of pages, so that you can manipulate the actual pages object
+  run = {
+    tab: null,
+    i: 0,
+    pages: {},
+    currentPage: null,
+    currentURL: null,
+    setIndex: (v) => {
+      run.i = v;
+      if (run.i < Object.keys(run.pages).length) {
+        run.currentURL = Object.keys(run.pages)[run.i];
+        run.currentPage = run.pages[run.currentURL];
+        return true;
+      }
+      return false;
+    },
+    nextPage: () => {
+      return run.setIndex(run.i + 1);
+    },
+    numPages: () => Object.keys(run.pages).length
+  };
+  loadMyData();
+  loadPages();
+};
+
+init();
 
 chrome.runtime.onInstalled.addListener(install);
 
@@ -51,22 +57,21 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
   }
 });
 
-var loadPages = function () {
+function loadPages() {
   chrome.storage.local.get('pages', (e) => {
     pages = e.pages;
   });
 };
 
-var loadMyData = function () {
+function loadMyData() {
   chrome.storage.local.get('options', (e) => {
     myData = e.options;
   });
 };
 
-loadPages();
-loadMyData();
 
-var savePages = function () {
+
+ function savePages() {
   let p = chrome.storage.local.set({
     pages: pages
   }, (e) => {
@@ -75,7 +80,7 @@ var savePages = function () {
 }
 
 // is called when the tab is completed loading a website
-var nextSiteLoaded = function (e) {
+function nextSiteLoaded(e) {
   browser.tabs.get(e.tabId)
   .then(p => {
     if (win == p.windowId && run.tab && p.id == run.tab.id && p.url != 'about:blank' && e.frameId == 0) {
@@ -85,7 +90,7 @@ var nextSiteLoaded = function (e) {
   }, err => console.log(err));
 }
 
-var createRunnerTab = function (index) {
+function createRunnerTab(index) {
   let i = index, 
       _pages = Object.keys(pages).filter((v, i) => pages[v].active || typeof pages[v].active == 'undefined'),
       y = {};
@@ -127,7 +132,7 @@ browser.windows.onRemoved.addListener((id, info) => {
 });
 
 // inserts code the bar with the next-button into the website
-var insertBar = function () {
+function insertBar() {
   // insert the CSS
   chrome.tabs.insertCSS(run.tab.id, {
     file: 'css/injectBar.css'
