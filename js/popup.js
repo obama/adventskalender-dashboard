@@ -40,11 +40,11 @@ window.onload = (e) => {
             console.log('deactivate', e);
             if (e === false) {
                 alert('Seite wurde deaktiviert. Sie wird beim nächsten mal nicht mehr aufgerufen. Im Dashboard kannst du sie wieder aktivieren.');
-                document.querySelector('#deactPage').data['tooltip'] = 'Aktiviere die Seite wieder.';
+                document.querySelector('#deactPage').setAttribute('data-tooltip', 'Aktiviere die Seite wieder.');
                 document.querySelector('#deactPage i').innerHTML = 'add_box';
             }
             else {
-                document.querySelector('#deactPage').title = 'Deaktiviere die Seite.';
+                document.querySelector('#deactPage').setAttribute('data-tooltip', 'Deaktiviere die Seite.');
                 document.querySelector('#deactPage i').innerHTML = 'report';
             }
         });
