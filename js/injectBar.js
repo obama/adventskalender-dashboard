@@ -225,7 +225,7 @@ function insert() {
                                 x.value = advCal.myData[x.name.toLowerCase()];
                             } 
                             else {
-                                for (let m of mappings) {
+                                for (let m in mappings) {
                                     if (mappings[m].indexOf(x.name.toLowerCase()) >= 0) {
                                         x.value = advCal.myData[m];
                                     }
@@ -250,6 +250,7 @@ function insert() {
             chrome.storage.local.get('pages', (e) => {
                 let pages = e.pages;
                 pages[advCal.page.url].form = f;
+                alert('Eingaben wurden gespeichert.');
                 //console.log(pages)
                 chrome.storage.local.set({
                     pages: pages

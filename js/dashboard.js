@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $('.datepicker').datepicker({
     format: 'DD.MM.YYYY',
-    yearRange: [1930, 2018]
+    yearRange: [1930, 2019]
   });
 
   // module for auto saving the form data in the "my info"
