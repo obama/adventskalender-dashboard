@@ -160,7 +160,7 @@ $(document).ready(function () {
       console.log(err)
       $('#importmydealz').removeClass('disabled');
     })
-    xhr.open('GET', 'https://bluvado.de/advent18/parser.php?methode=linksOnly');
+    xhr.open('GET', 'https://bluvado.de/advent19/parser.php?methode=linksOnly');
     xhr.send();
     $('#importmydealz').addClass('disabled');
   });
