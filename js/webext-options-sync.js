@@ -53,7 +53,7 @@ class OptionsSync {
 		return new Promise(resolve => {
 			chrome.storage.sync.set({
 				[this.storageName]: newOptions,
-			}, resolve);
+			}, e => { if (chrome.runtime.lastError) { console.log(chrome.runtime.lastError); } });
 		});
 	}
 
@@ -83,16 +83,30 @@ class OptionsSync {
 	}
 
 	static _applyToForm(options, form) {
-		console.group('Updating form');
+		console.group(`Updating form ${form}`);
+		
 		for (const name of Object.keys(options)) {
 			const els = form.querySelectorAll(`[name="${name}"]`);
 			const [field] = els;
 			if (field) {
-				console.info(name, ':', options[name]);
+				console.info(name, ':', options[name], " type: ", field.type);
 				switch (field.type) {
 					case 'checkbox':
 						field.checked = options[name];
 						break;
+					case 'select-one': {
+						let i = 0
+						for (let e of field.options) {
+							if (e.value == options[name]) { 
+								break;
+							}
+							i++;
+						}
+						field.options.selectedIndex = i;
+						let event = new Event('change'); // enforce update
+						field.dispatchEvent(event);
+						break;
+					}
 					case 'radio': {
 						const [selected] = [...els].filter(el => el.value === options[name]);
 						if (selected) {
