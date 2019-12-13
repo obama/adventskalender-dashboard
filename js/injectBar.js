@@ -54,6 +54,7 @@ function insert() {
     </style>`);*/
 
     if (advCal.nextURL != null) {
+        // preload next website, to reduce loading times
         document.querySelector('head').insertAdjacentHTML('afterbegin', `<link rel="preload" as="document" crossorigin="use-credentials" href="${advCal.nextURL}">`);
     }
 
@@ -195,26 +196,25 @@ function insert() {
                         x.checked = f[x.name] ? true : false;
                         x.value = x.checked;
                     } 
-                    else if (x.type == 'radio') {
-                        /*const [selected] = [...els].filter(el => el.value === options[name]);
-                        if (selected) {
-                            selected.checked = true;
-                        }*/
+                    else if (x.type == 'radio' && f[x.name]) {
+                        if (x.value == f[x.name]) {
+                            x.checked = true;
+                        }
                     }
-                    // selects might have a default value like "none" so we treat them separately
                     else if (x.nodeName == 'SELECT') {
                         let val = undefined;
                         if (f[x.name]) {
-                            val = f[x.name]
-                        }
-                        else {
-                            for (let m in mappings) {
-                                if (mappings[m].indexOf(x.name.toLowerCase()) >= 0) {
-                                    val = advCal.myData[m];
+                            val = f[x.name];
+                            let i = 0;
+                            for (let o of x.options) {
+                                o.selected = false;
+                                if (o.value != '' && o.value == f[x.name]) {
+                                    o.selected = true;
+                                    x.options.selectedIndex = i;
                                 }
+                                i++;
                             }
                         }
-                        x.value = val;
                     }
                     else if (!x.value || x.value == '') {
                         if (f[x.name]) {
@@ -234,15 +234,27 @@ function insert() {
                         }                           
                     }
                 }
+                // fire on change event manually
+                let e = new Event('change');
+                x.dispatchEvent(e); 
                 //console.log(x, x.name, x.value);
                 let saveVal = undefined;
-                switch (x.type) {
-                    case 'checkbox':
-                        saveVal = x.checked;
-                    break;
-                    default:
-                        saveVal = x.value;
-                    break;
+                if (x.nodeName == 'SELECT') {
+                    for (let o of x.options) {
+                        if (o.selected) {
+                            saveVal = o.value;
+                        }
+                    }
+                }
+                else {
+                    switch (x.type) {
+                        case 'checkbox':
+                            saveVal = x.checked;
+                        break;
+                        default:
+                            saveVal = x.value;
+                        break;
+                    }
                 }
                 f[x.name] = saveVal;
             }
@@ -250,7 +262,7 @@ function insert() {
             chrome.storage.local.get('pages', (e) => {
                 let pages = e.pages;
                 pages[advCal.page.url].form = f;
-                alert('Eingaben wurden gespeichert.');
+                //alert('Eingaben wurden gespeichert.');
                 //console.log(pages)
                 chrome.storage.local.set({
                     pages: pages
