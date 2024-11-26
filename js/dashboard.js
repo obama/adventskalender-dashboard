@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $('.datepicker').datepicker({
     format: 'DD.MM.YYYY',
-    yearRange: [1930, 2019]
+    yearRange: [1930, 2024]
   });
 
   // module for auto saving the form data in the "my info"
@@ -119,6 +119,28 @@ $(document).ready(function () {
     else {
       infoModal({header: 'Fehler', text:'es ist ein Fehler aufgetreten oder die Liste ist leer.'})
     }
+  });
+
+  $('#copyJson').click((e)=>{
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText &&
+    navigator.clipboard.writeText($('#exportData textarea').val())) {
+      infoModal({header: 'Daten kopiert', text:'Du kannst die Daten jetzt in einer textdatei einfügen und abspeichern.'});
+    }
+    else {
+      infoModal({header: 'Fehler', text: 'Konnte Text nicht kopieren.'});
+    }
+  });
+
+  $('#emptyPages').click(e=>{
+    confirmModal({header: 'Alle Daten löschen?', 
+    text: 'Willst du wirklich alle Seiten löschen?', 
+    yes: (e)=>{
+      pages={};
+      savePages();
+      buildPageCollection();
+      infoModal({header:'Seiten gelöscht', text: 'Alle Seiten wurden gelöscht.'});
+    }
+    });
   });
 
   $('#importmydealz').click(e => {
